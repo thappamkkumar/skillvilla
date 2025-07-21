@@ -1,0 +1,119 @@
+ 
+
+  
+	.job-meta {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap; 
+	}
+
+	.job-meta div {
+		font-size: 14px;
+		color: #555;
+		margin-right: 15px;
+		display: flex;
+		align-items: center;
+	}
+
+	.job-meta div i {
+		color: #3498db;
+		margin-right: 5px;
+	}
+ 
+ 
+
+.jobDetailTestQuestion ul {
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.jobDetailTestQuestion {
+  margin-bottom: 15px;
+}
+
+/*job apply instruction*/
+.question-title { 
+  color: rgb(var(--danger-color));
+}
+
+
+ .job-apply-instruction-header
+ {
+	 background:linear-gradient(135deg, rgba(var(--logo-secondary-color),1), rgba(var(--logo-primary-color),1));
+ }
+.jobApplyBTN
+{
+	font-weight:bold;
+	text-shadow:	1px 1px 0px rgba(var(--text-color),1);
+	text-transform: capitalize;
+	background:rgba(var(--logo-primary-color),1)!important;
+	/*background: linear-gradient(140deg, #6157FF,   #EE49FD)!important;*/
+	color:rgba(var(--button-text-color),1)!important;
+	border:2px solid rgba(var(--logo-primary-color),1)!important;	 
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)!important;
+	transition: background 0.5s ease, color 0.5s ease, border 0.5s ease; 
+}
+.jobApplyBTN:hover, .jobApplyBTN:active , .jobApplyBTN:disabled 
+{
+	background:rgba(var(--logo-primary-color),0.8)!important;  
+	 color:rgba(var(--button-text-color),1)!important;
+	 border:2px solid rgba(var(--logo-primary-color),1) !important;
+}
+ 
+/* ListGroup item styling */
+.custom_radio {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid  rgba(var(--text-color),1);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.custom_radio:hover {
+  background-color: rgba(var(--text-color),0.5); /* Light hover effect */
+	color: rgba(var(--bg-color),1); 
+}
+
+/* Selected (active) option */
+.custom_radio.selected {
+  background-color: rgba(var(--text-color),1);  
+   color: rgba(var(--bg-color),1);  
+    
+}
+
+/* Hide the default radio button */
+.custom_radio input[type="radio"] {
+  display: none;
+}
+
+/* Custom radio button styling */
+.custom_radio .form-check-label {
+  position: relative;
+  padding-left: 2rem; /* Space for the custom radio */
+  cursor: pointer;
+}
+
+.custom_radio .form-check-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  background-color: #fff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Checked state for custom radio */
+.custom_radio input[type="radio"]:checked + .form-check-label::before {
+  background-color: rgba(var(--text-color),1); /* Primary color */
+  border-color: rgba(255,255,255,1); 
+}
+
+
+
+ 
+ 

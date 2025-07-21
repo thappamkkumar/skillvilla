@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class StoriesLike extends Model
+{
+    use HasFactory;
+		protected $table = 'stories_likes';
+		protected $fillable = ['stories_id', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function stories()
+    {
+        return $this->belongsTo(Stories::class);
+    }
+}

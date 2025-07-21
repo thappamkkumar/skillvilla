@@ -1,0 +1,142 @@
+#headerId
+{
+  background:rgba(var(--bg-color),1);
+}
+ 
+ 
+ 
+ 
+.nav_logo_img
+{
+	width:100px; height:50px; 
+}
+ 
+ 
+ /*css for customer header*/
+ 
+.header
+{
+	 background:rgba(var(--bg-color),1);
+  border-bottom:1px solid rgba(var(--text-color),0.03);
+}
+ 
+  
+.nav_profile_img
+{
+		width:2.5rem;
+		aspect-ratio:1/1;
+		object-fit:fit; 
+		border-radius:50%;
+		  
+}
+
+  
+ 
+  
+/* Logo container */
+/* Logo container */
+.logo {
+  display: flex;
+  align-items: center;
+  /*justify-content: center;*/
+  gap: 5px; /* Increased gap for better spacing */
+ /* font-family: "Poppins", sans-serif;*/
+  font-weight: bold;
+  text-transform: lowercase;
+  line-height: 1;
+   cursor:pointer;
+}
+
+/* Large 'S' with slight size adjustment */
+.logo-s {
+  font-size: 46px; /* Increased for better balance */
+  font-weight: 900;
+  color:  rgba(var(--text-color),1);
+  text-shadow: 3px 3px 2px rgba(var(--text-color), 0.3);
+}
+
+/* Other characters with increased size */
+.char, .logo-villa {
+  font-size: 22px; /* Slightly larger for better visibility */
+  font-weight: bold;
+  color: rgba(var(--text-color),1);
+  text-shadow: 1.5px 1.5px 2px rgba(var(--text-color), 0.2);
+  padding: 0 2px; /* Added padding to increase spacing */
+}
+
+/* Light gray for 'Villa' */
+.logo-villa {
+  color: rgba(150,150,150,1);
+}
+
+/* Hover effect */
+.logo span:hover {
+  transform: translateY(-4px);
+  text-shadow: 2px 2px 3px rgba(var(--text-color), 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .logo {
+    gap: 3px; /* Reduce gap on smaller screens */
+  }
+
+  .logo-s {
+    font-size: 40px; /* Adjust size for smaller screens */
+  }
+
+  .char, .logo-villa {
+    font-size: 18px; /* Slightly smaller for mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    gap: 2px; /* Further reduce spacing */
+  }
+
+  .logo-s {
+    font-size: 36px; /* Adjust further */
+  }
+
+  .char, .logo-villa {
+    font-size: 16px; /* Reduce for mobile fit */
+  }
+}
+
+ .header_profile_btn
+ {
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15), 
+              0px 1px 2px rgba(0, 0, 0, 0.1);
+	background:rgba(var(--bg2-color),1); 
+	transition: transform 0.3s;
+ }
+ 
+ 
+ 
+.header_navigation_link
+{ 
+	color:rgba(var(--text-color),0.7); 
+	font-weight:500;    
+	border-bottom:0.2rem solid  rgba(var(--text-color),0.0);
+	transition: color 0.5s, border-bottom 0.7s;
+	border-radius:0.2rem;
+  text-shadow: 0.5px 0.5px 1px rgba(var(--text-color), 0.2);
+}
+.header_navigation_link:hover
+{ 
+	color:rgba(var(--text-color),1); 
+	border-bottom:0.2rem solid  rgba(var(--text-color),1); 
+	
+}  
+.header_nav_bar .header_navigation_link.active
+{ 
+	background:transparent;  
+	color:rgba(var(--text-color),1);   
+	font-weight:700 !important; 
+	border-bottom:0.2rem solid  rgba(var(--text-color),1);
+	
+}  

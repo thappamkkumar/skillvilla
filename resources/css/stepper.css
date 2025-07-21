@@ -1,0 +1,60 @@
+.stepper-container {
+  width: 100%;
+   
+}
+
+.stepper-track {
+  max-width: 600px;
+}
+
+.stepper-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(var(--text-color),0.5);
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.stepper-dot.filled {
+  background-color: rgba(var(--text-color),1);
+}
+
+.stepper-dot.active {
+  transform: scale(1.15);
+  box-shadow: 0 4px 10px rgba(var(--text-color),0.2);
+}
+
+.stepper-line-wrapper {
+  flex-grow: 1;
+  position: relative;
+  height: 4px;
+   
+}
+
+.stepper-line-bg {
+  background-color: rgba(var(--text-color),0.5);
+  height: 100%;
+  width: 100%;
+  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.stepper-line-fill {
+  background-color: rgba(var(--text-color),1);
+  height: 100%;
+  width: 0%;
+  border-radius: 0px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transition: width 0.4s ease-in-out;
+}
+
+.stepper-line-fill.filled {
+  width: 100%;
+}

@@ -1,0 +1,21 @@
+/*.story
+{
+	cursor:pointer;
+	transition: background-color 0.3s ease;
+}
+.story:hover
+{
+	background-color:rgba(245,245,245,1);
+	  
+}*/
+ 
+.storyDetailDeleteMsgContainer
+{
+	width:100%;   
+	height: auto; 
+	min-height: 40vh;  
+}
+.storyReviewInputContainer
+{
+	background:rgba(var(--text-color),0.1);
+}

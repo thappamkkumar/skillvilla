@@ -1,0 +1,92 @@
+
+.heroSection{}
+
+.featuresSection  
+{
+	/*background:rgba(var(--text-color),0.04);*/ 
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 2rem;
+ 
+}
+ 
+.feature_card   
+{
+		background:rgba(var(--bg2-color),1);  
+		box-shadow: 0px 4px 8px rgba(100, 100, 100, 0.15), 
+								0px 1px 2px rgba(100, 100, 100, 0.1);
+		transition: transform 0.3s;
+		
+}
+.feature_card:hover{
+	transform: translateY(-5px);
+}
+ 
+.testimonial {
+		max-width: 600px; 
+		background:rgba(var(--bg2-color),1); 
+		box-shadow: 0px 4px 8px rgba(100, 100, 100, 0.15), 
+              0px 1px 2px rgba(100, 100, 100, 0.1);
+	
+	}
+	 
+	.ctaSection
+	{ 
+		background:rgba(var(--text-color),0.8);
+		color:rgba(var(--bg2-color),1);
+	}
+	
+.social-btn 
+{
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Facebook */
+.social-btn.facebook {
+  background-color:rgba(13, 110, 253, 0.3); 
+   
+}
+.social-btn.facebook:hover {
+  background-color:rgba(13, 110, 253, 0.2);
+	color:rgba(var(--text-color), 0.5);}
+
+/* Twitter */
+.social-btn.twitter {
+  background-color: rgba(13, 202, 240, 0.3);  
+   
+}
+.social-btn.twitter:hover {
+  background-color:rgba(13, 202, 240, 0.2); 
+	color	:rgba(var(--text-color), 0.5);
+}
+
+/* Instagram */
+.social-btn.instagram {
+  background-color: rgba(220, 53, 69, 0.3);  
+   
+}
+.social-btn.instagram:hover {
+  background-color:rgba(220, 53, 69, 0.2); 
+	color	:rgba(var(--text-color), 0.5);
+}
+
+/* WhatsApp */
+.social-btn.whatsapp {
+  background-color: rgba(25, 135, 84, 0.3); 
+  
+}
+.social-btn.whatsapp:hover {
+  background-color:rgba(25, 135, 84, 0.2); 
+	color:rgba(var(--text-color), 0.5);
+}
+
+	
+	.footer-link
+	{
+		color:rgba(var(--text-color),1);
+	}
+	.footer-link:hover
+	{
+		color:rgba(var(--text-color),0.6);
+	}
+	 

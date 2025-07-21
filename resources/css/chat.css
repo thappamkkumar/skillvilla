@@ -1,0 +1,134 @@
+ 
+/*.chatList_container
+{
+	height:calc(100vh - 70px); 
+	overflow:auto;
+} */
+ 
+ 
+  
+ .chatBox_header
+{
+	background:rgba(var(--bg2-color),1);
+} 
+.chatBox_body,  .chatBox_footer
+{ 
+	background:rgba(var(--bg-color),1);
+}
+  
+.chatBox_footer_formContainer
+{
+	width:100%;
+	max-width:768px;
+	background:rgba(var(--bg2-color),1);
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+}
+ 
+.badge_chatList
+{
+	position:absolute;
+	bottom:0px;
+	right:5px; 
+
+}
+
+.chatBox_chat
+{
+	width:auto;
+	max-width:75%; 
+	/*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15), 
+              0px 1px 2px rgba(0, 0, 0, 0.1);*/
+}
+
+@media only screen and (max-width:768px)
+{
+	.chatBox_chat
+	{ 
+		max-width:85%;  
+	}
+}
+.current_user_message {
+  background: rgba(179, 212, 166, 1);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  
+}
+
+.other_user_message {
+  background: rgba(230, 230, 230, 1);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  
+}
+
+.messageAttachmnetDownloadIcon
+{ 
+	background:rgba(255,255,255,0.0)!important;
+	color:rgba(0,0,0,0.5);
+	border:2px solid rgba(0,0,0,0.5);	 
+	
+}
+.messageAttachmnetDownloadIcon:hover
+{ 
+	background:rgba(0,0,0,0.5)!important;
+	color:rgba(255,255,255,0.5);
+	border:2px solid rgba(0,0,0,0.5);	 
+	
+}
+ 
+ 
+ .chatScrolDownBTN
+ {
+	  position: sticky;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: rgba(var(--bg2-color),1);
+    color: rgba(var(--text-color),1); 
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    box-shadow:0px 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+		 
+    transition: opacity 0.3s ease-in-out;
+ }
+ .chatScrolDownBTN:hover { 
+			background-color: rgba(var(--bg-color),1); 
+}
+
+ 
+ 
+/* Sticky Date Header */
+.sticky-date {
+  position: sticky;
+  top: 0; 
+  z-index: 10;   
+	 backdrop-filter: blur(3px);
+	 background-color: rgba(var(--bg-color),0.6); 
+}
+.chatBox_messageInput{
+	 background-color: rgba(var(--primary-color),0.0);
+	resize: none; /* Allow vertical resizing */
+  overflow: auto; /* Hide overflow when the content grows */
+  width: 100%; /* Set a width to stretch the textarea */
+  min-height: 40px; /* Minimum height for the textarea */
+  max-height: 30vh;	 
+}
+.chatBox_messageInput:focus{
+	 background-color: rgba(var(--bg-color),0.0);  
+}
+
+.audioVedioCallBTN 
+{
+	background:transparent;
+	color:rgba(var(--text-color),1);
+}
+.audioVedioCallBTN:hover
+{  
+	color:rgba(0,0,0,1);
+}
+ 

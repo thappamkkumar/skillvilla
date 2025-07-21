@@ -1,0 +1,45 @@
+
+/*css for nested naviagtion like*/
+/*Community page nested navigation*/
+.community_nested_navigation_link
+{
+	background:transparent !important;
+	color:rgba(var(--text-color), 0.7);
+	font-size:1.1rem;
+	 transition: font-size 0.5s, color 0.5s;
+}
+.community_nested_navigation_link:hover
+{
+	color:rgba(var(--text-color), 1);
+}
+.community_nested_nav_bar .community_nested_navigation_link.active
+{
+	font-size:1.5rem;
+	color:rgba(var(--text-color), 1);
+	box-shadow:none;
+}
+.community_link_divider
+{
+	font-size:1.5rem;
+	color:rgba(var(--text-color), 0.7	);
+	font-weight:bold;
+}
+ 
+
+.community_member
+{
+	background:rgba(var(--bg2-color),1);
+	 
+} 
+ 
+.community_nested_navigation_add_new_community
+{
+	background:rgba(var(--text-color), 1);
+	color:rgba(var(--bg2-color), 1);
+}
+.community_nested_navigation_add_new_community:hover
+{
+	background:rgba(var(--text-color), 0.8);
+	color:rgba(var(--bg2-color), 1);
+}
+ 

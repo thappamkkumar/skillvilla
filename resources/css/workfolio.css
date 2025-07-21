@@ -1,0 +1,141 @@
+/* Container for masonry grid */
+.masonry {
+  column-count: 3; /* Number of columns */
+  column-gap: 16px; /* Spacing between columns */ 
+  width: 100%; /* Responsive width */
+}
+
+/* Individual masonry items */
+.masonry-item {
+  break-inside: avoid; /* Prevent breaking items across columns */
+  margin-bottom: 16px; /* Spacing between items */
+}
+
+/* Images */
+.masonry-image {
+  display: block;
+  width: 100%; /* Ensure image takes full width of its container */
+  height: auto; /* Maintain aspect ratio */
+	max-height:70vh;
+	object-fit: cover;
+  border-radius: 8px; /* Optional: Rounded corners */
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+ transition:0.5s ease;
+}
+ .masonry-image:hover
+ {
+	 transform:scale(1.015);
+ }
+
+/* For medium screens */
+@media (max-width: 992px) {
+  .masonry {
+    column-count: 3;
+  }
+}
+
+/* For small screens */
+@media (max-width: 768px) {
+  .masonry {
+    column-count: 2;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 576px) {
+  .masonry {
+    column-count: 2;
+  }
+}
+ 
+ 
+ 
+ 
+ .workfolio_images
+ {
+	width:100%;
+	aspect-ratio:1/1;
+	object-fit:cover; 
+	cursor:pointer; 
+ box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15), 
+              0px 1px 2px rgba(0, 0, 0, 0.1);
+	transition:0.5s ease;
+ }
+ 
+ .workfolio_images:hover
+ {
+	 transform:scale(1.015);
+ }
+ 
+ 
+ 
+ .video-container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto; /* Center the video container */
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.error-message {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 14px;
+  color: #6c757d;
+  margin-top: 10px;
+}
+.review_form_container
+{
+	background:rgba(var(--text-color), 1);
+	color:rgba(255,255,255, 1);
+}
+
+.reviewformInput 
+{
+		border:2px solid rgba(255,255,255,0.8);
+		color:rgba(255,255,255,1);
+}
+ .reviewformInput::placeholder {
+     color:rgba(255,255,255,1);
+       
+    }
+
+    /* For better browser compatibility */
+ .reviewformInput:-ms-input-placeholder { /* For Internet Explorer 10-11 */
+      color:rgba(255,255,255,1);
+    }
+.reviewformInput::-ms-input-placeholder { /* For Microsoft Edge */
+      color:rgba(255,255,255,1);
+    }
+
+.reviewformInput:focus
+{ 
+	outline:none;
+	border:2px solid rgba(255,255,255,1);
+	box-shadow:0px 0px 0px 4px rgba(255,255,255,0.5);
+	color:rgba(255,255,255,1);
+}
+.reviewStarContainer
+{
+	color:rgba(var(--danger-color), 1);
+}
+
+ 
+
+ .workfolio
+{
+	/*box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1); */
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15), 
+              0px 1px 2px rgba(0, 0, 0, 0.1);
+	 background:rgba(var(--item-bg-color),1); 
+}  
+ 
+ 

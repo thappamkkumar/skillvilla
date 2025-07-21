@@ -1,0 +1,88 @@
+.fullSideNavBar
+{
+	width:250px;
+	height:100vh;
+	overflow:auto; 
+	/*background-color:rgba(var(--bg-color), 0.2);
+	backdrop-filter:blur(20px);*/
+	border-right:0.05rem solid rgba(var(--text-color), 0.2);
+	 background:rgba(var(--bg-color),1);
+	 flex-shrink: 0;
+}
+.fullSideNavBar::-webkit-scrollbar {
+    width: 5px; /* Adjust the width of the scrollbar */
+}
+
+.fullSideNavBar::-webkit-scrollbar-track {
+    background: rgba(var(--bg-color), 0.5); /* Background color of the track */
+    border-radius: 10px; /* Optional: Rounded corners */
+}
+
+.fullSideNavBar::-webkit-scrollbar-thumb {
+    background: rgba(var(--text-color), 0.5); /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Optional: Rounded corners */
+}
+
+.fullSideNavBar::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--text-color), 0.7); /* Darker color on hover */
+}
+
+@media only screen and (min-width:575px) and (max-width:992px)
+{
+		.fullSideNavBar
+		{
+			width:200px;
+			  
+		}
+ }
+
+.smallScreenSideBar
+{
+	
+	background:rgba(var(--bg-color),1);
+	backdrop-filter:blur(20px);
+}
+
+
+
+.side_nav_logo
+{
+	width:60px; height:40px; 
+}
+.side_nav_full_logo
+{
+	width:150px;  
+		aspect-ratio:4/3;
+		object-fit:fit; 
+}
+.navigation_link
+{ 
+	color:rgba(var(--text-color),1); 
+	font-weight:420 !important;   
+	transition: background 0.5s;
+ 
+}
+.navigation_link:hover
+{ 
+	background:rgba(var(--text-color),0.1);  
+}  
+.nav_bar .navigation_link.active
+{ 
+	background:rgba(var(--text-color),0.3)!important;    
+	font-weight:700 !important; 
+}  
+.nav_bar .navigation_link.active .navigation_link_icon
+{ 
+	 
+	stroke-width:0.3;	
+   
+}  
+ 
+
+
+
+.dropdown_menu
+{
+	background:rgba(var(--bg2-color),1);
+}
+
