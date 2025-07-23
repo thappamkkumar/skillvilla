@@ -46,6 +46,7 @@ import '../../css/userCard.css';
 import '../../css/community.css'; 
 import '../../css/share.css'; 
 import '../../css/stepper.css'; 
+import '../../css/call.css'; 
 
 const AppRoutes = () => {
 	const is_login = useSelector((state) => state.auth.is_login);//get login info 

@@ -6,6 +6,8 @@ import { debounce } from 'lodash';
 // Components
 import Header from '../Components/Customer/Header/Header';
 import NavBarContainer from '../Components/Customer/NavBar/NavBarContainer';
+//call components
+import OutgoingCallModal from '../Components/Customer/Call/OutgoingCallModal';
 
 // Hook for visited URL
 import manageVisitedUrl from '../CustomHook/manageVisitedUrl';
@@ -18,6 +20,14 @@ const CustomerLayoutPage = () => {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 	const navigate = useNavigate();
 
+
+	
+	//states for call
+	const [showCallModal, setShowCallModal] = useState(true);
+	
+	
+	
+	
 	// Call the  hook for websockets event listeners for community message
 	useCommunityNewMessageWebsocket();
 	
@@ -60,7 +70,17 @@ const CustomerLayoutPage = () => {
           <Outlet /> {/* Render nested routes */}
         </div>
       </div>
-
+			
+			<>
+				{/*outgoing call model*/}
+				<OutgoingCallModal
+					show={showCallModal}
+					onHide={() => setShowCallModal(false)}
+					receiver={{name:"Jane Smith", image:'/images/profile_icon.png'}}
+				/>
+			
+			</>
+			
       
     </div>
   );

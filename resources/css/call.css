@@ -1,0 +1,17 @@
+/* Make avatar image responsive and consistent */
+.outgoing-call-avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+@media (max-width: 576px) {
+  .outgoing-call-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+}
