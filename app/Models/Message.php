@@ -17,6 +17,8 @@ class Message extends Model
 		'message', 
 		'is_read', 
 		'attachment',
+		'call_id',
+		'post_id',
 		'post_id',
 		'workfolio_id',
 		'problem_id',
@@ -74,7 +76,14 @@ class Message extends Model
     {
         return $this->belongsTo(ChatList::class);
     }
-
+		
+		//relation with call 
+		 public function call(): BelongsTo
+    {
+        return $this->belongsTo(Call::class);
+    }
+		
+		//realtion with sender user
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');
@@ -126,6 +135,8 @@ class Message extends Model
 		{
 			return $this->belongsTo(Post::class, 'post_id');
 		} 
+		
+		
 		
 		
 		

@@ -462,7 +462,25 @@ class User extends Authenticatable  implements JWTSubject
 		}
 
 		
-		
+		/**
+		* Creating  realtionship  
+		*   
+		*/   
+		// All calls the user has initiated
+		public function outgoingCalls()
+		{
+				return $this->hasMany(Call::class, 'caller_id');
+		}
+		/**
+		* Creating  realtionship  
+		*   
+		*/   
+		// All calls the user has received
+		public function incomingCalls()
+		{
+				return $this->hasMany(Call::class, 'receiver_id');
+		}
+
 		
 		
 		
