@@ -10,16 +10,20 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ChatCallEndEvent
+class ChatCallEndEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+		
+		public $toUserId;
+    public $reason;
+    public function __construct($toUserId, $reason = 'ended')
     {
-        //
+      $this->toUserId = $toUserId;
+      $this->reason = $reason;
     }
 
     /**
@@ -30,7 +34,7 @@ class ChatCallEndEvent
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+          new PrivateChannel('call.' . $this->toUserId);
         ];
     }
 }

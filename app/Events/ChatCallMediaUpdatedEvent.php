@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ChatCallSignalEvent implements ShouldBroadcast
+class ChatCallMediaUpdatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,13 +19,13 @@ class ChatCallSignalEvent implements ShouldBroadcast
      */
 		
 		public $toUserId;
-    public $fromUser;
-    public $signalData;
-    public function __construct($toUserId, $fromUser, $signalData)
+    public $fromUserId;
+    public $mediaStatus; // e.g. ['audio' => true, 'video' => false]
+    public function __construct($toUserId, $fromUserId, $mediaStatus)
     {
       $this->toUserId = $toUserId;
-      $this->fromUser = $fromUser;
-      $this->signalData = $signalData;
+      $this->fromUserId = $fromUserId;
+      $this->mediaStatus = $mediaStatus;
     }
 
     /**
@@ -36,7 +36,7 @@ class ChatCallSignalEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('call.' . $this->toUserId);
+          new PrivateChannel('call.' . $this->toUserId);
         ];
     }
 }

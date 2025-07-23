@@ -262,5 +262,11 @@ Broadcast::channel('community-request-cancel', function ($user) {
 Broadcast::channel('community-new-message', function ($user) {
     return true;
 });
- 
+
+
+//channel for chat calls events (ChatCallIncomingEvent, ChatCallAcceptedEvent, ChatCallRejectedEvent,  ChatCallSignalEvent, ChatCallEndEvent, ChatCallMediaUpdatedEvent )
+Broadcast::channel('call.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
+});
+
   

@@ -10,16 +10,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ChatCallAcceptedEvent
+class ChatCallAcceptedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
+			
     /**
      * Create a new event instance.
      */
-    public function __construct()
+		
+		public $fromUser;
+    public $toUserId;
+    public $callRoomId;
+		
+    public function __construct($fromUser, $toUserId, $callRoomId)
     {
-        //
+      $this->fromUser = $fromUser;
+			$this->toUserId = $toUserId;
+			$this->callRoomId = $callRoomId;
     }
 
     /**
@@ -30,7 +37,7 @@ class ChatCallAcceptedEvent
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new  PrivateChannel('call.' . $this->toUserId);
         ];
     }
 }
