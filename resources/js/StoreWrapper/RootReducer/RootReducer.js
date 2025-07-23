@@ -10,6 +10,7 @@ import TaggedSavedPostReducer  from '../Slice/TaggedSavedPostSlice';
  
 import ChatReducer  from '../Slice/ChatSlice';
 import ChatMessageReducer  from '../Slice/ChatMessageSlice';
+import ChatCallReducer  from '../Slice/ChatCallSlice';
 
 import WorkfolioReducer  from '../Slice/WorkfolioSlice';
 import UserWorkfolioReducer  from '../Slice/UserWorkfolioSlice';
@@ -77,6 +78,7 @@ const RootReducer = combineReducers(
 		 
 		chatList: ChatReducer, // for list of chat of logged user
 		messageList: ChatMessageReducer,   
+		chatCallData: ChatCallReducer,   
 		
 		workfolioList:WorkfolioReducer, //for list of work of logged user followings
 		userWorkfolioList: UserWorkfolioReducer,  //for list of work of logged or selected user
