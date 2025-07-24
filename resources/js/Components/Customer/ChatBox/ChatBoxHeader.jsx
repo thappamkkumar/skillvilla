@@ -8,6 +8,7 @@ import {    BsCameraVideoFill, BsTelephoneFill   } from 'react-icons/bs';
 import MessageAlert from '../../../Components/MessageAlert';
  
 import { updateChatMessageState } from '../../../StoreWrapper/Slice/ChatMessageSlice';
+import { updateChatCallState } from '../../../StoreWrapper/Slice/ChatCallSlice';
  
 import serverConnection from '../../../CustomHook/serverConnection';  
 import handleImageError from '../../../CustomHook/handleImageError';  
@@ -19,6 +20,8 @@ const ChatBoxHeader = ({user, chatId}) => {
 	
 	const authToken = useSelector((state) => state.auth.token); //selecting token from stor
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));//get login info 
+	const chatCallData =  useSelector((state) => state.chatCallData);//get call info 
+	
   const navigate = useNavigate(); //geting reference of useNavigate into navigate
 	const dispatch = useDispatch();
 	 
@@ -52,22 +55,51 @@ const ChatBoxHeader = ({user, chatId}) => {
 	const handleAubioCall = useCallback(async()=>{
 		try
 		{
+			if(chatCallData.callStatus === 'calling')
+			{
+				setsubmitionMSG("You're already trying to call someone. Please wait for them to answer.");
+				setShowModel(true);
+			}
+			if(chatCallData.callStatus === 'in-call')
+			{
+				setsubmitionMSG("You're already in a call. Please end the current call to start a new one.");
+				setShowModel(true);
+			}
 			
 			const resultData = await serverConnection('/initiate-call', 
-			{'toUserId': user.id, 'callType':'audio'}, 
+			{'receiver_id': user.id, 'call_type':'audio', 'chat_id': chatId}, 
 			authToken   ); 
 			
-			console.log(resultData);
-				 
+			//console.log(resultData);
+			if(resultData?.status )
+			{
+				let initiatingCallData = {
+					callId : resultData?.callData.id || null,
+					callStatus : 'calling',
+					callType : resultData?.callData.call_type || null,
+					reciver : resultData?.callData?.receiver || null,
+					caller : resultData?.callData?.caller || null,
+					callRoomId : resultData?.callData?.room_id || null,
+					 
+				};
+				
+				  
+				dispatch(updateChatCallState({'type' : 'initiatingCall', 'initiatingCall': initiatingCallData})); 
+			}
+			else
+			{
+				setsubmitionMSG(resultData.message || 'An error occurred. Please try again.');
+				setShowModel(true);
+			}
 		}
 		catch(e)
 		{
-			console.log(e);
+			 console.log(e);
 			setsubmitionMSG('An error occurred. Please try again.');
 			setShowModel(true);
 		}
 		
-	}, [authToken]);
+	}, [authToken, chatId, user.id, chatCallData.callStatus]);
 	const handleVedioCall = useCallback(()=>{alert("VEDIO CALL");}, []);
   return (
 		<>

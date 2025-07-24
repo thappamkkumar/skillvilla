@@ -17,6 +17,7 @@ return new class extends Migration
 					$table->unsignedBigInteger('receiver_id');
 
 					$table->enum('call_type', ['audio', 'video']);
+					$table->uuid('room_id')->nullable()->unique();
 					$table->enum('status', ['initiated', 'accepted', 'rejected', 'missed', 'ended']);
 					$table->timestamp('started_at')->nullable();
 					$table->timestamp('ended_at')->nullable();

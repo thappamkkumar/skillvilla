@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('message')->nullable();
 						$table->string('attachment')->nullable();
 						
+						$table->unsignedBigInteger('call_id')->nullable();
 						$table->unsignedBigInteger('post_id')->nullable();
 						$table->unsignedBigInteger('workfolio_id')->nullable();
 						$table->unsignedBigInteger('problem_id')->nullable();
@@ -27,6 +28,7 @@ return new class extends Migration
 						$table->unsignedBigInteger('community_id')->nullable();
 						$table->unsignedBigInteger('user_id')->nullable(); 
 						
+						$table->foreign('call_id')->references('id')->on('calls')->onDelete('set null');
 						$table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 						$table->foreign('workfolio_id')->references('id')->on('workfolios')->onDelete('cascade');
 						$table->foreign('problem_id')->references('id')->on('problems')->onDelete('cascade');

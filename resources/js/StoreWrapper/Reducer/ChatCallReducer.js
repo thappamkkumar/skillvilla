@@ -5,10 +5,30 @@ const ChatCallReducer = {
     {  
 			switch (action.payload.type)
 			{
+				
+				case "initiatingCall": 
+				{
+					const callData = action.payload.initiatingCall;
+					
+					state.callId= callData.callId;
+					state.callStatus= callData.callStatus;
+					state.callType= callData.callType;
+					state.caller= callData.caller;
+					state.receiver= callData.reciver;
+					state.callRoomId= callData.callRoomId;
 					 
+					break;
+				}
+				
+					 
+					 
+					
+					
+					
+					
 				case "incomingCallReceived": 
 					state.callStatus = 'incoming';
-					state.incomingCallData = action.payload;
+					state.incomingCallData = action.payload.incomingCallData;
 					break;  
 					 
 				case "acceptCall": 

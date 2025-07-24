@@ -14,6 +14,7 @@ class Call extends Model
 			'caller_id',
 			'receiver_id',
 			'call_type',
+			'room_id',
 			'status',
 			'started_at',
 			'ended_at',

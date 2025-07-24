@@ -1,6 +1,7 @@
  
 //initial state for store call related data
 const chatCallState = {
+	callId: null,
 	callStatus: 'idle',
   callType: null, // 'audio' | 'video'
   caller: null,
