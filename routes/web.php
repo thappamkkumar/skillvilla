@@ -46,6 +46,9 @@ Route::middleware(['api', 'auth:api'])->group(function () {
 	//Route group controller for chat 
   require_once __DIR__.'/customerWebRoutes/chatRoutes.php';
 	
+	//Route group controller for chat calls 
+  require_once __DIR__.'/customerWebRoutes/chatCallRoutes.php';
+	
 	//Route group controller for Workfolio
   require_once __DIR__.'/customerWebRoutes/workfolioRoutes.php';	
 		 

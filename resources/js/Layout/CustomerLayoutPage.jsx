@@ -23,7 +23,7 @@ const CustomerLayoutPage = () => {
 
 	
 	//states for call
-	const [showCallModal, setShowCallModal] = useState(true);
+	const [showCallModal, setShowCallModal] = useState(false);
 	
 	
 	

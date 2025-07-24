@@ -5,12 +5,13 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button'; 
 import {    BsCameraVideoFill, BsTelephoneFill   } from 'react-icons/bs';
 
+import MessageAlert from '../../../Components/MessageAlert';
  
 import { updateChatMessageState } from '../../../StoreWrapper/Slice/ChatMessageSlice';
  
+import serverConnection from '../../../CustomHook/serverConnection';  
 import handleImageError from '../../../CustomHook/handleImageError';  
-//import manageVisitedUrl from '../../../CustomHook/manageVisitedUrl';
- 
+	
 
 
 
@@ -21,7 +22,10 @@ const ChatBoxHeader = ({user, chatId}) => {
   const navigate = useNavigate(); //geting reference of useNavigate into navigate
 	const dispatch = useDispatch();
 	 
-
+	const [submitionMSG, setsubmitionMSG] = useState(null); //state for store info about form submition  
+	const [showModel, setShowModel] = useState(false); //state for alert message  
+	
+	
 	//function use to handle navigation to user profile
 	const handleNavigateToUserProfile = useCallback(()=>{
 		
@@ -45,7 +49,25 @@ const ChatBoxHeader = ({user, chatId}) => {
  
 	
 
-	const handleAubioCall = useCallback(()=>{alert("AUDIO CALL");}, []);
+	const handleAubioCall = useCallback(async()=>{
+		try
+		{
+			
+			const resultData = await serverConnection('/initiate-call', 
+			{'toUserId': user.id, 'callType':'audio'}, 
+			authToken   ); 
+			
+			console.log(resultData);
+				 
+		}
+		catch(e)
+		{
+			console.log(e);
+			setsubmitionMSG('An error occurred. Please try again.');
+			setShowModel(true);
+		}
+		
+	}, [authToken]);
 	const handleVedioCall = useCallback(()=>{alert("VEDIO CALL");}, []);
   return (
 		<>
@@ -75,6 +97,8 @@ const ChatBoxHeader = ({user, chatId}) => {
 			 
 					</div>
 			</div>
+			
+			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
 		</>
   );
 };
