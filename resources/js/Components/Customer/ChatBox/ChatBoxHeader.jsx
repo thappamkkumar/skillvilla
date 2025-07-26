@@ -77,7 +77,7 @@ const ChatBoxHeader = ({user, chatId}) => {
 					callId : resultData?.callData.id || null,
 					callStatus : 'calling',
 					callType : resultData?.callData.call_type || null,
-					reciver : resultData?.callData?.receiver || null,
+					receiver : resultData?.callData?.receiver || null,
 					caller : resultData?.callData?.caller || null,
 					callRoomId : resultData?.callData?.room_id || null,
 					 
@@ -94,7 +94,7 @@ const ChatBoxHeader = ({user, chatId}) => {
 		}
 		catch(e)
 		{
-			 console.log(e);
+			//console.log(e);
 			setsubmitionMSG('An error occurred. Please try again.');
 			setShowModel(true);
 		}

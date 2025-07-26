@@ -1,3 +1,10 @@
+.call-container
+{
+	background:rgba(var(--bg2-color),1);
+		backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 /* Make avatar image responsive and consistent */
 .outgoing-call-avatar {
   width: 100px;
@@ -11,7 +18,28 @@
     height: 80px;
   }
 
-  .modal-title {
-    font-size: 1rem;
-  }
+}
+
+.call-card
+{
+	box-shadow: 0px 4px 8px rgba(100, 100, 100, 0.15), 
+              0px 1px 2px rgba(100, 100, 100, 0.1);
+	background:rgba(var(--bg2-color),1);
+	overflow:hidden;
+	height:90vh;
+	width:100%;
+	
+}
+
+.caller-card
+{
+	max-width:350px;
+	background-size: cover;
+  background-position: center;
+}
+.caller-card-overlay
+{
+	background:rgba(var(--bg2-color),0.15);
+	backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }

@@ -17,7 +17,7 @@ import useCommunityNewMessageWebsocket from '../Websockets/Community/useCommunit
 const CustomerLayoutPage = () => {
   const is_login = useSelector((state) => state.auth.is_login); // Check login status
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user)); // Get logged-in user info
-  const chatCallData =  useSelector((state) => state.chatCallData);//get call info 
+ 
 	
 	const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 	const navigate = useNavigate();
@@ -73,11 +73,7 @@ const CustomerLayoutPage = () => {
 			
 			<>
 				{/*outgoing call model*/}
-				<OutgoingCallModal
-					show={chatCallData.callStatus === "calling"}
-					onHide={() => {}}
-					receiver={{name:"Jane Smith", image:'/images/profile_icon.png'}}
-				/>
+				<OutgoingCallModal  />
 			
 			</>
 			

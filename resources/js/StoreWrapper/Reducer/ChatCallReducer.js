@@ -14,7 +14,7 @@ const ChatCallReducer = {
 					state.callStatus= callData.callStatus;
 					state.callType= callData.callType;
 					state.caller= callData.caller;
-					state.receiver= callData.reciver;
+					state.receiver= callData.receiver;
 					state.callRoomId= callData.callRoomId;
 					 
 					break;
