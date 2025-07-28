@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {useSelector, useDispatch } from 'react-redux';  
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button'; 
+import Spinner from 'react-bootstrap/Spinner'; 
 import {    BsCameraVideoFill, BsTelephoneFill   } from 'react-icons/bs';
 
 import MessageAlert from '../../../Components/MessageAlert';
@@ -21,12 +22,17 @@ const ChatBoxHeader = ({user, chatId}) => {
 	const authToken = useSelector((state) => state.auth.token); //selecting token from stor
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));//get login info 
 	const chatCallData =  useSelector((state) => state.chatCallData);//get call info 
-	
-  const navigate = useNavigate(); //geting reference of useNavigate into navigate
-	const dispatch = useDispatch();
+
 	 
 	const [submitionMSG, setsubmitionMSG] = useState(null); //state for store info about form submition  
 	const [showModel, setShowModel] = useState(false); //state for alert message  
+	
+	const [audioCallLoader, setAudioCallLoader] = useState(false);
+	const [videoCallLoader, setVideoCallLoader] = useState(false);
+	
+		
+  const navigate = useNavigate(); //geting reference of useNavigate into navigate
+	const dispatch = useDispatch();
 	
 	
 	//function use to handle navigation to user profile
@@ -51,7 +57,7 @@ const ChatBoxHeader = ({user, chatId}) => {
 	
  
 	
-
+	//handle audio call
 	const handleAubioCall = useCallback(async()=>{
 		try
 		{
@@ -59,12 +65,16 @@ const ChatBoxHeader = ({user, chatId}) => {
 			{
 				setsubmitionMSG("You're already trying to call someone. Please wait for them to answer.");
 				setShowModel(true);
+				return;
 			}
 			if(chatCallData.callStatus === 'in-call')
 			{
-				setsubmitionMSG("You're already in a call. Please end the current call to start a new one.");
+				setsubmitionMSG("You're already in a call. Please end the current call to start a new one."); 
 				setShowModel(true);
+				return;
 			}
+			
+			setAudioCallLoader(true);
 			
 			const resultData = await serverConnection('/initiate-call', 
 			{'receiver_id': user.id, 'call_type':'audio', 'chat_id': chatId}, 
@@ -98,10 +108,18 @@ const ChatBoxHeader = ({user, chatId}) => {
 			setsubmitionMSG('An error occurred. Please try again.');
 			setShowModel(true);
 		}
+		finally
+		{
+			setAudioCallLoader(false);
+		}
 		
 	}, [authToken, chatId, user.id, chatCallData.callStatus]);
+
+	//handle video call
 	const handleVedioCall = useCallback(()=>{alert("VEDIO CALL");}, []);
-  return (
+ 
+
+ return (
 		<>
 		 		
 				
@@ -120,14 +138,19 @@ const ChatBoxHeader = ({user, chatId}) => {
 					</div>
 				</div>
 				<div className=" d-flex align-items-center  ps-2 " >
-						 <Button  variant="light"  title="Audio Call"  id="audioCallBTN" className="  border-0 shadow-none  me-1 p-2 lh-1 audioVedioCallBTN  " onClick={handleAubioCall} > 
-							<BsTelephoneFill    />
-						 </Button>
-						 <Button  variant="light"  title="Vedio Call"  id="vedioCallBTN" className="  border-0 shadow-none   me-1 p-2 lh-1 audioVedioCallBTN "	onClick={handleVedioCall}> 
-								 <BsCameraVideoFill   />
-						 </Button>
+					<Button  variant="light"  title="Audio Call"  id="audioCallBTN" className="  border-0 shadow-none  me-1 p-2 lh-1 audioVedioCallBTN  " onClick={handleAubioCall} disabled={audioCallLoader} > 
+						{
+							audioCallLoader ? <Spinner  size="sm"/> : <BsTelephoneFill    />
+						}
+							
+					</Button>
+					<Button  variant="light"  title="Vedio Call"  id="vedioCallBTN" className="  border-0 shadow-none   me-1 p-2 lh-1 audioVedioCallBTN "	onClick={handleVedioCall} disabled={videoCallLoader}> 
+						{
+								videoCallLoader ? <Spinner  size="sm"/> : <BsCameraVideoFill    />
+						} 
+					</Button>
 			 
-					</div>
+				</div>
 			</div>
 			
 			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>

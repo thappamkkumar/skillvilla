@@ -1,9 +1,37 @@
 .call-container
 {
-	background:rgba(var(--bg2-color),1);
+	background:rgba(var(--text-color),0.8);
 		backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
+
+ 
+
+.call-card
+{
+	box-shadow: 0px 4px 8px rgba(100, 100, 100, 0.15), 
+              0px 1px 2px rgba(100, 100, 100, 0.1);
+	background:rgba(var(--bg2-color),1);
+	overflow:hidden;
+	height:100vh;
+	width:100%;
+	
+}
+
+.caller-card
+{
+	max-width:400px;
+ 
+	background-size: cover;
+  background-position: center;
+}
+.caller-card-overlay
+{
+	background:rgba(var(--text-color),0.15);
+	backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 
 /* Make avatar image responsive and consistent */
 .outgoing-call-avatar {
@@ -20,26 +48,27 @@
 
 }
 
-.call-card
-{
-	box-shadow: 0px 4px 8px rgba(100, 100, 100, 0.15), 
-              0px 1px 2px rgba(100, 100, 100, 0.1);
-	background:rgba(var(--bg2-color),1);
-	overflow:hidden;
-	height:90vh;
-	width:100%;
-	
+
+
+.dot-blink {
+  animation: blink 1.4s infinite;
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 0;
 }
 
-.caller-card
-{
-	max-width:350px;
-	background-size: cover;
-  background-position: center;
+.dot-blink:nth-child(2) {
+  animation-delay: 0.2s;
 }
-.caller-card-overlay
-{
-	background:rgba(var(--bg2-color),0.15);
-	backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+.dot-blink:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.dot-blink:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
 }
