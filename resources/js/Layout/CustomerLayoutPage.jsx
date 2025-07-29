@@ -1,25 +1,27 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState,  } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { debounce } from 'lodash';
-
+ 
 // Components
 import Header from '../Components/Customer/Header/Header';
 import NavBarContainer from '../Components/Customer/NavBar/NavBarContainer';
 //call components
 import OutgoingCallModal from '../Components/Customer/Call/OutgoingCallModal';
+import IncomingCallModal from '../Components/Customer/Call/IncomingCallModal';
 
 // Hook for visited URL
 import manageVisitedUrl from '../CustomHook/manageVisitedUrl';
+import useWindowHeight  from '../CustomHook/useWindowHeight';
 
 import useCommunityNewMessageWebsocket from '../Websockets/Community/useCommunityNewMessageWebsocket'; 
+import useIncomingCallWebsocket from '../Websockets/Call/useIncomingCallWebsocket'; 
  
 const CustomerLayoutPage = () => {
   const is_login = useSelector((state) => state.auth.is_login); // Check login status
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user)); // Get logged-in user info
  
 	
-	const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+	const windowHeight = useWindowHeight();
 	const navigate = useNavigate();
 
 
@@ -30,6 +32,7 @@ const CustomerLayoutPage = () => {
 	
 	// Call the  hook for websockets event listeners for community message
 	useCommunityNewMessageWebsocket();
+	useIncomingCallWebsocket(logedUserData);
 	
 	 
 /*
@@ -43,23 +46,7 @@ const CustomerLayoutPage = () => {
   }, [is_login, logedUserData, navigate]);
 */
 
-  // Debounced resize handler
-  const handleResize = useCallback(
-    debounce(() => {
-			 
-      setWindowHeight(window.innerHeight);
-    }, 300), // Adjust the debounce delay as needed
-    []
-  );
-// Handle window resize to update height dynamically
- 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      handleResize.cancel(); // Cancel pending debounced calls on unmount
-    };
-  }, [handleResize]);
+   
 
   return (
     <div className="  layout-container" style={{ height: windowHeight }}>
@@ -74,6 +61,8 @@ const CustomerLayoutPage = () => {
 			<>
 				{/*outgoing call model*/}
 				<OutgoingCallModal  />
+				{/*incoming call model*/}
+				<IncomingCallModal  />
 			
 			</>
 			

@@ -35,15 +35,22 @@
 
 /* Make avatar image responsive and consistent */
 .outgoing-call-avatar {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 }
 
 @media (max-width: 576px) {
   .outgoing-call-avatar {
-    width: 80px;
-    height: 80px;
+    width: 150px;
+    height: 150px;
+  }
+
+}
+@media (max-width: 200px) {
+  .outgoing-call-avatar {
+    width: 70%;
+    height:auto;
   }
 
 }

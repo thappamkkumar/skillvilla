@@ -7,7 +7,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import {    BsCameraVideoFill, BsTelephoneFill   } from 'react-icons/bs';
 
 import MessageAlert from '../../../Components/MessageAlert';
- 
+
+import { updateChatState } from '../../../StoreWrapper/Slice/ChatSlice';
 import { updateChatMessageState } from '../../../StoreWrapper/Slice/ChatMessageSlice';
 import { updateChatCallState } from '../../../StoreWrapper/Slice/ChatCallSlice';
  
@@ -80,10 +81,11 @@ const ChatBoxHeader = ({user, chatId}) => {
 			{'receiver_id': user.id, 'call_type':'audio', 'chat_id': chatId}, 
 			authToken   ); 
 			
-			//console.log(resultData);
+			// console.log(resultData);
 			if(resultData?.status )
 			{
 				let initiatingCallData = {
+					chatId : chatId,
 					callId : resultData?.callData.id || null,
 					callStatus : 'calling',
 					callType : resultData?.callData.call_type || null,
@@ -95,6 +97,20 @@ const ChatBoxHeader = ({user, chatId}) => {
 				
 				  
 				dispatch(updateChatCallState({'type' : 'initiatingCall', 'initiatingCall': initiatingCallData})); 
+				
+				const newMessage = resultData.newMessage
+
+				if(logedUserData.id == newMessage.sender_id)
+				{
+					//add new mesage in chat list
+					dispatch(updateChatState({type : 'AddNewMessage',  message:newMessage } ));  
+					//move chat at top of list
+					dispatch(updateChatState({type : 'updateChatAndMoveToTop',  chatId:newMessage.chat_list_id } ));  
+					//add message in message list 
+					dispatch(updateChatMessageState({type : 'AddNewMessage', newMessage:newMessage}));
+					
+				}
+
 			}
 			else
 			{

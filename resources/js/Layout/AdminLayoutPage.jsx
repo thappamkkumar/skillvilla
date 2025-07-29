@@ -1,20 +1,20 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState,  } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { debounce } from 'lodash';
-
+ 
 // Components
 import Header from '../Components/Admin/Header/Header';
 import NavBarContainer from '../Components/Admin/NavBar/NavBarContainer';
 
 // Hook for visited URL
 import manageVisitedUrl from '../CustomHook/manageVisitedUrl';
+import useWindowHeight from '../CustomHook/useWindowHeight';
  
  
 const AdminLayoutPage = () => {
   const is_login = useSelector((state) => state.auth.is_login); // Check login status
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user)); // Get logged-in user info
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+	const windowHeight = useWindowHeight();
 	const navigate = useNavigate();
 
 	 
@@ -29,23 +29,7 @@ const AdminLayoutPage = () => {
   }, [is_login, logedUserData, navigate]);
 */
 
-  // Debounced resize handler
-  const handleResize = useCallback(
-    debounce(() => {
-			 
-      setWindowHeight(window.innerHeight);
-    }, 300), // Adjust the debounce delay as needed
-    []
-  );
-// Handle window resize to update height dynamically
- 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      handleResize.cancel(); // Cancel pending debounced calls on unmount
-    };
-  }, [handleResize]);
+		
 
   return (
     <div className="  layout-container" style={{ height: windowHeight }}>

@@ -21,7 +21,7 @@ return new class extends Migration
 					$table->enum('status', ['initiated', 'accepted', 'rejected', 'missed', 'ended']);
 					$table->timestamp('started_at')->nullable();
 					$table->timestamp('ended_at')->nullable();
-					$table->integer('duration_seconds')->nullable();
+					//$table->integer('duration_seconds')->nullable();
 
 					$table->timestamps();
 

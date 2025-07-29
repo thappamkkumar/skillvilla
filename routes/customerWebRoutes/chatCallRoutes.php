@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\Route;
 				//Route for call initiate
 				Route::post('/initiate-call', 'initiateCall')->name('user.initiateCall'); 
 				
+				//Route for end call 
+				Route::post('/end-call', 'endCall' )->name('user.endCall');
+				
+				
 				//Route for accept call 
 				Route::post('/accept-call', 'acceptCall' )->name('user.acceptCall');
 				
 				//Route for reject call 
 				Route::post('/reject-call', 'rejectCall' )->name('user.rejectCall');
 				
-				//Route for end call 
-				Route::post('/end-call', 'endCall' )->name('user.endCall');
 				
 				//Route for  call sigal
 				Route::post('/call-signal', 'callSignal' )->name('user.callSignal');

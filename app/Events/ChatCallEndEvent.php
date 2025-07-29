@@ -19,11 +19,13 @@ class ChatCallEndEvent implements ShouldBroadcast
      */
 		
 		public $toUserId;
+    public $callId;
     public $reason;
-    public function __construct($toUserId, $reason = 'ended')
+    public function __construct($toUserId, $reason = 'ended', $callId)
     {
       $this->toUserId = $toUserId;
       $this->reason = $reason;
+      $this->callId = $callId;
     }
 
     /**
@@ -34,7 +36,7 @@ class ChatCallEndEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-          new PrivateChannel('call.' . $this->toUserId);
+          new PrivateChannel('call.' . $this->toUserId),
         ];
     }
 }

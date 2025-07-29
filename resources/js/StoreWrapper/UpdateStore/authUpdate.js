@@ -11,6 +11,7 @@ const authUpdate = (is_login, jwtToken, user, rememberMe=false) =>
 		localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
 
 		sessionStorage.setItem('is_login', JSON.stringify(is_login));
+		//sessionStorage.setItem('auth_token', jwtToken);//important for private broadcast events listing, it use in echo.js file
 		
 	}
 	else
@@ -22,6 +23,7 @@ const authUpdate = (is_login, jwtToken, user, rememberMe=false) =>
 		localStorage.removeItem('user'); 
 		localStorage.removeItem('rememberMe'); 
 		sessionStorage.removeItem('is_login'); 
+		//sessionStorage.removeItem('auth_token'); 
 	}
 	
 };

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class Call extends Model
 {
     use HasFactory;
@@ -18,10 +18,18 @@ class Call extends Model
 			'status',
 			'started_at',
 			'ended_at',
-			'duration_seconds',
+			//'duration_seconds',
 	];
 	
 	
+	public function getDurationInSecondsAttribute()
+	{
+    if (!$this->started_at || !$this->ended_at) {
+        return null; // or return 0 if you prefer
+    }
+
+    return Carbon::parse($this->ended_at)->diffInSeconds(Carbon::parse($this->started_at));
+	}
 	
 	public function caller()
 	{

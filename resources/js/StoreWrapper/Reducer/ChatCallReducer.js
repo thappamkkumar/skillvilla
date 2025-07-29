@@ -10,6 +10,7 @@ const ChatCallReducer = {
 				{
 					const callData = action.payload.initiatingCall;
 					
+					state.chatId= callData.chatId;
 					state.callId= callData.callId;
 					state.callStatus= callData.callStatus;
 					state.callType= callData.callType;
@@ -20,7 +21,20 @@ const ChatCallReducer = {
 					break;
 				}
 				
-					 
+				case "endCall": 
+					state.callStatus = 'idle';
+					state.callType = null;
+					state.caller = null;
+					state.receiver = null;
+					state.callRoomId = null;
+					//state.mediaStream?.getTracks().forEach(t => t.stop());
+					state.mediaStream = null;
+					state.remoteStream = null;
+					state.incomingCallData = null;
+					state.error = null;
+					state.isMuted = false;
+					state.cameraOn = true;
+					break; 	 
 					 
 					
 					
@@ -38,12 +52,22 @@ const ChatCallReducer = {
 					state.callRoomId = action.payload.callRoomId;
 					break;  
 				
-				case "endCall": 
-					state.callStatus = 'ended';
-					state.mediaStream?.getTracks().forEach(t => t.stop());
+				case "rejectCall": 
+					state.callStatus = 'idle';
+					state.callType = null;
+					state.caller = null;
+					state.receiver = null;
+					state.callRoomId = null;
+					//state.mediaStream?.getTracks().forEach(t => t.stop());
 					state.mediaStream = null;
 					state.remoteStream = null;
+					state.incomingCallData = null;
+					state.error = null;
+					state.isMuted = false;
+					state.cameraOn = true;
 					break;  
+				
+				 
 				
 				case "setLocalStream": 
 					state.mediaStream = action.payload;
