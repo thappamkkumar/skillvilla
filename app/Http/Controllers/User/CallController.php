@@ -176,7 +176,7 @@ class CallController extends Controller
 		
 		
 			//function for ending call 
-		function endCall(Request $request)
+		function endOrRejectCall(Request $request)
 		{
 			try
 			{
@@ -188,12 +188,14 @@ class CallController extends Controller
         $request->validate([
             'call_id' => 'required|integer|exists:calls,id',
             'chat_id' => 'required|integer|exists:chat_lists,id',
+						'status' => 'required|string|in:ended,rejected,missed,busy',
         ]);
 				
 				 
 
         $chat_id = $request->chat_id;
-				
+				$status = strtolower($request->status);
+
 				
         // Fetch the call
         $call = Call::findOrFail($request->call_id);
@@ -207,7 +209,7 @@ class CallController extends Controller
         }
 				
 				 // Update call status
-        $call->status = 'ended';
+        $call->status = $status;
         $call->ended_at = now(); // optional if you track end time
         $call->save();
 				
@@ -215,10 +217,12 @@ class CallController extends Controller
 				
 				
 				// Also create a message linked to the call
+				$messageText = ucfirst($call->call_type) . ' Call ' . ucfirst($status);
+
 				$message = new Message([
 						'chat_list_id' => $chat_id,
 						'sender_id' => $call->caller_id,
-						'message' => ucfirst($call->call_type) .' '. ' Call Ended',
+						'message' => $messageText,
 				]);
 
 				$call->messages()->save($message); // This sets call_id
@@ -250,7 +254,7 @@ class CallController extends Controller
 				$otherUserId = $user->id == $caller_id ? $receiver_id : $caller_id;
 
 				//dispatch event for call end
-				ChatCallEndEvent::dispatch( $otherUserId , $call->id, 'Call Ended' ); 
+				ChatCallEndEvent::dispatch( $otherUserId , $call->id, $messageText ); 
 				SendMessageEvent::dispatch( 
 					 $newMessage 
 				);
@@ -258,7 +262,7 @@ class CallController extends Controller
 				// Return the posts as a JSON response
 				$data = [
 				'status' => true,
-				'message'=> 'Call Ended', 
+				'message'=> $messageText, 
 				'newMessage'=>$newMessage, ]; 
 				return response()->json($data);
 				

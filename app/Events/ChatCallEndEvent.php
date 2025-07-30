@@ -21,7 +21,7 @@ class ChatCallEndEvent implements ShouldBroadcast
 		public $toUserId;
     public $callId;
     public $reason;
-    public function __construct($toUserId, $reason = 'ended', $callId)
+    public function __construct($toUserId,  $callId, $reason = 'ended')
     {
       $this->toUserId = $toUserId;
       $this->reason = $reason;

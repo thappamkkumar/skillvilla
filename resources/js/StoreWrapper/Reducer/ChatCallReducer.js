@@ -22,7 +22,15 @@ const ChatCallReducer = {
 				}
 				
 				case "endCall": 
+				{
+					const callId =  action.payload.callId;
+					if(callId !== state.callId )
+					{
+						return;
+					}
 					state.callStatus = 'idle';
+					state.callId = null;
+					state.chatId = null;
 					state.callType = null;
 					state.caller = null;
 					state.receiver = null;
@@ -35,7 +43,8 @@ const ChatCallReducer = {
 					state.isMuted = false;
 					state.cameraOn = true;
 					break; 	 
-					 
+				}
+						 
 					
 					
 					

@@ -80,49 +80,14 @@ const IncomingCallModal = () => {
   const handleAutoEnd = () => {
     stopAudio(incomingCallToneRef); 
     handleCallEnd();
-     
   };
 	
-	//handle call end or reject
-	const handleCallEnd = useCallback(async(status, statusType)=>{
-		 
-		try
-		{
-			 
-			
-			const resultData = await serverConnection('/end-call', 
-			{   
-				'call_id': chatCallData.callId,
-				'chat_id': chatCallData.chatId,
-				'status':'Call Ended'
-			}, authToken   ); 
-			
-			//console.log(resultData);
-			
-			if(resultData?.status )
-			{
-				
-				dispatch(updateChatCallState({'type' : 'endCall'} )); 
-				
-				
-			}
-			else
-			{
-				setsubmitionMSG(resultData.message || 'An error occurred. Please try again.');
-				setShowModel(true);
-			}
-			
-		}
-		catch(e)
-		{
-			console.log(e);
-			submitionMSG('An error occurred. Please try again.');
-			setShowModel(true);
-		}
-		 
+	//handle call end  
+	const handleCallEnd= useCallback( ( )=>{
 		
-		
-	}, [authToken, chatCallData.callId]);
+		dispatch(updateChatCallState({'type' : 'endCall', 'callId':chatCallData.callId } ));  
+	 
+	}, [ ]);
 	
 	
 	//function for reject call
@@ -130,22 +95,41 @@ const IncomingCallModal = () => {
 		 
 		try
 		{
-			dispatch(updateChatCallState({'type' : 'endCall'} )); 
-				
+			setCallRejectLoader(true);
+			const resultData = await serverConnection('/call/end-or-reject', 
+			{   
+				'call_id': chatCallData.callId,
+				'chat_id': chatCallData.chatId,
+				'status':'rejected'
+			}, authToken   ); 
+			
+			//console.log(resultData);
+			
+			if(resultData?.status )
+			{ 
+				dispatch(updateChatCallState({'type' : 'endCall', 'callId':chatCallData.callId } ));  
+			}
+			else
+			{
+				setsubmitionMSG(resultData.message || 'An error occurred. Please try again.');
+				setShowModel(true);
+			}
+			 	
 		}
 		catch(e)
 		{
-			console.log(e);
+			//console.log(e);
 			submitionMSG('An error occurred. Please try again.');
 			setShowModel(true);
 		}
 		finally
 		{
-			 
+			 setCallRejectLoader(false);
 		}
 		
 		
 	}, [authToken, chatCallData.callId]);
+	
 	
 	//function for accept call
 	const handleCallAccept = useCallback(async( )=>{
@@ -167,7 +151,7 @@ const IncomingCallModal = () => {
 		
 	}, [authToken, chatCallData.callId]);
 	
-	 if (chatCallData.callStatus !== "incoming") return null;
+	if (chatCallData.callStatus !== "incoming") return null;
 	
   return (
     <div className="fixed-top w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75">

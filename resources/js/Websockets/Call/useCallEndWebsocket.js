@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { updateChatCallState } from '../../StoreWrapper/Slice/ChatCallSlice';
 
-const useIncomingCallWebsocket = (loggedUserData) => {
+const useCallEndWebsocket = (loggedUserData) => {
   const userRef = useRef(loggedUserData?.id);
   const dispatch = useDispatch();
 
@@ -19,23 +19,15 @@ const useIncomingCallWebsocket = (loggedUserData) => {
 		 
     const incomingCall_connectWebSocket = () => {
       window.Echo.private(channelName)
-        .listen('ChatCallIncomingEvent', (e) => {
-          //console.log("Incoming call event:", e.data);
+        .listen('ChatCallEndEvent', (e) => {
+         
+				 //console.log("Incoming call event:", e);
 					
-					const receivedData = e.data;
-					let  callData = { 
-					callId : receivedData?.id || null,
-					chatId : receivedData?.chatId || null,
-					callStatus : 'incoming',
-					callType : receivedData?.call_type || null,
-					receiver : receivedData?.receiver || null,
-					caller : receivedData?.caller || null,
-					callRoomId : receivedData?.room_id || null,
+					const callId = e.callId;
 					 
-				};
 				
 				  
-				dispatch(updateChatCallState({'type' : 'incomingCallReceived', 'incomingCallData': callData})); 
+					dispatch(updateChatCallState({'type' : 'endCall', 'callId':callId  })); 
           
         });
     };
@@ -48,4 +40,4 @@ const useIncomingCallWebsocket = (loggedUserData) => {
   }, [userRef.current, dispatch, loggedUserData ]);
 };
 
-export default useIncomingCallWebsocket;
+export default useCallEndWebsocket;

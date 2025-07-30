@@ -15,6 +15,7 @@ import useWindowHeight  from '../CustomHook/useWindowHeight';
 
 import useCommunityNewMessageWebsocket from '../Websockets/Community/useCommunityNewMessageWebsocket'; 
 import useIncomingCallWebsocket from '../Websockets/Call/useIncomingCallWebsocket'; 
+import useCallEndWebsocket from '../Websockets/Call/useCallEndWebsocket'; 
  
 const CustomerLayoutPage = () => {
   const is_login = useSelector((state) => state.auth.is_login); // Check login status
@@ -33,6 +34,7 @@ const CustomerLayoutPage = () => {
 	// Call the  hook for websockets event listeners for community message
 	useCommunityNewMessageWebsocket();
 	useIncomingCallWebsocket(logedUserData);
+	useCallEndWebsocket(logedUserData);
 	
 	 
 /*

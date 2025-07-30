@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 				Route::post('/initiate-call', 'initiateCall')->name('user.initiateCall'); 
 				
 				//Route for end call 
-				Route::post('/end-call', 'endCall' )->name('user.endCall');
+				Route::post('/call/end-or-reject', 'endOrRejectCall' )->name('user.endOrRejectCall');
 				
 				
 				//Route for accept call 

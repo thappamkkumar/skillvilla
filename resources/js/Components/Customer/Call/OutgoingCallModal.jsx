@@ -94,18 +94,18 @@ const OutgoingCallModal = () => {
 		{
 			setCallEndLoader(true);
 			
-			const resultData = await serverConnection('/end-call', 
+			const resultData = await serverConnection('/call/end-or-reject', 
 			{ 
 				'call_id': chatCallData.callId,
 				'chat_id': chatCallData.chatId,
-				'status':'Call Ended'
+				'status':'ended'
 			}, authToken   ); 
 			
 			//console.log(resultData);
 			
 			if(resultData?.status )
 			{
-				dispatch(updateChatCallState({'type' : 'endCall'} )); 
+				dispatch(updateChatCallState({'type' : 'endCall', 'callId':chatCallData.callId } )); 
 				
 				const newMessage = resultData.newMessage
 				
