@@ -264,8 +264,9 @@ Broadcast::channel('community-new-message', function ($user) {
 });
 
 
-//channel for chat calls events (ChatCallIncomingEvent, ChatCallAcceptedEvent, ChatCallRejectedEvent,  ChatCallSignalEvent, ChatCallEndEvent, ChatCallMediaUpdatedEvent )
+//channel for chat calls events (ChatCallIncomingEvent, ChatCallAcceptedEvent, ChatCallRejectedEvent,  ChatCallSignalEvent,  
 Broadcast::channel('call.{userId}', function ($user, $userId) {
+    //\Log::info('Channel auth request', ['user' => $user->id ?? null, 'expected' => $userId]);
     return (int) $user->id === (int) $userId;
 });
 

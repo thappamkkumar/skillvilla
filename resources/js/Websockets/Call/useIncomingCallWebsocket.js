@@ -16,12 +16,26 @@ const useIncomingCallWebsocket = (loggedUserData) => {
     if (!userRef.current) return;
 
     const channelName = `call.${userRef.current}`;
-
+		 
     const incomingCall_connectWebSocket = () => {
       window.Echo.private(channelName)
         .listen('ChatCallIncomingEvent', (e) => {
-          console.log("Incoming call event:", e);
-
+          console.log("Incoming call event:", e.data);
+					
+					const receivedData = e.data;
+					let  callData = { 
+					callId : receivedData?.id || null,
+					chatId : receivedData?.chatId || null,
+					callStatus : 'incoming',
+					callType : receivedData?.call_type || null,
+					receiver : receivedData?.receiver || null,
+					caller : receivedData?.caller || null,
+					callRoomId : receivedData?.room_id || null,
+					 
+				};
+				
+				  
+				dispatch(updateChatCallState({'type' : 'incomingCallReceived', 'incomingCallData': callData})); 
           
         });
     };
@@ -31,7 +45,7 @@ const useIncomingCallWebsocket = (loggedUserData) => {
     return () => {
       window.Echo.leave(channelName);
     };
-  }, [userRef.current, dispatch,  ]);
+  }, [userRef.current, dispatch, loggedUserData ]);
 };
 
 export default useIncomingCallWebsocket;

@@ -149,7 +149,7 @@ const AppRoutes = () => {
 			}
 			catch(e)
 			{
-				 console.error(e);
+				  console.error('error while refreshing token.');
 				dispatch(logout());
 				authUpdate(false, '', []);
 				navigate('/');

@@ -7,7 +7,7 @@ import Header from '../Components/Customer/Header/Header';
 import NavBarContainer from '../Components/Customer/NavBar/NavBarContainer';
 //call components
 import OutgoingCallModal from '../Components/Customer/Call/OutgoingCallModal';
-import IncomingCallModal from '../Components/Customer/Call/IncomingCallModal';
+import IncomingCallModal from '../Components/Customer/Call/IncomingCallModal'; 
 
 // Hook for visited URL
 import manageVisitedUrl from '../CustomHook/manageVisitedUrl';
@@ -59,6 +59,7 @@ const CustomerLayoutPage = () => {
       </div>
 			
 			<>
+				     
 				{/*outgoing call model*/}
 				<OutgoingCallModal  />
 				{/*incoming call model*/}

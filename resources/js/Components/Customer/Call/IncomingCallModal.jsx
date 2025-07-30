@@ -37,7 +37,7 @@ const IncomingCallModal = () => {
 	
 	// Helper: Play audio safely
   const playAudio = (ref, loop = false) => {
-    if (ref?.current) {
+    if (ref?.current) { 
       ref.current.loop = loop;
       ref.current.play().catch(() => {
         console.warn("Autoplay failed. User interaction required.");
@@ -55,8 +55,10 @@ const IncomingCallModal = () => {
 	
 	// Effect: Handle calling tone and auto-end
   useEffect(() => {
+	 
     if (chatCallData.callStatus === "incoming") 
-		{ 
+		{  
+		
       playAudio(incomingCallToneRef, true);
 
       autoEndTimeoutRef.current = setTimeout(() => {
@@ -72,7 +74,7 @@ const IncomingCallModal = () => {
       stopAudio(incomingCallToneRef);
       clearTimeout(autoEndTimeoutRef.current);
     };
-  }, [chatCallData.callStatus]);
+  }, [chatCallData]);
 	
 	// Handle auto-end due to no response
   const handleAutoEnd = () => {
@@ -86,10 +88,14 @@ const IncomingCallModal = () => {
 		 
 		try
 		{
-			setCallEndLoader(true);
+			 
 			
 			const resultData = await serverConnection('/end-call', 
-			{ 'call_id': chatCallData.callId, 'status':'Call Ended'}, authToken   ); 
+			{   
+				'call_id': chatCallData.callId,
+				'chat_id': chatCallData.chatId,
+				'status':'Call Ended'
+			}, authToken   ); 
 			
 			//console.log(resultData);
 			
@@ -98,18 +104,7 @@ const IncomingCallModal = () => {
 				
 				dispatch(updateChatCallState({'type' : 'endCall'} )); 
 				
-				const newMessage = resultData.newMessage
 				
-				if(logedUserData.id == newMessage.sender_id)
-				{
-					//add new mesage in chat list
-					dispatch(updateChatState({type : 'AddNewMessage',  message:newMessage } ));  
-					//move chat at top of list
-					dispatch(updateChatState({type : 'updateChatAndMoveToTop',  chatId:newMessage.chat_list_id } ));  
-					//add message in message list 
-					dispatch(updateChatMessageState({type : 'AddNewMessage', newMessage:newMessage}));
-					
-				}
 			}
 			else
 			{
@@ -121,12 +116,10 @@ const IncomingCallModal = () => {
 		catch(e)
 		{
 			console.log(e);
-			tsubmitionMSG('An error occurred. Please try again.');setShowModel(true);
+			submitionMSG('An error occurred. Please try again.');
+			setShowModel(true);
 		}
-		finally
-		{
-			setCallEndLoader(false);
-		}
+		 
 		
 		
 	}, [authToken, chatCallData.callId]);
@@ -137,12 +130,14 @@ const IncomingCallModal = () => {
 		 
 		try
 		{
-			
+			dispatch(updateChatCallState({'type' : 'endCall'} )); 
+				
 		}
 		catch(e)
 		{
 			console.log(e);
-			submitionMSG('An error occurred. Please try again.');setShowModel(true);
+			submitionMSG('An error occurred. Please try again.');
+			setShowModel(true);
 		}
 		finally
 		{
@@ -172,12 +167,12 @@ const IncomingCallModal = () => {
 		
 	}, [authToken, chatCallData.callId]);
 	
-	if (chatCallData.callStatus !== "incoming") return null;
+	 if (chatCallData.callStatus !== "incoming") return null;
 	
   return (
     <div className="fixed-top w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75">
       <MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
-      <audio ref={incomingCallToneRef} src="/audio/incoming-call-indicator.mp3" loop />
+      <audio ref={incomingCallToneRef} src="/audio/incoming-call-indicator.mp3" preload="auto" loop />
 			<div
         className="call-card caller-card"
         style={{ backgroundImage: `url(${backgroundImage})` }}

@@ -31,6 +31,7 @@ class CallController extends Controller
 					$data = ['status' => false,'message'=> "User must be selected before calling."];
 					return response()->json($data);
 				}
+				 
 				
 				// Retrieve the authenticated user from the JWT token
 				$user = JWTAuth::parseToken()->authenticate();
@@ -109,7 +110,8 @@ class CallController extends Controller
 				//dispatching events
 				
 				ChatCallIncomingEvent::dispatch( [
-					'call_id'    => $call->id,
+					'id'    => $call->id,
+					'chatId'    => $chat_id,
 					'room_id'    => $call->room_id,
 					'call_type'  => $call->call_type,
 					'started_at' => $call->started_at,
@@ -119,6 +121,12 @@ class CallController extends Controller
 							'userID'  => $call->caller->userID,
 							'image' => $call->caller->customer->image,
 					],
+					'receiver'   => [
+								'id'    => $call->receiver->id,
+								'name'  => $call->receiver->name,
+								'userID'  => $call->receiver->userID,
+								'image' => $call->receiver->customer->image,
+						],
 					'receiver_id' => $call->receiver->id,
 				] ); 
 				
@@ -179,8 +187,14 @@ class CallController extends Controller
 				 // Validate input
         $request->validate([
             'call_id' => 'required|integer|exists:calls,id',
+            'chat_id' => 'required|integer|exists:chat_lists,id',
         ]);
+				
+				 
 
+        $chat_id = $request->chat_id;
+				
+				
         // Fetch the call
         $call = Call::findOrFail($request->call_id);
 
@@ -198,16 +212,7 @@ class CallController extends Controller
         $call->save();
 				
 				
-				 //   Get chat_list_id from existing message related to this call
-        $chat_id = Message::where('call_id', $call->id)->value('chat_list_id');
-
-        // Fallback if not found (optional check)
-        if (!$chat_id) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Unable to find chat related to this call.',
-            ], 404);
-        }
+				
 				
 				// Also create a message linked to the call
 				$message = new Message([
@@ -242,7 +247,7 @@ class CallController extends Controller
 				$caller_id = $call->caller_id;
 				$receiver_id = $call->receiver_id;
 
-				$otherUserId = $user->id == $caller_id ? $receiver_id : $fromUserId;
+				$otherUserId = $user->id == $caller_id ? $receiver_id : $caller_id;
 
 				//dispatch event for call end
 				ChatCallEndEvent::dispatch( $otherUserId , $call->id, 'Call Ended' ); 

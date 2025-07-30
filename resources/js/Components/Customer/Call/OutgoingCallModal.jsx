@@ -95,7 +95,11 @@ const OutgoingCallModal = () => {
 			setCallEndLoader(true);
 			
 			const resultData = await serverConnection('/end-call', 
-			{ 'call_id': chatCallData.callId, 'status':'Call Ended'}, authToken   ); 
+			{ 
+				'call_id': chatCallData.callId,
+				'chat_id': chatCallData.chatId,
+				'status':'Call Ended'
+			}, authToken   ); 
 			
 			//console.log(resultData);
 			

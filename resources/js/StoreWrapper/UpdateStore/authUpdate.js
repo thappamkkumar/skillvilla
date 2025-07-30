@@ -1,11 +1,12 @@
+import { initEcho } from '../..//echo';
  
 const authUpdate = (is_login, jwtToken, user, rememberMe=false) =>
 { 
 	if(is_login)
 	{ 
-		 
-			localStorage.setItem('token',jwtToken);
-			localStorage.setItem('user',user);  
+		initEcho(jwtToken);//initializing echo for listen events
+		localStorage.setItem('token',jwtToken);
+		localStorage.setItem('user',user);  
 		
 		// Store rememberMe as a proper boolean string
 		localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
@@ -17,7 +18,7 @@ const authUpdate = (is_login, jwtToken, user, rememberMe=false) =>
 	else
 	{ 
 		 
-		
+		initEcho(null); 
 		//remove session of user data
 		localStorage.removeItem('token');
 		localStorage.removeItem('user'); 
