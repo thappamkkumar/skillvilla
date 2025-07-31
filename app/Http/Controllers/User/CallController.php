@@ -175,7 +175,7 @@ class CallController extends Controller
 		}
 		
 		
-			//function for ending call 
+			//function for ending or rejecting call 
 		function endOrRejectCall(Request $request)
 		{
 			try
@@ -283,11 +283,40 @@ class CallController extends Controller
 			{
 				
 				// Retrieve the authenticated user from the JWT token
+				 
 				$user = JWTAuth::parseToken()->authenticate();
-					
+				
+				 // Validate input
+        $request->validate([
+            'call_id' => 'required|integer|exists:calls,id',
+            'chat_id' => 'required|integer|exists:chat_lists,id', 
+        ]);
+				
+				 
+
+        $chat_id = $request->chat_id;
+				
+				 // Fetch the call
+        $call = Call::findOrFail($request->call_id);
+
+        // Ensure the user is part of the call (optional, for security)
+        if ($call->receiver_id !== $user->id) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized action.',
+            ], 403);
+        }
+				
+				 // Update call status
+        $call->status = 'accepted';
+        $call->save();
+				
+				
+				
+				
 				
 				// Return the posts as a JSON response
-				$data = ['status' => true,'message'=> ' ',  ]; 
+				$data = ['status' => true,'message'=> 'Call Accepted',  ]; 
 				return response()->json($data);
 				
 			}
@@ -299,29 +328,7 @@ class CallController extends Controller
 			}
 		}
 		
-		//function for rejecting call 
-		function rejectCall(Request $request)
-		{
-			try
-			{
-				
-				// Retrieve the authenticated user from the JWT token
-				$user = JWTAuth::parseToken()->authenticate();
-					
-				
-				// Return the posts as a JSON response
-				$data = ['status' => true,'message'=> ' ',  ]; 
-				return response()->json($data);
-				
-			}
-			catch(Exception $e)
-			{
-				//$data = ['status' => false,'message'=> 'Oops! Something went wrong.'];
-				$data = ['status' => false,'message'=> $e->getMessage()];
-				return response()->json($data);
-			}
-		}
-		
+		 
 		
 		
 	

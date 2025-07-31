@@ -128,7 +128,7 @@ const IncomingCallModal = () => {
 		}
 		
 		
-	}, [authToken, chatCallData.callId]);
+	}, [authToken, chatCallData.callId, chatCallData.chatId]);
 	
 	
 	//function for accept call
@@ -136,20 +136,38 @@ const IncomingCallModal = () => {
 		 
 		try
 		{
+			setCallAcceptLoader(true);
+			const resultData = await serverConnection('/call/accept', 
+			{   
+				'call_id': chatCallData.callId,
+				'chat_id': chatCallData.chatId, 
+			}, authToken   ); 
 			
+			//console.log(resultData);
+			
+			if(resultData?.status )
+			{   
+				dispatch(updateChatCallState({'type' : 'acceptCall', 'callId':chatCallData.callId } ));  
+			}
+			else
+			{
+				setsubmitionMSG(resultData.message || 'An error occurred. Please try again.');
+				setShowModel(true);
+			}
+			 	
 		}
 		catch(e)
 		{
-			console.log(e);
-			submitionMSG('An error occurred. Please try again.');setShowModel(true);
+			 console.log(e);
+			submitionMSG('An error occurred. Please try again.');
+			setShowModel(true);
 		}
 		finally
 		{
-			 
-		}
+			setCallAcceptLoader(false);
+		}		
 		
-		
-	}, [authToken, chatCallData.callId]);
+	}, [authToken, chatCallData.callId, chatCallData.chatId]);
 	
 	if (chatCallData.callStatus !== "incoming") return null;
 	

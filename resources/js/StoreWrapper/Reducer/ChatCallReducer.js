@@ -45,10 +45,7 @@ const ChatCallReducer = {
 					break; 	 
 				}
 						 
-					
-					
-					
-					
+			 
 				case "incomingCallReceived":
 				{
 					const callData = action.payload.incomingCallData;
@@ -68,11 +65,18 @@ const ChatCallReducer = {
 				
 					 
 				case "acceptCall": 
+				{
+					const callId = action.payload.callId;
+					 
+					if(callId !== state.callId )
+					{
+						return;
+					}
 					state.callStatus = 'in-call';
-					state.callType = action.payload.callType;
-					state.caller = action.payload.caller;
-					state.callRoomId = action.payload.callRoomId;
 					break;  
+					
+				}
+					
 				
 				case "rejectCall": 
 					state.callStatus = 'idle';

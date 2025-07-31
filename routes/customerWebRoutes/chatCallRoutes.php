@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 				
 				
 				//Route for accept call 
-				Route::post('/accept-call', 'acceptCall' )->name('user.acceptCall');
+				Route::post('/call/accept', 'acceptCall' )->name('user.acceptCall');
 				
 				//Route for reject call 
-				Route::post('/reject-call', 'rejectCall' )->name('user.rejectCall');
+				//Route::post('/reject-call', 'rejectCall' )->name('user.rejectCall');
 				
 				
 				//Route for  call sigal
