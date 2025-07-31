@@ -8,6 +8,8 @@ import NavBarContainer from '../Components/Customer/NavBar/NavBarContainer';
 //call components
 import OutgoingCallModal from '../Components/Customer/Call/OutgoingCallModal';
 import IncomingCallModal from '../Components/Customer/Call/IncomingCallModal'; 
+import AudioCallModal from '../Components/Customer/Call/AudioCallModal'; 
+import VideoCallModal from '../Components/Customer/Call/VideoCallModal'; 
 
 // Hook for visited URL
 import manageVisitedUrl from '../CustomHook/manageVisitedUrl';
@@ -16,6 +18,7 @@ import useWindowHeight  from '../CustomHook/useWindowHeight';
 import useCommunityNewMessageWebsocket from '../Websockets/Community/useCommunityNewMessageWebsocket'; 
 import useIncomingCallWebsocket from '../Websockets/Call/useIncomingCallWebsocket'; 
 import useCallEndWebsocket from '../Websockets/Call/useCallEndWebsocket'; 
+import useCallAcceptWebsocket from '../Websockets/Call/useCallAcceptWebsocket'; 
  
 const CustomerLayoutPage = () => {
   const is_login = useSelector((state) => state.auth.is_login); // Check login status
@@ -35,6 +38,7 @@ const CustomerLayoutPage = () => {
 	useCommunityNewMessageWebsocket();
 	useIncomingCallWebsocket(logedUserData);
 	useCallEndWebsocket(logedUserData);
+	useCallAcceptWebsocket(logedUserData);
 	
 	 
 /*
@@ -66,6 +70,10 @@ const CustomerLayoutPage = () => {
 				<OutgoingCallModal  />
 				{/*incoming call model*/}
 				<IncomingCallModal  />
+				{/*Audio In-call model*/}
+				<AudioCallModal  />
+				{/*Video In-call model*/}
+				<VideoCallModal  />
 			
 			</>
 			

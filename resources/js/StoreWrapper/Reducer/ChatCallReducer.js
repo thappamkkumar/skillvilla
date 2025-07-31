@@ -73,12 +73,15 @@ const ChatCallReducer = {
 						return;
 					}
 					state.callStatus = 'in-call';
+					state.startedAt = new Date().toISOString();  //remove it
+
 					break;  
 					
 				}
 					
 				
-				case "rejectCall": 
+				case "rejectCall":
+				{				
 					state.callStatus = 'idle';
 					state.callType = null;
 					state.caller = null;
@@ -92,7 +95,7 @@ const ChatCallReducer = {
 					state.isMuted = false;
 					state.cameraOn = true;
 					break;  
-				
+				}
 				 
 				
 				case "setLocalStream": 

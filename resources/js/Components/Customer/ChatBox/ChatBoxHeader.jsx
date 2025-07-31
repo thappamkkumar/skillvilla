@@ -59,7 +59,7 @@ const ChatBoxHeader = ({user, chatId}) => {
  
 	
 	//handle audio call
-	const handleAubioCall = useCallback(async()=>{
+	const handleCall = useCallback(async(callType)=>{
 		try
 		{
 			if(chatCallData.callStatus === 'calling')
@@ -75,10 +75,18 @@ const ChatBoxHeader = ({user, chatId}) => {
 				return;
 			}
 			
-			setAudioCallLoader(true);
+			if(callType === "audio")
+			{
+				setAudioCallLoader(true);
+			}
+			else
+			{
+				setVideoCallLoader(true);
+			}
+			
 			
 			const resultData = await serverConnection('/initiate-call', 
-			{'receiver_id': user.id, 'call_type':'audio', 'chat_id': chatId}, 
+			{'receiver_id': user.id, 'call_type':callType, 'chat_id': chatId}, 
 			authToken   ); 
 			
 			// console.log(resultData);
@@ -126,7 +134,14 @@ const ChatBoxHeader = ({user, chatId}) => {
 		}
 		finally
 		{
-			setAudioCallLoader(false);
+			if(callType === "audio")
+			{
+				setAudioCallLoader(false);
+			}
+			else
+			{
+				setVideoCallLoader(false);
+			}
 		}
 		
 	}, [authToken, chatId, user.id, chatCallData.callStatus]);
@@ -154,15 +169,29 @@ const ChatBoxHeader = ({user, chatId}) => {
 					</div>
 				</div>
 				<div className=" d-flex align-items-center  ps-2 " >
-					<Button  variant="light"  title="Audio Call"  id="audioCallBTN" className="  border-0 shadow-none  me-1 p-2 lh-1 audioVedioCallBTN  " onClick={handleAubioCall} disabled={audioCallLoader} > 
+					<Button  
+						variant="light"  
+						title="Audio Call" 
+						id="audioCallBTN" 
+						className="  border-0 shadow-none  me-1 p-2 lh-1 audioVedioCallBTN  "
+						onClick={()=>{handleCall('audio');}} 
+						disabled={audioCallLoader} 
+					> 
 						{
-							audioCallLoader ? <Spinner  size="sm"/> : <BsTelephoneFill    />
+							audioCallLoader ? <Spinner  size="sm"/> : <BsTelephoneFill />
 						}
 							
 					</Button>
-					<Button  variant="light"  title="Vedio Call"  id="vedioCallBTN" className="  border-0 shadow-none   me-1 p-2 lh-1 audioVedioCallBTN "	onClick={handleVedioCall} disabled={videoCallLoader}> 
+					<Button  
+						variant="light"
+						title="Video Call" 
+						id="vedioCallBTN" 
+						className="  border-0 shadow-none   me-1 p-2 lh-1  audioVedioCallBTN "
+						onClick={()=>{handleCall('video');}}  
+						disabled={videoCallLoader}
+					> 
 						{
-								videoCallLoader ? <Spinner  size="sm"/> : <BsCameraVideoFill    />
+								videoCallLoader ? <Spinner  size="sm"/> : <BsCameraVideoFill />
 						} 
 					</Button>
 			 

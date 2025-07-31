@@ -13,6 +13,7 @@ use App\Models\ChatList;
 
 use App\Events\ChatCallIncomingEvent;
 use App\Events\ChatCallEndEvent;
+use App\Events\ChatCallAcceptedEvent;
 use App\Events\SendMessageEvent;
 
 use Exception;
@@ -49,7 +50,7 @@ class CallController extends Controller
 					'call_type' => $call_type,
 					'room_id' => $call_room_id,
 					'status' => 'initiated',
-					'started_at' => now(),
+					
 				]);
 				
 				// Also create a message linked to the call
@@ -114,7 +115,6 @@ class CallController extends Controller
 					'chatId'    => $chat_id,
 					'room_id'    => $call->room_id,
 					'call_type'  => $call->call_type,
-					'started_at' => $call->started_at,
 					'caller'     => [
 							'id'    => $call->caller->id,
 							'name'  => $call->caller->name,
@@ -144,7 +144,6 @@ class CallController extends Controller
 						'id'         => $call->id,
 						'room_id'    => $call->room_id,
 						'call_type'  => $call->call_type,
-						'started_at' => $call->started_at,
 						'receiver'   => [
 								'id'    => $call->receiver->id,
 								'name'  => $call->receiver->name,
@@ -311,8 +310,10 @@ class CallController extends Controller
         $call->status = 'accepted';
         $call->save();
 				
+				$caller_id = $call->caller_id;
 				
-				
+				//dispatch event for call end
+				ChatCallAcceptedEvent::dispatch( $caller_id , $call->id  ); 
 				
 				
 				// Return the posts as a JSON response

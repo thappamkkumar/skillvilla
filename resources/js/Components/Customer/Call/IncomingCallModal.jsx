@@ -158,7 +158,7 @@ const IncomingCallModal = () => {
 		}
 		catch(e)
 		{
-			 console.log(e);
+			//console.log(e);
 			submitionMSG('An error occurred. Please try again.');
 			setShowModel(true);
 		}
