@@ -1,9 +1,8 @@
 import {useState, useEffect, useRef, useCallback } from "react";
-import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
-import { useSelector,useDispatch } from 'react-redux';
-import { BsTelephoneFill } from "react-icons/bs";
 
+import { useSelector,useDispatch } from 'react-redux';
+ 
+import CallControlActions from './CallControlActions/CallControlActions';
 import MessageAlert from '../../../Components/MessageAlert';
 
 import { updateChatState } from '../../../StoreWrapper/Slice/ChatSlice';
@@ -143,20 +142,11 @@ const AudioCallModal = () => {
           </div>
 
           <div className="d-flex justify-content-center">
-            <Button 
-							variant="danger" 
-							id="endCallBTN"
-							title="End Call"
-							onClick={handleCallEnd}
-							className="rounded-circle fs-5  "
-							disabled={callEndLoader}
-							 style={{ width: "65px", height: "65px",  }}
-						>
-							{
-								callEndLoader ? <Spinner  size="sm"/> : <BsTelephoneFill   className="fs-3"   />
-							} 
-               
-            </Button>
+						<CallControlActions 
+							handleCallEnd={handleCallEnd}
+							callEndLoader={callEndLoader}
+						/>
+            
           </div>
         </div>
       </div>

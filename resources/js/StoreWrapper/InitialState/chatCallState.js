@@ -15,5 +15,7 @@ const chatCallState = {
   error: null,
   isMuted: false,
   cameraOn: true,
+  speakerOff: false,
+  isHold: false,
 };
 export default chatCallState;
