@@ -1,4 +1,5 @@
 
+import {  useState } from 'react';
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import { 
@@ -15,6 +16,7 @@ import {
 } from "react-icons/bs";
 import { useSelector } from 'react-redux';
 
+import  SpeakerDevices  from './SpeakerDevices';
 
 const CallControlActions = ({
 	handleCallEnd,
@@ -22,15 +24,25 @@ const CallControlActions = ({
 }) => {
 
 	const chatCallData = useSelector((state) => state.chatCallData);
-  
+  const [showSpeakerModal, setShowSpeakerModal] = useState(false);
+	
+	
 	
 	return(
 		<div  className="d-flex flex-column   align-items-center  " >
-			<div 
-				className="  d-flex flex-wrap justify-content-center align-items-center gap-3   mb-4  " 
-				style={{backgroundColor:'rgba(255,255,255,0.0)'}}
-			>
 			
+			<SpeakerDevices 
+				show={showSpeakerModal}
+        onClose={() => setShowSpeakerModal(false)}
+			/> 
+				 
+				
+				
+			<div 
+				className="w-100  d-flex flex-wrap justify-content-center align-items-center gap-3   mb-4  " 
+				 
+			>
+				
 				{/* Call Mic Button*/}
 				<Button 
 					variant={chatCallData.cameraOn ? "light" : "secondary"}
@@ -62,7 +74,7 @@ const CallControlActions = ({
 					title="Sound Controll" 
 					id="soundControlBTN" 
 					className="  border-0 shadow-none    fs-4 p-2 lh-1      "
-					onClick={()=>{alert('change sound device or speaker')}}
+					onClick={ () => setShowSpeakerModal(true)} 
 				>
 					{
 						chatCallData.speakerOff ? <BsVolumeMute /> : <BsVolumeUp /> 

@@ -172,7 +172,7 @@ const IncomingCallModal = () => {
 	if (chatCallData.callStatus !== "incoming") return null;
 	
   return (
-    <div className="fixed-top w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75">
+    <div className="fixed-top w-100   d-flex justify-content-center align-items-center bg-dark bg-opacity-75">
       <MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
       <audio ref={incomingCallToneRef} src="/audio/incoming-call-indicator.mp3" preload="auto" loop />
 			<div

@@ -15,11 +15,13 @@ export default defineConfig({
   ],
 	 
 	//this is for run app on mobile and desktop both
- 	server: {
+ 	/*server: {
 			host: '192.168.31.225',  // Your local IP address
 			port: 3000,               // Port number
 		},
-  
+  */
+	
+	
 	/*build: {
     outDir: 'public/js', // Specify the output directory for the build
     emptyOutDir: true, // Empty the output directory before building
