@@ -19,6 +19,7 @@ return new class extends Migration
 					$table->enum('call_type', ['audio', 'video']);
 					$table->uuid('room_id')->nullable()->unique();
 					$table->enum('status', ['initiated', 'accepted', 'rejected', 'missed', 'ended']);
+					$table->boolean('is_hold')->default(true); 
 					$table->timestamp('started_at')->nullable();
 					$table->timestamp('ended_at')->nullable();
 					//$table->integer('duration_seconds')->nullable();

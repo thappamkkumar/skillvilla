@@ -60,7 +60,7 @@
 	color:rgba(var(--text-color),1); 
 	font-weight:420 !important;   
 	transition: background 0.5s;
- 
+	background:transparent;
 }
 .navigation_link:hover
 { 

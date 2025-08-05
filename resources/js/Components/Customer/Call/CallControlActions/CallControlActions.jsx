@@ -1,5 +1,5 @@
 
-import {  useState } from 'react';
+import {  useState, useCallback } from 'react';
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import { 
@@ -14,17 +14,34 @@ import {
 	BsPauseFill,
   
 } from "react-icons/bs";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import  SpeakerDevices  from './SpeakerDevices';
+import  MicDevices  from './MicDevices';
+import  CameraDevices  from './CameraDevices';
+
+
+import { updateChatCallState } from '../../../../StoreWrapper/Slice/ChatCallSlice';
+
+import serverConnection from '../../../../CustomHook/serverConnection';  
+
 
 const CallControlActions = ({
 	handleCallEnd,
 	callEndLoader,
+	holdCall,
+	holdCallLoader,
 }) => {
 
-	const chatCallData = useSelector((state) => state.chatCallData);
-  const [showSpeakerModal, setShowSpeakerModal] = useState(false);
+	 const chatCallData = useSelector((state) => state.chatCallData);
+  
+	const [showSpeakerModal, setShowSpeakerModal] = useState(false);
+  const [showMicModal, setShowMicModal] = useState(false);
+  const [showCameraModal, setShowCameraModal] = useState(false);
+	
+	
+
+	const dispatch = useDispatch();
 	
 	
 	
@@ -34,6 +51,14 @@ const CallControlActions = ({
 			<SpeakerDevices 
 				show={showSpeakerModal}
         onClose={() => setShowSpeakerModal(false)}
+			/> 
+			<MicDevices 
+				show={showMicModal}
+        onClose={() => setShowMicModal(false)}
+			/> 
+			<CameraDevices 
+				show={showCameraModal}
+        onClose={() => setShowCameraModal(false)}
 			/> 
 				 
 				
@@ -49,7 +74,7 @@ const CallControlActions = ({
 					title="Camera Controll" 
 					id="cameraControlBTN" 
 					className="     fs-4 p-2 lh-1       "
-					onClick={()=>{alert('change Camera')}}
+					onClick={ () => setShowCameraModal(true)} 
 				>
 					{
 						chatCallData.cameraOn ? <BsCameraVideo /> : <BsCameraVideoOff /> 
@@ -61,7 +86,7 @@ const CallControlActions = ({
 					title="Mic Controll" 
 					id="micControlBTN" 
 					className="       fs-4 p-2 lh-1       "
-					onClick={()=>{alert('change mic')}}
+					onClick={ () => setShowMicModal(true)} 
 				>
 					{
 						chatCallData.isMuted ? <BsMicMute /> : <BsMic /> 
@@ -70,7 +95,7 @@ const CallControlActions = ({
 				
 				
 				<Button 
-					variant={chatCallData.isMuted ? "secondary" : "light"} 
+					variant={chatCallData.speakerOff ? "secondary" : "light"} 
 					title="Sound Controll" 
 					id="soundControlBTN" 
 					className="  border-0 shadow-none    fs-4 p-2 lh-1      "
@@ -82,15 +107,22 @@ const CallControlActions = ({
 				</Button>
 				
 				<Button 
-					variant={chatCallData.isMuted ? "secondary" : "light"}  
+					variant={chatCallData.isHold ? "secondary" : "light"}  
 					title="Hold Call" 
 					id="holdControlBTN" 
-					className="  border-0 shadow-none fs-4 p-2 lh-1       "
-					onClick={()=>{alert('change hold call')}}
+					className={`  border-0 shadow-none p-2  ${ !holdCallLoader  && 	'lh-1     fs-4 '}   `}
+					onClick={holdCall}
 				>
 					{
-						chatCallData.isHold ? <BsPauseFill /> : <BsPause /> 
+						holdCallLoader 
+						? 
+							<Spinner className="   m-1" size="sm"  />
+						: 
+						(
+								chatCallData.isHold ? <BsPauseFill /> : <BsPause /> 
+						)
 					}
+					 
 				</Button>
 				
 				

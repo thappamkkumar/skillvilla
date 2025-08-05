@@ -16,6 +16,7 @@ class Call extends Model
 			'call_type',
 			'room_id',
 			'status',
+			'is_hold',
 			'started_at',
 			'ended_at',
 			//'duration_seconds',

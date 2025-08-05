@@ -15,6 +15,7 @@ use App\Events\ChatCallIncomingEvent;
 use App\Events\ChatCallEndEvent;
 use App\Events\ChatCallAcceptedEvent;
 use App\Events\SendMessageEvent;
+use App\Events\ChatCallHoldEvent;
 
 use Exception;
 use JWTAuth;
@@ -288,12 +289,12 @@ class CallController extends Controller
 				 // Validate input
         $request->validate([
             'call_id' => 'required|integer|exists:calls,id',
-            'chat_id' => 'required|integer|exists:chat_lists,id', 
+           // 'chat_id' => 'required|integer|exists:chat_lists,id', 
         ]);
 				
 				 
 
-        $chat_id = $request->chat_id;
+       // $chat_id = $request->chat_id;
 				
 				 // Fetch the call
         $call = Call::findOrFail($request->call_id);
@@ -318,6 +319,62 @@ class CallController extends Controller
 				
 				// Return the posts as a JSON response
 				$data = ['status' => true,'message'=> 'Call Accepted',  ]; 
+				return response()->json($data);
+				
+			}
+			catch(Exception $e)
+			{
+				//$data = ['status' => false,'message'=> 'Oops! Something went wrong.'];
+				$data = ['status' => false,'message'=> $e->getMessage()];
+				return response()->json($data);
+			}
+		}
+		
+		 
+		//function for hold call 
+		function holdCall(Request $request)
+		{
+			try
+			{
+				
+				// Retrieve the authenticated user from the JWT token
+				 
+				$user = JWTAuth::parseToken()->authenticate();
+				
+				 // Validate input
+        $request->validate([
+            'call_id' => 'required|integer|exists:calls,id',
+              
+        ]);
+				
+				  
+				 // Fetch the call
+        $call = Call::findOrFail($request->call_id);
+
+        // Ensure the user is part of the call (optional, for security)
+        if ($call->receiver_id !== $user->id && $call->caller_id !== $user->id) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized action.',
+            ], 403);
+        }
+				
+				 // Update call status
+        $call->is_hold = !$call->is_hold;
+        $call->save();
+				
+				$caller_id = $call->caller_id;
+				$receiver_id = $call->receiver_id;
+
+				$otherUserId = $user->id == $caller_id ? $receiver_id : $caller_id;
+
+				//dispatch event for call end
+				ChatCallHoldEvent::dispatch( $otherUserId , $call->id  ); 
+				
+				
+				
+				// Return the posts as a JSON response
+				$data = ['status' => true,'message'=> 'update is hold.',  ]; 
 				return response()->json($data);
 				
 			}

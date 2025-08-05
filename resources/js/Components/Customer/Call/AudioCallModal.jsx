@@ -20,6 +20,7 @@ const AudioCallModal = () => {
   
 	const [submitionMSG, setsubmitionMSG] = useState(null); //state for store info about form submition  
 	const [showModel, setShowModel] = useState(false); //state for alert message   
+	const [holdCallLoader, setHoldCallEndLoader] = useState(false);
 	const [callEndLoader, setCallEndLoader] = useState(false);
 	const [elapsedTime, setElapsedTime] = useState(0);
 	const timerRef = useRef(null); 
@@ -96,7 +97,8 @@ const AudioCallModal = () => {
 		catch(e)
 		{
 			//console.log(e);
-			 submitionMSG('An error occurred. Please try again.');setShowModel(true);
+			 submitionMSG('An error occurred. Please try again.');
+			 setShowModel(true);
 		}
 		finally
 		{
@@ -106,7 +108,43 @@ const AudioCallModal = () => {
 		
 	}, [authToken, chatCallData.callId]);
  
- 
+	const holdCall = useCallback(async()=>{
+		try
+		{alert('try to add hold according to role like caller_hold, reciver_hold, it help to manage both sides.is_hold not good for both side.');
+			setHoldCallEndLoader(true);
+			const resultData = await serverConnection('/call/hold', 
+			{ 
+				'call_id': chatCallData.callId, 
+			}, authToken   ); 
+			
+			//console.log(resultData);
+			
+			if(resultData?.status )
+			{
+				dispatch(updateChatCallState({'type' : 'holdCall' } ));
+			}
+			else
+			{
+				setsubmitionMSG(resultData.message || 'An error occurred. Please try again.');
+				setShowModel(true);
+			}
+		}
+		catch(e)
+		{
+			//console.log(e);
+			submitionMSG('An error occurred. Please try again.');
+			setShowModel(true);
+		}
+		finally
+		{
+			setHoldCallEndLoader(false);
+		}
+		
+		  
+	}, [dispatch, authToken, chatCallData.callId]);
+	
+	
+	
   if (chatCallData.callStatus !== "in-call" || chatCallData.callType != 'audio') return null;
 
   return (
@@ -118,7 +156,7 @@ const AudioCallModal = () => {
         className="call-card caller-card"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
-        <div className="w-100    p-3 p-lg-5 d-flex flex-column caller-card-overlay" style={{ height: windowHeight }} >
+        <div className="w-100    p-3 p-lg-5 d-flex flex-column caller-card-overlay position-relative" style={{ height: windowHeight }} >
           <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
             <img
               src={chatCallData.receiver?.image || "/images/profile_icon.png"}
@@ -138,13 +176,21 @@ const AudioCallModal = () => {
 								</strong>
 							</small>
 						</p>
-
+						<p className="text-light dot-blink">
+							 
+								<strong> 
+									{chatCallData?.isHold && "on Hold"}
+								</strong>
+							 
+						</p>
           </div>
 
           <div className="d-flex justify-content-center">
 						<CallControlActions 
 							handleCallEnd={handleCallEnd}
 							callEndLoader={callEndLoader}
+							holdCall={holdCall}
+							holdCallLoader={holdCallLoader}
 						/>
             
           </div>

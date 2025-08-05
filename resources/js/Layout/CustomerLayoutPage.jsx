@@ -19,6 +19,7 @@ import useCommunityNewMessageWebsocket from '../Websockets/Community/useCommunit
 import useIncomingCallWebsocket from '../Websockets/Call/useIncomingCallWebsocket'; 
 import useCallEndWebsocket from '../Websockets/Call/useCallEndWebsocket'; 
 import useCallAcceptWebsocket from '../Websockets/Call/useCallAcceptWebsocket'; 
+import useCallHoldWebsocket from '../Websockets/Call/useCallHoldWebsocket'; 
  
 const CustomerLayoutPage = () => {
   const is_login = useSelector((state) => state.auth.is_login); // Check login status
@@ -39,6 +40,7 @@ const CustomerLayoutPage = () => {
 	useIncomingCallWebsocket(logedUserData);
 	useCallEndWebsocket(logedUserData);
 	useCallAcceptWebsocket(logedUserData);
+	useCallHoldWebsocket(logedUserData);
 	
 	 
 /*

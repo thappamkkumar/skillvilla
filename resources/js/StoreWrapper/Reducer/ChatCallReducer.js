@@ -42,6 +42,11 @@ const ChatCallReducer = {
 					state.error = null;
 					state.isMuted = false;
 					state.cameraOn = true;
+					state.speakerOff = false;
+					state.isHold = false;
+					state.micId = null;
+					state.speakerId = null;
+					state.cameraId = null;
 					break; 	 
 				}
 						 
@@ -94,8 +99,68 @@ const ChatCallReducer = {
 					state.error = null;
 					state.isMuted = false;
 					state.cameraOn = true;
+					speakerOff = false;
+					isHold = false;
+					micId = null;
+					speakerId = null;
+					cameraId = null;
 					break;  
 				}
+				
+				case "holdCall":
+				{		 
+					state.isHold = !state.isHold;
+					break;  
+				}
+				
+				case "setMic":
+				{		 
+					state.micId=action.payload.micId;
+					if(action.payload.micId === 'off')
+					{
+						state.isMuted = true;
+					}
+					else if(state.isMuted)
+					{
+						state.isMuted = false;
+					}
+					else
+					{}
+					break;  
+				}
+				case "setSpeaker":
+				{		 
+					state.speakerId = action.payload.speakerId;
+					if(action.payload.speakerId === 'off')
+					{
+						state.speakerOff = true;
+					}
+					else if(state.speakerOff)
+					{
+						state.speakerOff = false;
+					}
+					else
+					{}
+					break;  
+				}
+				case "setCamera":
+				{		  
+					state.cameraId = action.payload.cameraId;
+					if(action.payload.cameraId === 'off')
+					{
+						state.cameraOn = false;
+					}
+					else if(!state.cameraOn)
+					{
+						state.cameraOn = true;
+					}
+					else
+					{}
+					break;  
+				}
+			 
+				
+				
 				 
 				
 				case "setLocalStream": 
@@ -106,10 +171,7 @@ const ChatCallReducer = {
 					state.remoteStream = action.payload;
 					break;  
 					 
-				case "setMuted": 
-					state.isMuted = action.payload;
-					break;  
-				
+				 
 				case "toggleCamera": 
 					 state.cameraOn = !state.cameraOn;
 					break;  
@@ -132,6 +194,11 @@ const ChatCallReducer = {
 					state.error = null;
 					state.isMuted = false;
 					state.cameraOn = true;
+					state.speakerOff = false;
+					state.isHold = false;
+					state.micId = null;
+					state.speakerId = null;
+					state.cameraId = null;
 					break;
 				}
 				

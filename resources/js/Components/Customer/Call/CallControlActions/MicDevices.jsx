@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { BsVolumeUp, BsX } from "react-icons/bs";
-import Button from "react-bootstrap/Button"; // You can replace with your own button if needed
+import { BsMic, BsX } from "react-icons/bs";
+import Button from "react-bootstrap/Button";
 import { useSelector, useDispatch } from 'react-redux';
 
 import { updateChatCallState } from '../../../../StoreWrapper/Slice/ChatCallSlice';
 
 
-const SpeakerDevices = ({ show, onClose }) => {
+const MicDevices = ({ show, onClose }) => {
 	
 	const chatCallData = useSelector((state) => state.chatCallData);
  
-  const [speakerDevices, setSpeakerDevices] = useState([]);
+  const [micDevices, setMicDevices] = useState([]);
   const [error, setError] = useState(null);
 	
 	const dispatch = useDispatch();
@@ -24,8 +24,8 @@ const SpeakerDevices = ({ show, onClose }) => {
     navigator.mediaDevices
       .enumerateDevices()
       .then((devices) => {
-        const speakers = devices.filter((d) => d.kind === "audiooutput");
-        setSpeakerDevices(speakers);
+        const mics = devices.filter((d) => d.kind === "audioinput");
+        setMicDevices(mics);
       })
       .catch((err) => {
         console.warn("Error accessing devices:", err);
@@ -36,27 +36,25 @@ const SpeakerDevices = ({ show, onClose }) => {
   const handleSelect = (deviceId) => {
 		dispatch(updateChatCallState(
 		{
-			'type' : 'setSpeaker', 
-			'speakerId':deviceId, 
+			'type' : 'setMic', 
+			'micId':deviceId, 
 		}
 		)); 
-		 
     onClose();
   };
 
   if (!show) return null;
 
   return (
-    <div className="fixed-top   w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center z-3">
-      <div className=" bg-white rounded shadow-lg  ">
+    <div className="fixed-top w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center z-3">
+      <div className="bg-white rounded shadow-lg">
         {/* Header */}
-        <div className=" d-flex justify-content-between align-items-center p-3 border-bottom">
-          <h5>Select Speaker</h5>
+        <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
+          <h5>Select Microphone</h5>
           <Button
             variant="outline-dark"
             className="p-1 border-2 border-dark"
             onClick={onClose}
-            id="speakerListCloseButton"
             title="Close"
           >
             <BsX className="fw-bold fs-3" />
@@ -67,23 +65,22 @@ const SpeakerDevices = ({ show, onClose }) => {
         <div className="p-2">
           {error ? (
             <div className="text-danger">{error}</div>
-          ) : speakerDevices.length > 0 ? (
-            <div className=" ">
-              {speakerDevices.map((device) => (
+          ) : micDevices.length > 0 ? (
+            <div>
+              {micDevices.map((device) => (
                 <Button
                   key={device.deviceId}
-                  id={device.deviceId}
-                  title="Speaker"
+									id={device.deviceId}
+                  title="Mic"
                   variant="light"
-                  className={` w-100 border-0 py-2 mb-2   text-start rounded navigation_link 
-									${chatCallData.speakerId == device.deviceId && 'bg-secondary'} 
-									
+                  className={`w-100 border-0 py-2 mb-2 text-start rounded navigation_link
+									${chatCallData.micId == device.deviceId && 'bg-secondary'} 
 									`}
                   onClick={() => handleSelect(device.deviceId)}
-									disabled={chatCallData.speakerId == device.deviceId}
+									disabled={chatCallData.micId == device.deviceId}
                 >
-                  <BsVolumeUp className="me-2"/>
-                  {device.label || `Speaker (${device.deviceId.slice(0, 6)})`}
+                  <BsMic className="me-2" />
+                  {device.label || `Mic (${device.deviceId.slice(0, 6)})`}
                 </Button>
               ))}
 							
@@ -91,20 +88,21 @@ const SpeakerDevices = ({ show, onClose }) => {
 							
 							<Button
                    
-                  id="offSpeaker"
-                  title="Off Speaker"
+                  id="muteMic"
+                  title="Mute Mic"
                   variant="danger"
-                  className=" w-100 border-0 py-2    text-start rounded  exploreFilterClearBTN"
-									 									
-									disabled={chatCallData.speakerId == 'off'}
+                  className=" w-100 border-0 py-2    text-start rounded  exploreFilterClearBTN" 
+									disabled={chatCallData.micId == 'off'}
                   onClick={() => handleSelect('off')}
               >
-                  <BsVolumeUp className="me-2"/>
-                   Off
+                  <BsMic className="me-2"/>
+                   Mute
               </Button>
+							
+							
             </div>
           ) : (
-            <div>No speaker devices found</div>
+            <div>No microphone devices found</div>
           )}
         </div>
       </div>
@@ -112,4 +110,4 @@ const SpeakerDevices = ({ show, onClose }) => {
   );
 };
 
-export default SpeakerDevices;
+export default MicDevices;
