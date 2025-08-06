@@ -32,8 +32,9 @@ const CallControlActions = ({
 	holdCall,
 	holdCallLoader,
 }) => {
-
-	 const chatCallData = useSelector((state) => state.chatCallData);
+	
+	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
+	const chatCallData = useSelector((state) => state.chatCallData);
   
 	const [showSpeakerModal, setShowSpeakerModal] = useState(false);
   const [showMicModal, setShowMicModal] = useState(false);
@@ -43,7 +44,7 @@ const CallControlActions = ({
 
 	const dispatch = useDispatch();
 	
-	
+ 
 	
 	return(
 		<div  className="d-flex flex-column   align-items-center  " >
@@ -107,7 +108,12 @@ const CallControlActions = ({
 				</Button>
 				
 				<Button 
-					variant={chatCallData.isHold ? "secondary" : "light"}  
+					variant={
+										(logedUserData.id == chatCallData.caller.id && chatCallData.callerHold) || 
+										(logedUserData.id == chatCallData.receiver.id && chatCallData.receiverHold)
+													? "secondary"
+													: "light"
+									}
 					title="Hold Call" 
 					id="holdControlBTN" 
 					className={`  border-0 shadow-none p-2  ${ !holdCallLoader  && 	'lh-1     fs-4 '}   `}
@@ -119,7 +125,9 @@ const CallControlActions = ({
 							<Spinner className="   m-1" size="sm"  />
 						: 
 						(
-								chatCallData.isHold ? <BsPauseFill /> : <BsPause /> 
+							 logedUserData.id == chatCallData.caller.id
+                ? (chatCallData.callerHold ? <BsPauseFill /> : <BsPause />)
+                : (chatCallData.receiverHold ? <BsPauseFill /> : <BsPause />)
 						)
 					}
 					 

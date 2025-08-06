@@ -21,11 +21,17 @@ const useCallHoldWebsocket = (loggedUserData) => {
       window.Echo.private(channelName)
         .listen('ChatCallHoldEvent', (e) => {
          
-				 // console.log("  call accept event:", e);
+				  // console.log("  call accept event:", e);
 					
-					const callId = e.callId;
-					   
-					dispatch(updateChatCallState({'type' : 'acceptCall', 'callId':callId  })); 
+					const data = e.data;
+					
+					const holdData = {
+						'callId' : data?.callId,
+						'callerHold' : data?.callerHold,
+						'receiverHold' : data?.receiverHold,
+						
+					}
+					dispatch(updateChatCallState({'type' : 'holdCall', 'holdData':holdData } )); 
           
         });
     };

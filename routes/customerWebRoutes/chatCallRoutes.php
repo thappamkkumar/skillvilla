@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\Route;
 				Route::post('/call/hold', 'holdCall' )->name('user.holdCall');
 				
 				
+				//Route for hold call 
+				Route::post('/call/active', 'getActiveCall' )->name('user.getActiveCall');
+				
+				
 				//Route for reject call 
 				//Route::post('/reject-call', 'rejectCall' )->name('user.rejectCall');
 				

@@ -16,13 +16,20 @@ class Call extends Model
 			'call_type',
 			'room_id',
 			'status',
-			'is_hold',
+			'caller_hold',
+			'receiver_hold',
 			'started_at',
 			'ended_at',
-			//'duration_seconds',
+			 
 	];
 	
-	
+	protected function casts(): array
+	{
+			return [ 
+					'caller_hold' => 'boolean',
+					'receiver_hold' => 'boolean'
+				];
+	}
 	public function getDurationInSecondsAttribute()
 	{
     if (!$this->started_at || !$this->ended_at) {

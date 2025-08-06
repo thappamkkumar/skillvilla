@@ -23,6 +23,56 @@ use Carbon\Carbon;
 
 class CallController extends Controller
 {
+	
+		//function for get active if any
+		function getActiveCall(Request $request)
+		{
+			try
+			{
+				// Get logged-in user
+        $user = JWTAuth::parseToken()->authenticate();
+				
+				
+				// Find an active call where user is caller or receiver
+        $activeCall = Call::where(function ($query) use ($user) {
+                $query->where('caller_id', $user->id)
+                      ->orWhere('receiver_id', $user->id);
+            })
+            ->whereNotIn('status', ['ended', 'rejected', 'missed'])
+            ->latest('created_at')
+            ->first();
+
+        if (!$activeCall) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No active call found',
+            ], 200);
+        }
+				
+				$data = [
+                'callId'       	=> $activeCall->id,
+                'callerId'    	=> $activeCall->caller_id,
+                'receiverId'  	=> $activeCall->receiver_id,
+                'callerHold'   	=> $activeCall->caller_hold,
+                'receiverHold'	=> $activeCall->receiver_hold,
+                'callType'     	=> $activeCall->call_type,
+                'roomId'				=> $activeCall->room_id,
+                'callStatus'  	=> $activeCall->status,
+                'startedAt'    	=> $activeCall->started_at,
+            ];
+        return response()->json([
+            'status' => true,
+            'data' => $data,
+        ], 200);
+				
+			}
+			catch(Exception $e)
+			{
+				//$data = ['status' => false,'message'=> 'Oops! Something went wrong.'];
+				$data = ['status' => false,'message'=> $e->getMessage()];
+				return response()->json($data);
+			}
+		}
     //function for initiate call 
 		function initiateCall(Request $request)
 		{
@@ -289,12 +339,12 @@ class CallController extends Controller
 				 // Validate input
         $request->validate([
             'call_id' => 'required|integer|exists:calls,id',
-           // 'chat_id' => 'required|integer|exists:chat_lists,id', 
+            
         ]);
 				
 				 
 
-       // $chat_id = $request->chat_id;
+        
 				
 				 // Fetch the call
         $call = Call::findOrFail($request->call_id);
@@ -309,16 +359,17 @@ class CallController extends Controller
 				
 				 // Update call status
         $call->status = 'accepted';
+				$call->started_at = now(); 
         $call->save();
 				
 				$caller_id = $call->caller_id;
 				
 				//dispatch event for call end
-				ChatCallAcceptedEvent::dispatch( $caller_id , $call->id  ); 
+				ChatCallAcceptedEvent::dispatch( $caller_id , $call->id, $call->started_at ); 
 				
 				
 				// Return the posts as a JSON response
-				$data = ['status' => true,'message'=> 'Call Accepted',  ]; 
+				$data = ['status' => true,'message'=> 'Call Accepted', 'startedAt'=> $call->started_at ]; 
 				return response()->json($data);
 				
 			}
@@ -358,23 +409,36 @@ class CallController extends Controller
                 'message' => 'Unauthorized action.',
             ], 403);
         }
-				
-				 // Update call status
-        $call->is_hold = !$call->is_hold;
+				 
+				$otherUserId = null;
+				if ($call->caller_id === $user->id) 
+				{
+					$call->caller_hold = !$call->caller_hold;
+					$otherUserId = $call->receiver_id; 
+        } elseif ($call->receiver_id === $user->id) {
+					$call->receiver_hold = !$call->receiver_hold;
+					$otherUserId = $call->caller_id;
+        }
         $call->save();
-				
-				$caller_id = $call->caller_id;
-				$receiver_id = $call->receiver_id;
-
-				$otherUserId = $user->id == $caller_id ? $receiver_id : $caller_id;
-
+				 
 				//dispatch event for call end
-				ChatCallHoldEvent::dispatch( $otherUserId , $call->id  ); 
+				ChatCallHoldEvent::dispatch( [
+					'callId' => $call->id,
+					'toUserId' => $otherUserId,
+					'callerHold' => $call->caller_hold,
+					'receiverHold' => $call->receiver_hold,
+				]  ); 
 				
 				
 				
 				// Return the posts as a JSON response
-				$data = ['status' => true,'message'=> 'update is hold.',  ]; 
+				$data = [
+					'status' => true,
+					'message'=> 'update is hold.', 
+					'caller_hold' => $call->caller_hold,
+					'receiver_hold' => $call->receiver_hold,
+					
+				]; 
 				return response()->json($data);
 				
 			}

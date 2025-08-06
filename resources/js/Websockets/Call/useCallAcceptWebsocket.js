@@ -23,9 +23,12 @@ const useCallAcceptWebsocket = (loggedUserData) => {
          
 				 // console.log("  call accept event:", e);
 					
-					const callId = e.callId;
-					   
-					dispatch(updateChatCallState({'type' : 'acceptCall', 'callId':callId  })); 
+				 
+					const callData = {
+						'callId': e.callId,
+						'startedAt': e.startedAt,
+					};   
+					dispatch(updateChatCallState({'type' : 'acceptCall', 'callData':callData } ));
           
         });
     };

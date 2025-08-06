@@ -21,12 +21,14 @@ class ChatCallAcceptedEvent implements ShouldBroadcast
 		
     public $toUserId;
     public $callId;
+    public $startedAt;
 		
-    public function __construct( $toUserId, $callId)
+    public function __construct( $toUserId, $callId, $startedAt)
     {
       
 			$this->toUserId = $toUserId;
 			$this->callId = $callId;
+			$this->startedAt = $startedAt;
     }
 
     /**

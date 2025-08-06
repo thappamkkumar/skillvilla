@@ -43,7 +43,8 @@ const ChatCallReducer = {
 					state.isMuted = false;
 					state.cameraOn = true;
 					state.speakerOff = false;
-					state.isHold = false;
+					state.callerHold = false;
+					state.receiverHold = false;
 					state.micId = null;
 					state.speakerId = null;
 					state.cameraId = null;
@@ -71,14 +72,14 @@ const ChatCallReducer = {
 					 
 				case "acceptCall": 
 				{
-					const callId = action.payload.callId;
+					const callData = action.payload.callData;
 					 
-					if(callId !== state.callId )
+					if(callData.callId !== state.callId )
 					{
 						return;
 					}
 					state.callStatus = 'in-call';
-					state.startedAt = new Date().toISOString();  //remove it
+					state.startedAt = callData.startedAt;  //remove it
 
 					break;  
 					
@@ -99,17 +100,24 @@ const ChatCallReducer = {
 					state.error = null;
 					state.isMuted = false;
 					state.cameraOn = true;
-					speakerOff = false;
-					isHold = false;
-					micId = null;
-					speakerId = null;
-					cameraId = null;
+					state.speakerOff = false;
+					state.callerHold = false;
+					state.receiverHold = false;
+					state.micId = null;
+					state.speakerId = null;
+					state.cameraId = null;
 					break;  
 				}
 				
 				case "holdCall":
 				{		 
-					state.isHold = !state.isHold;
+					const holdData = action.payload.holdData;
+					if(holdData.callId !== state.callId) 
+					{
+						return;
+					}
+					state.callerHold = holdData.callerHold;
+					state.receiverHold = holdData.receiverHold;
 					break;  
 				}
 				
@@ -181,10 +189,32 @@ const ChatCallReducer = {
 					break;  
 					 
 				
+				case "setActiveCallData": {
+					const callData = action.payload.callData;
 					
+					state.chatId = callData.chatId;
+					state.callId = callData.callId;
+					state.callStatus = callData.callStatus;
+					state.callType = callData.callType;
+					state.startedAt = callData.startedAt;
+					state.caller = callData.caller;
+					state.receiver = callData.receiver;
+					state.callRoomId = callData.callRoomId;
+					state.incomingCallData = callData.incomingCallData;
+					state.callerHold = callData.callerHold;
+					state.receiverHold = callData.receiverHold; 
+					state.micId = callData.micId;
+					state.speakerId = callData.speakerId;
+					state.cameraId = callData.cameraId; 
+					
+					break;
+				}	
 				case "refresh": {
+					state.chatId = null;
+					state.callId = null;
 					state.callStatus = 'idle';
 					state.callType = null;
+					state.startedAt = null;
 					state.caller = null;
 					state.receiver = null;
 					state.callRoomId = null;
@@ -195,7 +225,8 @@ const ChatCallReducer = {
 					state.isMuted = false;
 					state.cameraOn = true;
 					state.speakerOff = false;
-					state.isHold = false;
+					state.callerHold = false;
+					state.receiverHold = false;
 					state.micId = null;
 					state.speakerId = null;
 					state.cameraId = null;

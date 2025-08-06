@@ -18,13 +18,13 @@ class ChatCallHoldEvent implements ShouldBroadcast
      * Create a new event instance.
      */
 		 
-		public $toUserId;
-    public $callId;
+	 
+    public $data;
 		
-    public function __construct($toUserId, $callId)
+    public function __construct($data)
     {
-      $this->toUserId = $toUserId;
-			$this->callId = $callId;
+      $this->data = $data;
+			 
     }
 
     /**
@@ -35,7 +35,7 @@ class ChatCallHoldEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new  PrivateChannel('call.' . $this->toUserId),
+            new  PrivateChannel('call.' . $this->data['toUserId']),
         ];
     }
 }

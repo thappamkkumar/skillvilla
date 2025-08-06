@@ -37,21 +37,36 @@ const AudioCallModal = () => {
 		return `${mins}:${secs}`;
 	};
 	useEffect(() => {
-		if (!chatCallData?.startedAt) return;
+    if (!chatCallData?.startedAt) return;
 
-		const startTime = new Date(chatCallData.startedAt).getTime();
+    const startTime = new Date(chatCallData.startedAt).getTime();
 
-		const updateTimer = () => {
-			const now = Date.now();
-			const elapsed = Math.floor((now - startTime) / 1000);
-			setElapsedTime(elapsed > 0 ? elapsed : 0);
-		};
+    const updateTimer = () => {
+      const now = Date.now();
+      const elapsed = Math.floor((now - startTime) / 1000);
+      setElapsedTime(elapsed > 0 ? elapsed : 0);
+    };
 
-		updateTimer(); // run once initially
-		timerRef.current = setInterval(updateTimer, 1000);
+    // Clear any existing interval
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
 
-		return () => clearInterval(timerRef.current);
-	}, [chatCallData?.startedAt]);
+    updateTimer(); // Run immediately
+    timerRef.current = setInterval(updateTimer, 1000);
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [chatCallData?.startedAt]);
+
+  const displayTime = chatCallData?.startedAt
+    ? elapsedTime > 0
+      ? formatTime(elapsedTime)
+      : "Connecting..."
+    : "Calling";
 
 	
 	//handle call end
@@ -110,18 +125,24 @@ const AudioCallModal = () => {
  
 	const holdCall = useCallback(async()=>{
 		try
-		{alert('try to add hold according to role like caller_hold, reciver_hold, it help to manage both sides.is_hold not good for both side.');
+		{ 
 			setHoldCallEndLoader(true);
 			const resultData = await serverConnection('/call/hold', 
 			{ 
 				'call_id': chatCallData.callId, 
 			}, authToken   ); 
 			
-			//console.log(resultData);
+			// console.log(resultData);
 			
 			if(resultData?.status )
 			{
-				dispatch(updateChatCallState({'type' : 'holdCall' } ));
+				const holdData = {
+					'callId' : chatCallData.callId,
+					'callerHold' : resultData?.caller_hold,
+					'receiverHold' : resultData?.receiver_hold,
+					
+				}
+				dispatch(updateChatCallState({'type' : 'holdCall', 'holdData':holdData } ));
 			}
 			else
 			{
@@ -171,15 +192,13 @@ const AudioCallModal = () => {
             </h5>
             <p className="text-light">
 							<small>
-								<strong>
-									{chatCallData?.startedAt ? formatTime(elapsedTime) : "Calling"}
-								</strong>
+								<strong>{displayTime}</strong>
 							</small>
-						</p>
+						</p> 
 						<p className="text-light dot-blink">
 							 
 								<strong> 
-									{chatCallData?.isHold && "on Hold"}
+									{ (chatCallData.callerHold || chatCallData.receiverHold)  && "on Hold"}
 								</strong>
 							 
 						</p>

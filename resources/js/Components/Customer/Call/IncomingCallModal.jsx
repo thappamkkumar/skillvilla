@@ -146,8 +146,13 @@ const IncomingCallModal = () => {
 			//console.log(resultData);
 			
 			if(resultData?.status )
-			{   
-				dispatch(updateChatCallState({'type' : 'acceptCall', 'callId':chatCallData.callId } ));  
+			{  
+				const callData = {
+					'callId': chatCallData.callId,
+					'startedAt': resultData.startedAt,
+					
+				};
+				dispatch(updateChatCallState({'type' : 'acceptCall', 'callData':callData } ));  
 			}
 			else
 			{
