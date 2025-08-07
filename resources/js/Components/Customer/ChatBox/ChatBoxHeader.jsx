@@ -100,6 +100,7 @@ const ChatBoxHeader = ({user, chatId}) => {
 					receiver : resultData?.callData?.receiver || null,
 					caller : resultData?.callData?.caller || null,
 					callRoomId : resultData?.callData?.room_id || null,
+					initiatedAt : resultData?.callData?.initiated_at || null,
 					 
 				};
 				

@@ -17,6 +17,7 @@ const ChatCallReducer = {
 					state.caller= callData.caller;
 					state.receiver= callData.receiver;
 					state.callRoomId= callData.callRoomId;
+					state.initiatedAt= callData.initiatedAt;
 					 
 					break;
 				}
@@ -63,6 +64,7 @@ const ChatCallReducer = {
 					state.caller= callData.caller;
 					state.receiver= callData.receiver;
 					state.callRoomId= callData.callRoomId;
+					state.initiatedAt= callData.initiatedAt;
 					
 					state.incomingCallData = callData;
 					break;  
@@ -197,15 +199,18 @@ const ChatCallReducer = {
 					state.callStatus = callData.callStatus;
 					state.callType = callData.callType;
 					state.startedAt = callData.startedAt;
+					state.initiatedAt = callData.initiatedAt;
 					state.caller = callData.caller;
 					state.receiver = callData.receiver;
 					state.callRoomId = callData.callRoomId;
-					state.incomingCallData = callData.incomingCallData;
+					
 					state.callerHold = callData.callerHold;
 					state.receiverHold = callData.receiverHold; 
 					state.micId = callData.micId;
 					state.speakerId = callData.speakerId;
 					state.cameraId = callData.cameraId; 
+					
+					state.incomingCallData = callData.incomingCallData;
 					
 					break;
 				}	

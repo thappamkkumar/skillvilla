@@ -31,6 +31,7 @@ const useIncomingCallWebsocket = (loggedUserData) => {
 					receiver : receivedData?.receiver || null,
 					caller : receivedData?.caller || null,
 					callRoomId : receivedData?.room_id || null,
+					initiatedAt : receivedData?.initiated_at || null,
 					 
 				};
 				

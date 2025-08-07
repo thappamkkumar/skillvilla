@@ -6,6 +6,7 @@ const chatCallState = {
 	callStatus: 'idle',
   callType: null, // 'audio' | 'video'
   startedAt: null,
+  initiatedAt: null,
   caller: null,
   receiver: null,
   callRoomId: null,

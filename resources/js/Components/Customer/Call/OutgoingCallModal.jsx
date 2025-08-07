@@ -59,10 +59,31 @@ const OutgoingCallModal = () => {
 		{
       playAudio(callingToneRef, true);
 
-      autoEndTimeoutRef.current = setTimeout(() => {
-        setAutoEndTriggered(true);
-        handleAutoEnd();
-      }, 60000); // 1 min
+      let timeoutDuration = 0; // default: 1 min in ms
+
+			if (chatCallData.initiatedAt) {
+				const initiatedTime = new Date(chatCallData.initiatedAt).getTime();
+				const currentTime = new Date().getTime();
+
+				if (!isNaN(initiatedTime)) {
+					const diffInMs = 2 * 60 * 1000 - (currentTime - initiatedTime); // 2 mins from initiatedAt
+					timeoutDuration = diffInMs > 0 ? diffInMs : 0;
+				}
+			}
+			 
+      if (timeoutDuration <= 0) 
+			{
+				// Already expired
+				setAutoEndTriggered(true);
+				handleAutoEnd();
+			} 
+			else 
+			{
+				autoEndTimeoutRef.current = setTimeout(() => {
+					setAutoEndTriggered(true);
+					handleAutoEnd();
+				}, timeoutDuration);
+			} 
     } else {
       stopAudio(callingToneRef);
       clearTimeout(autoEndTimeoutRef.current);
@@ -72,7 +93,7 @@ const OutgoingCallModal = () => {
       stopAudio(callingToneRef);
       clearTimeout(autoEndTimeoutRef.current);
     };
-  }, [chatCallData.callStatus]);
+  }, [chatCallData.callStatus, chatCallData.initiatedAt]);
 	
 	
 	// Handle auto-end due to no response

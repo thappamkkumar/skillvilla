@@ -56,20 +56,59 @@ const CustomerLayoutPage = () => {
 	const restoreCallState = async()=> {
     try {
       const res = await serverConnection('/call/active', {}, authToken);
-
-      if (res?.status && res.data) 
+			
+			//console.log(res);
+      
+			if (res?.status && res.data) 
 			{
+				const callStatus = res.data.call_status; 
+				const isReceiver = res.data.is_receiver;
 				
-				const callData = {
+				if(callStatus === 'initiated')
+				{
+					let incomingCallData = null;
+					let initiatedCallStatus = 'calling';
+					if(isReceiver)
+					{
+						incomingCallData = res.data;
+						initiatedCallStatus = 'incoming';
+					}
+				 
+					 
 					
-				};
-        dispatch(updateChatCallState({ type: 'setActiveCallData', callData: callData }));
-				alert('if call status is initiated show calling ui of caller and incoming call ui for reciver. if call status is accepted then show message like you are already in call and btn for join or cancel.');
+					const callData = {
+						
+						chatId : res.data.chat_id,
+						callId : res.data.call_id,
+						callStatus : initiatedCallStatus,
+						callType : res.data.call_type,
+						startedAt : res.data.started_at,
+						initiatedAt : res.data.initiated_at,
+						
+						callRoomId : res.data.room_id,
+						callerHold : res.data.receiver_hold,
+						receiverHold : res.data.caller_hold,
+						caller : res.data.caller,
+						receiver : res.data.receiver,
+						
+						micId : null,
+						speakerId : null,
+						cameraId : null,
+						
+						incomingCallData : incomingCallData,
+					};
+					dispatch(updateChatCallState({ type: 'setActiveCallData', callData: callData }));
+				}
+				
+				if(callStatus === 'accepted')
+				{
+					alert('show box with message you are in call. and btn for join and cancel');
+				}
       } else {
         dispatch(updateChatCallState({ type: 'refresh' }));
       }
     } catch (err) {
-      console.error('Error restoring call state:', err);
+      console.error('Error restoring call state:');
     }
   }
 

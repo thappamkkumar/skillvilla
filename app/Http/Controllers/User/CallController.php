@@ -40,6 +40,13 @@ class CallController extends Controller
             })
             ->whereNotIn('status', ['ended', 'rejected', 'missed'])
             ->latest('created_at')
+						->with([
+							'caller:id,userID,name',
+							'caller.customer:id,user_id,image',  
+							'receiver:id,userID,name',
+							'receiver.customer:id,user_id,image', 
+							 
+						])
             ->first();
 
         if (!$activeCall) {
@@ -49,20 +56,76 @@ class CallController extends Controller
             ], 200);
         }
 				
+				
+				// Check if the call is initiated and created more than 1 minute ago
+        if ($activeCall->status === 'initiated') {
+            $callCreated = \Carbon\Carbon::parse($activeCall->created_at);
+            $now = now();
+
+            if ($callCreated->diffInSeconds($now) > 120) {
+                // Auto-end the call
+                $activeCall->status = 'missed';
+                $activeCall->ended_at = $now;
+                $activeCall->save();
+
+                // (Optional) Dispatch missed event here if needed
+                // CallMissedEvent::dispatch($activeCall);
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Call missed due to no response.',
+                ], 200);
+            }
+        }
+
+
+				//getting url of profile image of users
+				if ($activeCall->caller->customer != null && !filter_var($activeCall->caller->customer->image, FILTER_VALIDATE_URL)) 
+				{ 
+					$activeCall->caller->customer->image = $activeCall->caller->customer->image
+					? url(Storage::url('profile_image/' . $activeCall->caller->customer->image))  
+					: null; 
+				}	
+				if ($activeCall->receiver->customer != null && !filter_var($activeCall->receiver->customer->image, FILTER_VALIDATE_URL)) 
+				{ 
+					$activeCall->receiver->customer->image = $activeCall->receiver->customer->image
+					? url(Storage::url('profile_image/' . $activeCall->receiver->customer->image))  
+					: null; 
+				}	
+				
+
+
+				$messages = $activeCall->messages;
+        $chatId = $messages->first()?->chat_list_id;
+				
 				$data = [
-                'callId'       	=> $activeCall->id,
-                'callerId'    	=> $activeCall->caller_id,
-                'receiverId'  	=> $activeCall->receiver_id,
-                'callerHold'   	=> $activeCall->caller_hold,
-                'receiverHold'	=> $activeCall->receiver_hold,
-                'callType'     	=> $activeCall->call_type,
-                'roomId'				=> $activeCall->room_id,
-                'callStatus'  	=> $activeCall->status,
-                'startedAt'    	=> $activeCall->started_at,
-            ];
+					'chat_id' => $chatId,
+					'call_id' => $activeCall->id,
+					'call_status' => $activeCall->status,
+					'call_type' => $activeCall->call_type,
+					'started_at' => $activeCall->started_at, 
+					'room_id' => $activeCall->room_id,
+					'receiver_hold' => $activeCall->receiver_hold,
+					'caller_hold' => $activeCall->caller_hold,
+					'receiver'   => [
+								'id'    => $activeCall->receiver->id,
+								'name'  => $activeCall->receiver->name,
+								'userID'  => $activeCall->receiver->userID,
+								'image' => $activeCall->receiver->customer->image,
+						],
+						'caller'     => [
+							'id'    => $activeCall->caller->id,
+							'name'  => $activeCall->caller->name,
+							'userID'  => $activeCall->caller->userID,
+							'image' => $activeCall->caller->customer->image,
+						],
+					'is_receiver' => $user->id === $activeCall->receiver->id,
+					'initiated_at' => $activeCall->created_at,
+				];
         return response()->json([
             'status' => true,
             'data' => $data,
+            
         ], 200);
 				
 			}
@@ -178,6 +241,7 @@ class CallController extends Controller
 								'userID'  => $call->receiver->userID,
 								'image' => $call->receiver->customer->image,
 						],
+					'initiated_at' => $call->created_at,
 					'receiver_id' => $call->receiver->id,
 				] ); 
 				
@@ -207,6 +271,7 @@ class CallController extends Controller
 							'userID'  => $call->caller->userID,
 							'image' => $call->caller->customer->image,
 						],
+						'initiated_at' => $call->created_at,
 					],
 					'newMessage'=>$newMessage,
 				]; 
