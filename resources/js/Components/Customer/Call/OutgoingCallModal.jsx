@@ -5,6 +5,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import { BsTelephoneFill } from "react-icons/bs";
 
 import MessageAlert from '../../../Components/MessageAlert';
+import CallControlActions from './CallControlActions/CallControlActions';
 
 import { updateChatState } from '../../../StoreWrapper/Slice/ChatSlice';
 import { updateChatMessageState } from '../../../StoreWrapper/Slice/ChatMessageSlice';
@@ -34,14 +35,33 @@ const OutgoingCallModal = () => {
   const backgroundImage = chatCallData.receiver?.image || "/images/profile_icon.png";
 
 	// Helper: Play audio safely
-  const playAudio = (ref, loop = false) => {
+  /*const playAudio = (ref, loop = false) => {
     if (ref?.current) {
       ref.current.loop = loop;
       ref.current.play().catch(() => {
         console.warn("Autoplay failed. User interaction required.");
       });
     }
-  };
+  };*/
+	// Helper: Play audio safely with optional sinkId (speaker)
+const playAudio = async (ref, loop = false, sinkId = null) => {
+  if (ref?.current) {
+    try {
+      ref.current.loop = loop;
+
+      // Set output device if supported
+      if (sinkId && typeof ref.current.setSinkId === "function") {
+        await ref.current.setSinkId(sinkId);
+      }
+
+			//play audio tone
+      await ref.current.play();
+    } catch (error) {
+      console.warn("Audio play/setSinkId failed:", error);
+    }
+  }
+};
+
 
   // Helper: Stop audio safely
   const stopAudio = (ref) => {
@@ -55,10 +75,18 @@ const OutgoingCallModal = () => {
 	
 	// Effect: Handle calling tone and auto-end
   useEffect(() => {
+		const speakerId = chatCallData.speakerId || null;
+		
     if (chatCallData.callStatus === "calling") 
 		{
-      playAudio(callingToneRef, true);
-
+			if(chatCallData.speakerOff)
+			{
+				stopAudio(callingToneRef);				
+			}
+			else
+			{
+				playAudio(callingToneRef, true, speakerId);
+			}
       let timeoutDuration = 0; // default: 1 min in ms
 
 			if (chatCallData.initiatedAt) {
@@ -93,7 +121,7 @@ const OutgoingCallModal = () => {
       stopAudio(callingToneRef);
       clearTimeout(autoEndTimeoutRef.current);
     };
-  }, [chatCallData.callStatus, chatCallData.initiatedAt]);
+  }, [chatCallData.callStatus, chatCallData.initiatedAt, chatCallData.speakerId, chatCallData.speakerOff]);
 	
 	
 	// Handle auto-end due to no response
@@ -197,20 +225,13 @@ const OutgoingCallModal = () => {
           </div>
 
           <div className="d-flex justify-content-center">
-            <Button 
-							variant="danger" 
-							id="endCallBTN"
-							title="End Call"
-							onClick={handleCallEnd}
-							className="rounded-circle fs-5  "
-							disabled={callEndLoader}
-							 style={{ width: "65px", height: "65px",  }}
-						>
-							{
-								callEndLoader ? <Spinner  size="sm"/> : <BsTelephoneFill   className="fs-3"   />
-							} 
-               
-            </Button>
+						<CallControlActions 
+							handleCallEnd={handleCallEnd}
+							callEndLoader={callEndLoader}
+							handleHoldCall={()=>{}}
+							holdCallLoader={false}
+						/>
+             
           </div>
         </div>
       </div>

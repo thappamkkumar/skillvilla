@@ -106,7 +106,7 @@ const IncomingCallModal = () => {
 	
 	//handle call end  
 	const handleCallEnd= useCallback( ( )=>{
-		console.log('end');
+		
 		dispatch(updateChatCallState({'type' : 'endCall', 'callId':chatCallData.callId } ));  
 	 
 	}, [chatCallData.callId ]);
@@ -228,7 +228,7 @@ const IncomingCallModal = () => {
             </p>
           </div>
 
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between px-5 px-lg-0">
             <Button 
 							variant="danger" 
 							id="endCallBTN"

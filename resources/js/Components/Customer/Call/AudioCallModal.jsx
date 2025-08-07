@@ -123,7 +123,7 @@ const AudioCallModal = () => {
 		
 	}, [authToken, chatCallData.callId]);
  
-	const holdCall = useCallback(async()=>{
+	const handleHoldCall = useCallback(async()=>{
 		try
 		{ 
 			setHoldCallEndLoader(true);
@@ -208,7 +208,7 @@ const AudioCallModal = () => {
 						<CallControlActions 
 							handleCallEnd={handleCallEnd}
 							callEndLoader={callEndLoader}
-							holdCall={holdCall}
+							handleHoldCall={handleHoldCall}
 							holdCallLoader={holdCallLoader}
 						/>
             

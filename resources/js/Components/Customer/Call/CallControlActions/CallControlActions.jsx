@@ -29,7 +29,7 @@ import serverConnection from '../../../../CustomHook/serverConnection';
 const CallControlActions = ({
 	handleCallEnd,
 	callEndLoader,
-	holdCall,
+	handleHoldCall,
 	holdCallLoader,
 }) => {
 	
@@ -45,7 +45,7 @@ const CallControlActions = ({
 	const dispatch = useDispatch();
 	
  
-	
+	 
 	return(
 		<div  className="d-flex flex-column   align-items-center  " >
 			
@@ -75,7 +75,8 @@ const CallControlActions = ({
 					title="Camera Controll" 
 					id="cameraControlBTN" 
 					className="     fs-4 p-2 lh-1       "
-					onClick={ () => setShowCameraModal(true)} 
+					onClick={ () => setShowCameraModal(true)}
+					disabled = {(chatCallData.callStatus === 'calling') || chatCallData.callType === 'audio'}
 				>
 					{
 						chatCallData.cameraOn ? <BsCameraVideo /> : <BsCameraVideoOff /> 
@@ -88,6 +89,7 @@ const CallControlActions = ({
 					id="micControlBTN" 
 					className="       fs-4 p-2 lh-1       "
 					onClick={ () => setShowMicModal(true)} 
+					disabled = {chatCallData.callStatus === 'calling'}
 				>
 					{
 						chatCallData.isMuted ? <BsMicMute /> : <BsMic /> 
@@ -117,7 +119,8 @@ const CallControlActions = ({
 					title="Hold Call" 
 					id="holdControlBTN" 
 					className={`  border-0 shadow-none p-2  ${ !holdCallLoader  && 	'lh-1     fs-4 '}   `}
-					onClick={holdCall}
+					onClick={handleHoldCall}
+					disabled = {chatCallData.callStatus === 'calling'}
 				>
 					{
 						holdCallLoader 
