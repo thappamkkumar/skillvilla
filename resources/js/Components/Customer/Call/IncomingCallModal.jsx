@@ -33,7 +33,7 @@ const IncomingCallModal = () => {
 	const dispatch = useDispatch();
 	const windowHeight = useWindowHeight();
 	
-	const backgroundImage = chatCallData.caller?.image || "/images/profile_icon.png";
+	 
 	
 	// Helper: Play audio safely
   const playAudio = (ref, loop = false) => {
@@ -200,14 +200,12 @@ const IncomingCallModal = () => {
 	if (chatCallData.callStatus !== "incoming") return null;
 	
   return (
-    <div className="fixed-top w-100   d-flex justify-content-center align-items-center bg-dark bg-opacity-75">
-      <MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
+    <div className="fixed-top w-100   d-flex justify-content-center align-items-center call-container" style={{ height: windowHeight }}>
+      
+			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
       <audio ref={incomingCallToneRef} src="/audio/incoming-call-indicator.mp3" preload="auto" loop />
-			<div
-        className="call-card caller-card"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
-        <div className="w-100    p-3 p-lg-5 d-flex flex-column caller-card-overlay" style={{ height: windowHeight }} >
+			 
+        <div className="   p-3   d-flex flex-column  call-card " >
           <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
             <img
               src={chatCallData.caller?.image || "/images/profile_icon.png"}
@@ -228,7 +226,7 @@ const IncomingCallModal = () => {
             </p>
           </div>
 
-          <div className="d-flex justify-content-between px-5 px-lg-0">
+          <div className="d-flex justify-content-between px-4    mb-4  ">
             <Button 
 							variant="danger" 
 							id="endCallBTN"
@@ -260,7 +258,7 @@ const IncomingCallModal = () => {
             </Button>
           </div>
         </div>
-      </div>
+       
 			
     </div>
   );

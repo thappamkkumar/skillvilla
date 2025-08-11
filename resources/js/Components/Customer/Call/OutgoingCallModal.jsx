@@ -32,7 +32,7 @@ const OutgoingCallModal = () => {
 	const dispatch = useDispatch();
 	const windowHeight = useWindowHeight();
 	
-  const backgroundImage = chatCallData.receiver?.image || "/images/profile_icon.png";
+  
 
 	// Helper: Play audio safely
   /*const playAudio = (ref, loop = false) => {
@@ -193,18 +193,15 @@ const playAudio = async (ref, loop = false, sinkId = null) => {
   if (chatCallData.callStatus !== "calling") return null;
 
   return (
-    <div className="fixed-top w-100   d-flex justify-content-center align-items-center call-container">
+    <div className="fixed-top w-100   d-flex justify-content-center align-items-center call-container" style={{ height: windowHeight }}>
 			
 			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
       <audio ref={callingToneRef} src="/audio/calling-indicator.mp3" loop />
       <audio ref={noResponseToneRef} src="/audio/busy-indicator.mp3" />
       
-      <div
-        className="call-card caller-card"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
-        <div className="w-100    p-3 p-lg-5 d-flex flex-column caller-card-overlay" style={{ height: windowHeight }} >
-          <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+       
+        <div className="   p-3   d-flex flex-column call-card "   >
+          <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center  ">
             <img
               src={chatCallData.receiver?.image || "/images/profile_icon.png"}
               alt="User Avatar"
@@ -234,7 +231,7 @@ const playAudio = async (ref, loop = false, sinkId = null) => {
              
           </div>
         </div>
-      </div>
+       
     </div>
   );
 };

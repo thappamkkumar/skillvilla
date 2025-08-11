@@ -62,7 +62,7 @@ const CameraDevices = ({ show, onClose }) => {
         </div>
 
         {/* Body */}
-        <div className="p-2">
+        <div className="p-2 d-flex flex-column align-items-stretch">
           {error ? (
             <div className="text-danger">{error}</div>
           ) : cameraDevices.length > 0 ? (
@@ -73,7 +73,7 @@ const CameraDevices = ({ show, onClose }) => {
 									id={device.deviceId}
                   title="Camera"
                   variant="light"
-                  className={`w-100 border-0 py-2 mb-2 text-start rounded navigation_link
+                  className={`d-block w-100 border-0 py-2 mb-2 text-start rounded navigation_link
 									${chatCallData.cameraId == device.deviceId && 'bg-secondary' } `}  
                   onClick={() => handleSelect(device.deviceId)}
 									disabled={chatCallData.cameraId == device.deviceId}
@@ -88,7 +88,7 @@ const CameraDevices = ({ show, onClose }) => {
                   id="offCamera"
                   title="Off Camera"
                   variant="danger"
-                  className=" w-100 border-0 py-2    text-start rounded  exploreFilterClearBTN" 
+                  className=" d-block w-100 border-0 py-2    text-start rounded  exploreFilterClearBTN" 
 									disabled={chatCallData.cameraId == 'off'}
                   onClick={() => handleSelect('off')}
               >

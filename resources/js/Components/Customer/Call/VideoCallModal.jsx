@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import { useSelector,useDispatch } from 'react-redux';
 import { BsTelephoneFill } from "react-icons/bs";
 
+import CallControlActions from './CallControlActions/CallControlActions';
 import MessageAlert from '../../../Components/MessageAlert';
 
 import { updateChatState } from '../../../StoreWrapper/Slice/ChatSlice';
@@ -22,16 +23,46 @@ const VideoCallModal = () => {
   const chatCallData = useSelector((state) => state.chatCallData);
   
 	const [submitionMSG, setsubmitionMSG] = useState(null); //state for store info about form submition  
-	const [showModel, setShowModel] = useState(false); //state for alert message   
+	const [showModel, setShowModel] = useState(false); //state for alert message 
+	const [holdCallLoader, setHoldCallEndLoader] = useState(false);   
 	const [callEndLoader, setCallEndLoader] = useState(false);
 	const [elapsedTime, setElapsedTime] = useState(0);
+	const [showUserManual, setShowUserManual] = useState(true);
+	
 	const timerRef = useRef(null); 
-	 
+	const hideTimerRef = useRef(null);
+	
+
 	const dispatch = useDispatch();
 	const windowHeight = useWindowHeight();
 	
-  const backgroundImage = chatCallData.receiver?.image || "/images/profile_icon.png";
+  
+	const resetHideTimer = useCallback(() => {
+		// Show controls
+		setShowUserManual(true);
 
+		// Clear existing timer
+		if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+
+		// Set timer to hide after 30s
+		hideTimerRef.current = setTimeout(() => {
+			setShowUserManual(false);
+		}, 30000);
+	}, []);
+
+	useEffect(() => {
+		// Start initial hide timer
+		resetHideTimer();
+
+		// Interaction events
+		const events = ["mousemove", "mousedown", "click", "touchstart", "touchmove", "keydown"];
+		events.forEach(evt => window.addEventListener(evt, resetHideTimer));
+
+		return () => {
+			events.forEach(evt => window.removeEventListener(evt, resetHideTimer));
+			if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+		};
+	}, [resetHideTimer]);
 	 
 	const formatTime = (seconds) => {
 		const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -109,81 +140,114 @@ const VideoCallModal = () => {
 		
 	}, [authToken, chatCallData.callId]);
  
- 
+	const handleHoldCall = useCallback(async()=>{
+		try
+		{ 
+			setHoldCallEndLoader(true);
+			const resultData = await serverConnection('/call/hold', 
+			{ 
+				'call_id': chatCallData.callId, 
+			}, authToken   ); 
+			
+			// console.log(resultData);
+			
+			if(resultData?.status )
+			{
+				const holdData = {
+					'callId' : chatCallData.callId,
+					'callerHold' : resultData?.caller_hold,
+					'receiverHold' : resultData?.receiver_hold,
+					
+				}
+				dispatch(updateChatCallState({'type' : 'holdCall', 'holdData':holdData } ));
+			}
+			else
+			{
+				setsubmitionMSG(resultData.message || 'An error occurred. Please try again.');
+				setShowModel(true);
+			}
+		}
+		catch(e)
+		{
+			//console.log(e);
+			submitionMSG('An error occurred. Please try again.');
+			setShowModel(true);
+		}
+		finally
+		{
+			setHoldCallEndLoader(false);
+		}
+		
+		  
+	}, [dispatch, authToken, chatCallData.callId]);
+	
+	
+	
+	
   if (chatCallData.callStatus !== "in-call" || chatCallData.callType != 'video') return null;
 
   return (
-    <div className="fixed-top w-100   d-flex justify-content-center align-items-center call-container" style={{ height: windowHeight }}>
+    <div className="fixed-top w-100    call-container" style={{ height: windowHeight }}>
 			
 			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
       
-			<div className="w-100 h-100 position-relative ">
+			<div className="position-relative w-100 h-100"  >
+				
+				<div className="w-100 h-100 position-absolute   ">
+					<video  
+						className="w-100 h-100 object-fit-cover   "
+						autoPlay
+						playsInline
+						loop={true}
+						muted={false}
+						id="remoteVideo"
+						style={{ backgroundColor: "#000" }}
+					></video>
+				</div>
+				
+				<div
+					className={`position-absolute w-100 h-100 transition-opacity ${showUserManual ? 'opacity-100' : 'opacity-0'}`}
+					id="userMannual"
+					style={{ pointerEvents: showUserManual ? 'auto' : 'none', transition: 'opacity 0.3s ease' }}
+				>
+					<div className="w-100 h-100  p-3   d-flex flex-column">
+						<div className="flex-grow-1 text-white d-flex  flex-column justify-content-between">
+							
+							<div >
+								<div className="d-inline-block bg-dark bg-opacity-50   p-2 rounded">
+									<h5>{chatCallData.receiver?.name}</h5>
+									<small>{chatCallData?.startedAt ? formatTime(elapsedTime) : "Connecting..."}</small>
+								</div>
+							</div>
+							
+							<div className=" d-flex justify-content-end mb-4 mb-md-5 ">
+								<div className="rounded overflow-hidden local-video-container ">
+									<video 
+										className="w-100 h-100 object-fit-cover   "
+										style={{ backgroundColor: "#111" }}
+										autoPlay
+										muted
+										playsInline
+										id="localVideo"
+										loop={true}
+									></video>
+								</div>
+							</div>
+							
+						</div>
+						<div className=" ">
+							<CallControlActions 
+								handleCallEnd={handleCallEnd}
+								callEndLoader={callEndLoader}
+								handleHoldCall={handleHoldCall}
+								holdCallLoader={holdCallLoader}
+							/>
+							
+						</div>
+					</div> 
+				</div>
 			
-				<Row className="h-100 g-0   ">
-						{/* Remote video */}
-						<Col xs={12} md={6} className="position-relative">
-							<video
-								className="w-100 h-100 object-fit-cover"
-								autoPlay
-								playsInline
-								muted={false}
-								id="remoteVideo"
-								style={{ backgroundColor: "#000" }}
-							></video>
-						</Col>
-						{/* Local video for large screen */}
-						<Col xs={12} md={6} className="d-none d-md-block position-relative">
-							<video
-								className="w-100 h-100 object-fit-cover"
-								autoPlay
-								playsInline
-								muted
-								id="localVideo"
-								style={{ backgroundColor: "#111" }}
-							></video>
-						</Col>
-				</Row>
-				{/* Local video for small screens */}
-				
-				<video
-					className="d-md-none position-absolute"
-					style={{
-						width: "120px",
-						height: "90px",
-						bottom: "120px",
-						right: "16px",
-						borderRadius: "8px",
-						backgroundColor: "#111",
-					}}
-					autoPlay
-					muted
-					playsInline
-					id="localVideo"
-				></video>
-				
-				{/* User name and time */}
-				<div className="position-absolute top-0 start-0 p-3 text-white">
-					<h5>{chatCallData.receiver?.name}</h5>
-					<small>{chatCallData?.startedAt ? formatTime(elapsedTime) : "Connecting..."}</small>
-				</div>
-				
-				{/* End Call Button */}
-				<div className="position-absolute bottom-0 start-50 translate-middle-x mb-4">
-					<Button
-						variant="danger"
-						id="endCallBTN"
-						title="End Call"
-						onClick={handleCallEnd}
-						className="rounded-circle fs-5"
-						disabled={callEndLoader}
-						style={{ width: "65px", height: "65px" }}
-					>
-						{callEndLoader ? <Spinner size="sm" /> : <BsTelephoneFill className="fs-3" />}
-					</Button>
-				</div>
-				
-      </div>
-			 
+			</div>
     </div>
   );
 };

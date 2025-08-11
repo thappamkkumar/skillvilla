@@ -5,33 +5,24 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
- 
-
+  
 .call-card
 {
-	box-shadow: 0px 4px 8px rgba(100, 100, 100, 0.15), 
-              0px 1px 2px rgba(100, 100, 100, 0.1);
-	background:rgba(var(--bg2-color),1);
+	 
 	overflow:hidden;
-	height:100vh;
+	height:100%;
 	width:100%;
-	
+	max-width:400px;background:rgba(var(--text-color),0.1);
 }
-
-.caller-card
-{
-	max-width:400px;
  
-	background-size: cover;
-  background-position: center;
-}
+ /*
 .caller-card-overlay
 {
 	background:rgba(var(--text-color),0.15);
 	backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-
+*/
 
 /* Make avatar image responsive and consistent */
 .outgoing-call-avatar {
@@ -78,4 +69,38 @@
   0% { opacity: 0.2; }
   50% { opacity: 1; }
   100% { opacity: 0.2; }
+}
+
+.local-video-container
+ {
+	 width:100px;
+	 height:150px;
+ } 
+ 
+ @media (max-width: 200px) {
+  .local-video-container {
+   display:none;
+  }
+
+} 
+@media (min-width: 768px) {
+  .local-video-container {
+   width:150px;
+	 height:200px;
+  }
+
+} 
+@media (min-width: 1200px) {
+  .local-video-container {
+   width:200px;
+	 height:250px;
+  }
+
+} 
+
+@media (max-height: 500px) {
+  .local-video-container {
+   display:none;
+  }
+
 }

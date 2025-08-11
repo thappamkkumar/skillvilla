@@ -64,7 +64,7 @@ const SpeakerDevices = ({ show, onClose }) => {
         </div>
 
         {/* Body */}
-        <div className="p-2">
+        <div className="p-2 d-flex flex-column align-items-stretch">
           {error ? (
             <div className="text-danger">{error}</div>
           ) : speakerDevices.length > 0 ? (
@@ -75,7 +75,7 @@ const SpeakerDevices = ({ show, onClose }) => {
                   id={device.deviceId}
                   title="Speaker"
                   variant="light"
-                  className={` w-100 border-0 py-2 mb-2   text-start rounded navigation_link 
+                  className={` d-block w-100 border-0 py-2 mb-2   text-start rounded navigation_link 
 									${chatCallData.speakerId == device.deviceId && 'bg-secondary'} 
 									
 									`}
@@ -94,7 +94,7 @@ const SpeakerDevices = ({ show, onClose }) => {
                   id="offSpeaker"
                   title="Off Speaker"
                   variant="danger"
-                  className=" w-100 border-0 py-2    text-start rounded  exploreFilterClearBTN"
+                  className=" d-block w-100 border-0 py-2    text-start rounded  exploreFilterClearBTN"
 									 									
 									disabled={chatCallData.speakerId == 'off'}
                   onClick={() => handleSelect('off')}

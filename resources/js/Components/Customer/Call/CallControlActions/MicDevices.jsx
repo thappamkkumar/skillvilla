@@ -46,8 +46,8 @@ const MicDevices = ({ show, onClose }) => {
   if (!show) return null;
 
   return (
-    <div className="fixed-top w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center z-3">
-      <div className="bg-white rounded shadow-lg">
+    <div className="fixed-top w-100 h-100 bg-dark   d-flex justify-content-center align-items-center z-3">
+      <div className="bg-white rounded shadow-lg  ">
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
           <h5>Select Microphone</h5>
@@ -62,7 +62,7 @@ const MicDevices = ({ show, onClose }) => {
         </div>
 
         {/* Body */}
-        <div className="p-2">
+        <div className="p-2 d-flex flex-column align-items-stretch">
           {error ? (
             <div className="text-danger">{error}</div>
           ) : micDevices.length > 0 ? (
@@ -73,7 +73,7 @@ const MicDevices = ({ show, onClose }) => {
 									id={device.deviceId}
                   title="Mic"
                   variant="light"
-                  className={`w-100 border-0 py-2 mb-2 text-start rounded navigation_link
+                  className={` d-block w-100 border-0 py-2 mb-2 text-start rounded navigation_link
 									${chatCallData.micId == device.deviceId && 'bg-secondary'} 
 									`}
                   onClick={() => handleSelect(device.deviceId)}
@@ -91,7 +91,7 @@ const MicDevices = ({ show, onClose }) => {
                   id="muteMic"
                   title="Mute Mic"
                   variant="danger"
-                  className=" w-100 border-0 py-2    text-start rounded  exploreFilterClearBTN" 
+                  className=" d-block w-100  border-0 py-2    text-start rounded  exploreFilterClearBTN" 
 									disabled={chatCallData.micId == 'off'}
                   onClick={() => handleSelect('off')}
               >
