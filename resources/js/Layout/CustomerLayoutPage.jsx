@@ -1,4 +1,4 @@
-import   { useState, useEffect,   } from 'react';
+import   { useState, useEffect, useRef, useCallback } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
  
@@ -11,6 +11,12 @@ import IncomingCallModal from '../Components/Customer/Call/IncomingCallModal';
 import AudioCallModal from '../Components/Customer/Call/AudioCallModal'; 
 import VideoCallModal from '../Components/Customer/Call/VideoCallModal'; 
 
+//call functions
+import startCall from '../Components/Customer/Call/CallFunctions/startCall'; 
+import handleOffer from '../Components/Customer/Call/CallFunctions/handleOffer'; 
+import handleAnswer from '../Components/Customer/Call/CallFunctions/handleAnswer'; 
+import handleICE from '../Components/Customer/Call/CallFunctions/handleICE'; 
+
 // Hook for visited URL
 import serverConnection from '../CustomHook/serverConnection';
 import manageVisitedUrl from '../CustomHook/manageVisitedUrl';
@@ -21,6 +27,7 @@ import useIncomingCallWebsocket from '../Websockets/Call/useIncomingCallWebsocke
 import useCallEndWebsocket from '../Websockets/Call/useCallEndWebsocket'; 
 import useCallAcceptWebsocket from '../Websockets/Call/useCallAcceptWebsocket'; 
 import useCallHoldWebsocket from '../Websockets/Call/useCallHoldWebsocket'; 
+import useCallSignalWebsocket from '../Websockets/Call/useCallSignalWebsocket'; 
  
  
  import { updateChatCallState } from '../StoreWrapper/Slice/ChatCallSlice';
@@ -31,24 +38,59 @@ const CustomerLayoutPage = () => {
   //const is_login = useSelector((state) => state.auth.is_login); // Check login status
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user)); // Get logged-in user info
  	const authToken = useSelector((state) => state.auth.token); 
- 
-	
+  const chatCallData = useSelector((state) => state.chatCallData);
+   
 	const windowHeight = useWindowHeight();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 
-	 
+	//webrtc
+	const ICE_CONFIG = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }; 
+	let peerConRef = useRef(null); 
+	const audioCallRef = useRef(null);//ref for audio tag  for audio call
 	
+	
+	
+	const onOffer = useCallback(
+		async (payload) => {
+			await handleOffer(payload, ICE_CONFIG, peerConRef, audioCallRef, authToken, chatCallData, dispatch);
+		},
+		[ICE_CONFIG, peerConRef, audioCallRef, authToken, chatCallData, dispatch]
+	);
+
+	const onAnswer = useCallback(
+		async (payload) => {
+			await handleAnswer(payload, peerConRef);
+		},
+		[peerConRef]
+	);
+	
+	const onICEConnection = useCallback(
+		async (payload) => {
+			await handleICE(payload, peerConRef);
+		},
+		[peerConRef]
+	);
+
+ const onStartCall = useCallback(
+		async ( ) => {
+			await startCall(ICE_CONFIG, peerConRef, audioCallRef, authToken, chatCallData, dispatch);
+		},
+		[ICE_CONFIG, peerConRef, audioCallRef, authToken, chatCallData, dispatch]
+	);
+
+ 
 	
 	
 	
 	// Call the  hook for websockets event listeners for community message
 	useCommunityNewMessageWebsocket();
 	useIncomingCallWebsocket(logedUserData);
-	useCallEndWebsocket(logedUserData);
-	useCallAcceptWebsocket(logedUserData);
-	useCallHoldWebsocket(logedUserData);
+	useCallEndWebsocket(logedUserData); 
+	useCallHoldWebsocket(logedUserData); 
+	useCallAcceptWebsocket(logedUserData,  onStartCall, ); 
+	useCallSignalWebsocket(	logedUserData,	chatCallData.callId	,	 onOffer, onAnswer, onICEConnection ); 
 	
 	useEffect(() => {
   if (!authToken) return; // wait until token refresh finishes
@@ -102,7 +144,7 @@ const CustomerLayoutPage = () => {
 				
 				if(callStatus === 'accepted')
 				{
-					alert('show box with message you are in call. and btn for join and cancel');
+					console.log('show box with message you are in call. and btn for join and cancel');
 				}
       } else {
         dispatch(updateChatCallState({ type: 'refresh' }));
@@ -145,7 +187,7 @@ const CustomerLayoutPage = () => {
 				{/*incoming call model*/}
 				<IncomingCallModal  />
 				{/*Audio In-call model*/}
-				<AudioCallModal  />
+				<AudioCallModal audioCallRef = {audioCallRef} peerConRef={peerConRef} />
 				{/*Video In-call model*/}
 				<VideoCallModal  />
 			

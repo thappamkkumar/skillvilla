@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { updateChatCallState } from '../../StoreWrapper/Slice/ChatCallSlice';
 
-const useCallAcceptWebsocket = (loggedUserData) => {
+const useCallAcceptWebsocket = (loggedUserData, startCall = ()=>{}) => {
   const userRef = useRef(loggedUserData?.id);
   const dispatch = useDispatch();
 
@@ -17,7 +17,7 @@ const useCallAcceptWebsocket = (loggedUserData) => {
 
     const channelName = `call.${userRef.current}`;
 		 
-    const incomingCall_connectWebSocket = () => {
+    const acceptCall_connectWebSocket = () => {
       window.Echo.private(channelName)
         .listen('ChatCallAcceptedEvent', (e) => {
          
@@ -29,11 +29,12 @@ const useCallAcceptWebsocket = (loggedUserData) => {
 						'startedAt': e.startedAt,
 					};   
 					dispatch(updateChatCallState({'type' : 'acceptCall', 'callData':callData } ));
-          
+					//call function for start connectiong via webRTC
+          startCall();
         });
     };
 
-    incomingCall_connectWebSocket();
+    acceptCall_connectWebSocket();
  
     return () => {
       window.Echo.leave(channelName);

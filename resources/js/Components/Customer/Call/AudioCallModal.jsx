@@ -13,7 +13,11 @@ import serverConnection from '../../../CustomHook/serverConnection';
 import handleImageError from "../../../CustomHook/handleImageError";
 import useWindowHeight from "../../../CustomHook/useWindowHeight";
 
-const AudioCallModal = () => {
+const AudioCallModal = ({
+	audioCallRef,
+	peerConRef,
+}) => {
+	
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));//get login info 
 	const authToken = useSelector((state) => state.auth.token); 
   const chatCallData = useSelector((state) => state.chatCallData);
@@ -101,6 +105,13 @@ const AudioCallModal = () => {
 					dispatch(updateChatMessageState({type : 'AddNewMessage', newMessage:newMessage}));
 					
 				}
+				if (peerConRef.current) {
+					peerConRef.current.getSenders().forEach(s => {
+						if (s.track) s.track.stop();
+					});
+					peerConRef.current.close();
+					peerConRef.current = null;
+				}
 			}
 			else
 			{
@@ -111,8 +122,8 @@ const AudioCallModal = () => {
 		}
 		catch(e)
 		{
-			//console.log(e);
-			 submitionMSG('An error occurred. Please try again.');
+			console.log(e);
+			 setsubmitionMSG('An error occurred. Please try again.');
 			 setShowModel(true);
 		}
 		finally
@@ -153,7 +164,7 @@ const AudioCallModal = () => {
 		catch(e)
 		{
 			//console.log(e);
-			submitionMSG('An error occurred. Please try again.');
+			setsubmitionMSG('An error occurred. Please try again.');
 			setShowModel(true);
 		}
 		finally
@@ -172,7 +183,8 @@ const AudioCallModal = () => {
     <div className="fixed-top w-100   d-flex justify-content-center align-items-center call-container" style={{ height: windowHeight }} >
 			
 			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
-       
+      
+			<audio ref={audioCallRef}   preload="auto"   />
        
         <div className="   p-3   d-flex flex-column call-card  "  >
           <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
@@ -192,13 +204,17 @@ const AudioCallModal = () => {
 								<strong>{displayTime}</strong>
 							</small>
 						</p> 
-						<p className="text-light dot-blink">
-							 
+						<p className="text-danger  "> 
+								<strong> 
+									{chatCallData.error}
+								</strong> 
+						</p>
+						<p className="text-light dot-blink"> 
 								<strong> 
 									{ (chatCallData.callerHold || chatCallData.receiverHold)  && "on Hold"}
-								</strong>
-							 
+								</strong> 
 						</p>
+						
           </div>
 
           <div className="d-flex justify-content-center">

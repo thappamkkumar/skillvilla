@@ -169,7 +169,10 @@ const ChatCallReducer = {
 					break;  
 				}
 			 
-				
+				case "setError": 
+					  state.error = action.payload.error;
+					break;  
+					 
 				
 				 
 				
@@ -182,14 +185,8 @@ const ChatCallReducer = {
 					break;  
 					 
 				 
-				case "toggleCamera": 
-					 state.cameraOn = !state.cameraOn;
-					break;  
-					 
-				case "setError": 
-					  state.error = action.payload;
-					break;  
-					 
+				 
+				
 				
 				case "setActiveCallData": {
 					const callData = action.payload.callData;

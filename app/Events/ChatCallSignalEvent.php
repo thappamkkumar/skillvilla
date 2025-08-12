@@ -19,13 +19,16 @@ class ChatCallSignalEvent implements ShouldBroadcast
      */
 		
 		public $toUserId;
-    public $fromUser;
-    public $signalData;
-    public function __construct($toUserId, $fromUser, $signalData)
+		public $callId; 
+    public $payload ;
+    public $type ;
+		
+    public function __construct($toUserId, $callId, $payload, $type )
     {
-      $this->toUserId = $toUserId;
-      $this->fromUser = $fromUser;
-      $this->signalData = $signalData;
+      $this->toUserId = $toUserId; 
+      $this->callId  = $callId ;
+      $this->payload  = $payload ;
+      $this->type  = $type ;
     }
 
     /**
@@ -36,7 +39,7 @@ class ChatCallSignalEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('call.' . $this->toUserId);
+            new PrivateChannel('call.' . $this->toUserId),
         ];
     }
 }

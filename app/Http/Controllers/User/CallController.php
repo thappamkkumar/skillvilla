@@ -16,6 +16,7 @@ use App\Events\ChatCallEndEvent;
 use App\Events\ChatCallAcceptedEvent;
 use App\Events\SendMessageEvent;
 use App\Events\ChatCallHoldEvent;
+use App\Events\ChatCallSignalEvent;
 
 use Exception;
 use JWTAuth;
@@ -136,7 +137,9 @@ class CallController extends Controller
 				return response()->json($data);
 			}
 		}
-    //function for initiate call 
+ 
+	
+		//function for initiate call 
 		function initiateCall(Request $request)
 		{
 			try
@@ -528,10 +531,19 @@ class CallController extends Controller
 				
 				// Retrieve the authenticated user from the JWT token
 				$user = JWTAuth::parseToken()->authenticate();
-					
+				
+				$toUserId = $request->toUserId;
+				$call_id = $request->call_id;
+				$payload = $request->payload;
+				$type = $request->type;
+			 
+				//dispatch event for call end
+				ChatCallSignalEvent::dispatch( $toUserId , $call_id, $payload, $type  ); 
+				
+				
 				
 				// Return the posts as a JSON response
-				$data = ['status' => true,'message'=> ' ',  ]; 
+				$data = ['status' => true,   ]; 
 				return response()->json($data);
 				
 			}

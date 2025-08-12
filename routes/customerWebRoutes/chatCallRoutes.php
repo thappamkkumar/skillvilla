@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 				
 				
 				//Route for  call sigal
-				Route::post('/call-signal', 'callSignal' )->name('user.callSignal');
+				Route::post('/call/signal', 'callSignal' )->name('user.callSignal');
 				
 				//Route for   call  media
 				Route::post('/call-media', 'callMedia' )->name('user.callMedia');
