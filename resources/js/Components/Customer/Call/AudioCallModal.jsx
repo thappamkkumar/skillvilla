@@ -209,6 +209,11 @@ const AudioCallModal = ({
 									{chatCallData.error}
 								</strong> 
 						</p>
+						<p className="text-light  dot-blink"> 
+								<strong> 
+									{chatCallData.isConnecting && 'Connecting'}
+								</strong> 
+						</p>
 						<p className="text-light dot-blink"> 
 								<strong> 
 									{ (chatCallData.callerHold || chatCallData.receiverHold)  && "on Hold"}

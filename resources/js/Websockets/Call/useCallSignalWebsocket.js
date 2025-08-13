@@ -20,7 +20,7 @@ const useCallSignalWebsocket = (loggedUserData, callId, handleOffer = ()=>{}, ha
       window.Echo.private(channelName)
         .listen('ChatCallSignalEvent', (e) => {
          
-				    console.log("  call accept event:", e);
+				   //  console.log("  call accept event:", e);
 					if ( e.callId !== callId) return;
 					if (e.type === 'offer') 
 					{

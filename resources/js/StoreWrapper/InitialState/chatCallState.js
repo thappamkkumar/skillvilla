@@ -22,5 +22,6 @@ const chatCallState = {
 	micId:null,
 	speakerId:null,
 	cameraId:null,
+	isConnecting:false,
 };
 export default chatCallState;

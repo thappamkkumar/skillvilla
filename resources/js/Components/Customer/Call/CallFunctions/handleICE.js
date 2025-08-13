@@ -1,17 +1,34 @@
+ import { updateChatCallState } from '../../../../StoreWrapper/Slice/ChatCallSlice';
  
-const handleICE = async (payload, peerConRef) => {
+ 
+ const handleICE = async (payload, peerConRef, dispatch) => {
   try {
     if (Array.isArray(payload)) {
       for (const candidate of payload) {
-        await peerConRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+        try {
+          await peerConRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+        } catch (err) {
+          console.warn("Non-fatal ICE candidate error:", err);
+        }
       }
     } else {
-      await peerConRef.current.addIceCandidate(new RTCIceCandidate(payload));
+      try {
+        await peerConRef.current.addIceCandidate(new RTCIceCandidate(payload));
+      } catch (err) {
+        console.warn("Non-fatal ICE candidate error:", err);
+      }
     }
-    console.log('ICE candidates added');
+
+    
+    console.log('ICE candidates processed');
   } catch (err) {
-    console.warn('Error adding ICE candidate:', err);
+    console.error("Critical ICE handling error:", err);
+    
   }
+	finally{
+		//dispatch(updateChatCallState({ type: 'setConnected' }));
+	//	console.log('ICE candidates  ');
+	}
 };
 
 export default handleICE;

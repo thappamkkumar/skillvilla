@@ -49,6 +49,7 @@ const ChatCallReducer = {
 					state.micId = null;
 					state.speakerId = null;
 					state.cameraId = null;
+					state.isConnecting = false; 
 					break; 	 
 				}
 						 
@@ -82,7 +83,7 @@ const ChatCallReducer = {
 					}
 					state.callStatus = 'in-call';
 					state.startedAt = callData.startedAt;  //remove it
-
+					state.isConnecting = true; 
 					break;  
 					
 				}
@@ -170,20 +171,18 @@ const ChatCallReducer = {
 				}
 			 
 				case "setError": 
+				{
 					  state.error = action.payload.error;
 					break;  
-					 
+				} 
+				
+				 case "setConnected": 
+				{
+					state.isConnecting = false; 
+					break;  
+				} 
 				
 				 
-				
-				case "setLocalStream": 
-					state.mediaStream = action.payload;
-					break;  
-					 
-				case "setRemoteStream": 
-					state.remoteStream = action.payload;
-					break;  
-					 
 				 
 				 
 				
@@ -211,7 +210,9 @@ const ChatCallReducer = {
 					
 					break;
 				}	
-				case "refresh": {
+			
+
+			case "refresh": {
 					state.chatId = null;
 					state.callId = null;
 					state.callStatus = 'idle';
@@ -232,6 +233,7 @@ const ChatCallReducer = {
 					state.micId = null;
 					state.speakerId = null;
 					state.cameraId = null;
+					state.isConnecting = false; 
 					break;
 				}
 				
