@@ -87,7 +87,7 @@ const CustomerLayoutPage = () => {
 	// Call the  hook for websockets event listeners for community message
 	useCommunityNewMessageWebsocket();
 	useIncomingCallWebsocket(logedUserData);
-	useCallEndWebsocket(logedUserData); 
+	useCallEndWebsocket(logedUserData, peerConRef); 
 	useCallHoldWebsocket(logedUserData); 
 	useCallAcceptWebsocket(logedUserData,  onStartCall, ); 
 	useCallSignalWebsocket(	logedUserData,	chatCallData.callId	,	 onOffer, onAnswer, onICEConnection ); 

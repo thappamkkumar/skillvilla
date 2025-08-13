@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { updateChatCallState } from '../../StoreWrapper/Slice/ChatCallSlice';
 
-const useCallEndWebsocket = (loggedUserData) => {
+const useCallEndWebsocket = (loggedUserData, peerConRef) => {
   const userRef = useRef(loggedUserData?.id);
   const dispatch = useDispatch();
 
@@ -25,10 +25,16 @@ const useCallEndWebsocket = (loggedUserData) => {
 					
 					const callId = e.callId;
 					 
-				
-				  
+				 
 					dispatch(updateChatCallState({'type' : 'endCall', 'callId':callId  })); 
           
+					if (peerConRef.current) {
+						peerConRef.current.getSenders().forEach(s => {
+							if (s.track) s.track.stop();
+						});
+						peerConRef.current.close();
+						peerConRef.current = null;
+					}
         });
     };
 
