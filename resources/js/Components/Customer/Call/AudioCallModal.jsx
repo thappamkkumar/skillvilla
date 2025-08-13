@@ -32,8 +32,50 @@ const AudioCallModal = ({
 	const dispatch = useDispatch();
 	const windowHeight = useWindowHeight();
 	
-   
+  
+	// Helper: Play audio safely with optional sinkId (speaker)
+	const playAudio = async (ref, loop = false, sinkId = null) => {
+		if (ref?.current) {
+			try {
+				ref.current.loop = loop;
 
+				// Set output device if supported
+				if (sinkId && typeof ref.current.setSinkId === "function") {
+					await ref.current.setSinkId(sinkId);
+				}
+
+				//play audio tone
+				await ref.current.play();
+			} catch (error) {
+				console.warn("Audio play/setSinkId failed:", error);
+			}
+		}
+	};
+
+
+  // Helper: Stop audio safely
+  const stopAudio = (ref) => {
+    if (ref?.current) {
+      ref.current.pause();
+      ref.current.currentTime = 0;
+    }
+  };
+	
+	//change device according to seleced device id
+	useEffect(() => {
+		const speakerId = chatCallData.speakerId || null;
+		if(chatCallData.speakerOff)
+		{
+			stopAudio(audioCallRef);				
+		}
+		else
+		{
+			playAudio(audioCallRef, true, speakerId);
+		}
+	}, [chatCallData.speakerId, chatCallData.speakerOff]);
+	 
+	 
+	 
 	 
 	const formatTime = (seconds) => {
 		const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -228,6 +270,7 @@ const AudioCallModal = ({
 							callEndLoader={callEndLoader}
 							handleHoldCall={handleHoldCall}
 							holdCallLoader={holdCallLoader}
+							peerConRef={peerConRef}
 						/>
             
           </div>

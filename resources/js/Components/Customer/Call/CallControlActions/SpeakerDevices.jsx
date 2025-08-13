@@ -25,13 +25,14 @@ const SpeakerDevices = ({ show, onClose }) => {
       .enumerateDevices()
       .then((devices) => {
         const speakers = devices.filter((d) => d.kind === "audiooutput");
+        
         setSpeakerDevices(speakers);
       })
       .catch((err) => {
         console.warn("Error accessing devices:", err);
         setError("Could not enumerate devices");
       });
-  }, []);
+  }, [show]);
 
   const handleSelect = (deviceId) => {
 		dispatch(updateChatCallState(

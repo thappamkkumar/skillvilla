@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateChatCallState } from '../../../../StoreWrapper/Slice/ChatCallSlice';
 
 
-const MicDevices = ({ show, onClose }) => {
+const MicDevices = ({ show, onClose, peerConRef }) => {
 	
 	const chatCallData = useSelector((state) => state.chatCallData);
  
@@ -31,16 +31,61 @@ const MicDevices = ({ show, onClose }) => {
         console.warn("Error accessing devices:", err);
         setError("Could not enumerate devices");
       });
-  }, []);
+  }, [show]);
 
-  const handleSelect = (deviceId) => {
-		dispatch(updateChatCallState(
+  const handleSelect = async(deviceId) => {
+		
+		
+		//change mic for input
+		try
 		{
-			'type' : 'setMic', 
-			'micId':deviceId, 
+			if (deviceId !== 'off') 
+			{
+				// Get the new microphone stream
+				const newStream = await navigator.mediaDevices.getUserMedia({
+					audio: { deviceId: { exact: deviceId } }
+				});
+
+				const newTrack = newStream.getAudioTracks()[0];
+
+				// Replace track in the PeerConnection
+				const sender = peerConRef.current
+					?.getSenders()
+					.find(s => s.track && s.track.kind === 'audio');
+					
+				if (sender) 
+				{
+					sender.replaceTrack(newTrack);
+				}
+			} 
+			else 
+			{
+				// Mute by disabling the current track
+				const sender = peerConRef.current
+					?.getSenders()
+					.find(s => s.track && s.track.kind === 'audio');
+				if (sender?.track) 
+				{
+					sender.track.enabled = false;
+				}
+			}
+			
+			dispatch(updateChatCallState(
+				{
+					'type' : 'setMic', 
+					'micId':deviceId, 
+				}
+			)); 
+			onClose();
+		} 
+		catch (err) 
+		{
+			console.error('Error switching microphone:', err);
 		}
-		)); 
-    onClose();
+		
+		
+		
+   
   };
 
   if (!show) return null;

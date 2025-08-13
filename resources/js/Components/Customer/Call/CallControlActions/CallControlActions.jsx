@@ -31,6 +31,7 @@ const CallControlActions = ({
 	callEndLoader,
 	handleHoldCall,
 	holdCallLoader,
+	peerConRef,
 }) => {
 	
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
@@ -56,14 +57,16 @@ const CallControlActions = ({
 			<MicDevices 
 				show={showMicModal}
         onClose={() => setShowMicModal(false)}
+        peerConRef={peerConRef}
 			/> 
 			<CameraDevices 
 				show={showCameraModal}
         onClose={() => setShowCameraModal(false)}
+        peerConRef={peerConRef}
 			/> 
 			 
 				
-				{/* Call Mic Button*/}
+				 
 				<Button 
 					variant={chatCallData.cameraOn ? "light" : "secondary"}
 					title="Camera Controll" 
@@ -83,7 +86,7 @@ const CallControlActions = ({
 					id="micControlBTN" 
 					className="   rounded-circle     fs-5 p-3 lh-1       "
 					onClick={ () => setShowMicModal(true)} 
-					disabled = {chatCallData.callStatus === 'calling'}
+					 
 				>
 					{
 						chatCallData.isMuted ? <BsMicMute /> : <BsMic /> 

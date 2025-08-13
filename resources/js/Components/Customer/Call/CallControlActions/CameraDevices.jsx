@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateChatCallState } from '../../../../StoreWrapper/Slice/ChatCallSlice';
 
 
-const CameraDevices = ({ show, onClose }) => {
+const CameraDevices = ({ show, onClose, peerConRef }) => {
 	
 	const chatCallData = useSelector((state) => state.chatCallData);
  
@@ -33,15 +33,55 @@ const CameraDevices = ({ show, onClose }) => {
       });
   }, []);
 
-  const handleSelect = (deviceId) => {
-		dispatch(updateChatCallState(
+  const handleSelect = async (deviceId) => {
+		try 
 		{
-			'type' : 'setCamera', 
-			'cameraId':deviceId, 
+			if (peerConRef?.current) 
+			{
+				if (deviceId === 'off') 
+				{
+					// Stop sending video
+					const senders = peerConRef.current.getSenders();
+					const videoSender = senders.find(s => s.track && s.track.kind === 'video');
+					if (videoSender) 
+					{
+						videoSender.track.stop();
+						videoSender.replaceTrack(null);
+					}
+				} 
+				else
+				{
+					// Get new camera stream
+					const newStream = await navigator.mediaDevices.getUserMedia({
+						video: { deviceId: { exact: deviceId } }
+					});
+					const newVideoTrack = newStream.getVideoTracks()[0];
+
+					// Replace video track in existing peer connection
+					const senders = peerConRef.current.getSenders();
+					const videoSender = senders.find(s => s.track && s.track.kind === 'video');
+					if (videoSender) 
+					{
+						await videoSender.replaceTrack(newVideoTrack);
+					}
+				}
+			}
+
+			// Update Redux
+			dispatch(updateChatCallState({
+				type: 'setCamera',
+				cameraId: deviceId
+			}));
+
+			onClose();
+			
+		} 
+		catch (err) 
+		{
+			console.error("Error switching camera:", err);
 		}
-		)); 
-    onClose();
-  };
+	};
+
 
   if (!show) return null;
 
