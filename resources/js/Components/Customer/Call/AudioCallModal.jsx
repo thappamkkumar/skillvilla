@@ -195,7 +195,55 @@ const AudioCallModal = ({
 					'receiverHold' : resultData?.receiver_hold,
 					
 				}
+				 
 				dispatch(updateChatCallState({'type' : 'holdCall', 'holdData':holdData } ));
+				
+				
+				const isCurrentUserHolding =
+								(holdData.callerHold && logedUserData.id === chatCallData.caller.id) ||
+								(holdData.receiverHold && logedUserData.id === chatCallData.receiver.id);
+								
+				if (peerConRef?.current)
+				{
+					//hold or unhold input device
+					peerConRef.current.getSenders().forEach(sender => {
+						if (!sender.track) return; 
+						if (isCurrentUserHolding) 
+						{
+								// Mute the track without stopping it
+								sender.track.enabled = false;
+								//console.log('stop input device');
+						} 
+						else 
+						{
+								// Unmute the track
+								sender.track.enabled = true;
+								//console.log('start input device');
+						}
+						
+					});
+					//hold or unhold output device
+					peerConRef.current.getReceivers().forEach(receiver  => {
+						if (!receiver.track) return; 
+						if (isCurrentUserHolding) 
+						{
+								// Mute the track without stopping it
+								receiver.track.enabled = false;
+								//console.log('stop output device');
+						} 
+						else 
+						{
+								// Unmute the track
+								receiver.track.enabled = true;
+								//console.log('start output device');
+						}
+						
+					});
+					
+					
+				}
+
+				
 			}
 			else
 			{
@@ -215,7 +263,7 @@ const AudioCallModal = ({
 		}
 		
 		  
-	}, [dispatch, authToken, chatCallData.callId]);
+	}, [dispatch, authToken, chatCallData, logedUserData]);
 	
 	
 	
@@ -251,17 +299,23 @@ const AudioCallModal = ({
 									{chatCallData.error}
 								</strong> 
 						</p>
-						<p className="text-light  dot-blink"> 
-								<strong> 
-									{chatCallData.isConnecting && 'Connecting'}
-								</strong> 
-						</p>
-						<p className="text-light dot-blink"> 
-								<strong> 
-									{ (chatCallData.callerHold || chatCallData.receiverHold)  && "on Hold"}
-								</strong> 
-						</p>
 						
+						 
+						{ 
+							(chatCallData.callerHold || chatCallData.receiverHold)  
+							&& 
+							<p className="text-light dot-blink mb-5"> 
+								<strong>  	on Hold </strong> 
+							</p>
+						}
+						{ 
+							(chatCallData.isConnecting  )  
+							&& 
+							<p className="text-light dot-blink  "> 
+								<strong>  	Connecting </strong> 
+							</p>
+						}
+								 
           </div>
 
           <div className="d-flex justify-content-center">

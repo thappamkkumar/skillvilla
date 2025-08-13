@@ -45,7 +45,9 @@ const CallControlActions = ({
 
 	const dispatch = useDispatch();
 	
- 
+	const isCurrentUserHolding = 
+										(logedUserData.id == chatCallData.caller.id && chatCallData.callerHold) || 
+										(logedUserData.id == chatCallData.receiver.id && chatCallData.receiverHold)
 	 
 	return(
 		<div  className=" d-flex flex-wrap justify-content-center align-items-center gap-3   mb-4  " >
@@ -73,7 +75,7 @@ const CallControlActions = ({
 					id="cameraControlBTN" 
 					className={` ${chatCallData.callType === 'audio' ? 'd-none' : 'd-block'} rounded-circle    fs-5 p-3  lh-1       `}
 					onClick={ () => setShowCameraModal(true)}
-					disabled = {(chatCallData.callStatus === 'calling')  }
+					disabled = {(isCurrentUserHolding || chatCallData.callStatus === 'calling')  }
 				>
 					{
 						chatCallData.cameraOn ? <BsCameraVideo /> : <BsCameraVideoOff /> 
@@ -86,7 +88,7 @@ const CallControlActions = ({
 					id="micControlBTN" 
 					className="   rounded-circle     fs-5 p-3 lh-1       "
 					onClick={ () => setShowMicModal(true)} 
-					 
+					disabled = {(isCurrentUserHolding || chatCallData.callStatus === 'calling')  }
 				>
 					{
 						chatCallData.isMuted ? <BsMicMute /> : <BsMic /> 
@@ -100,6 +102,7 @@ const CallControlActions = ({
 					id="soundControlBTN" 
 					className="  rounded-circle     fs-5 p-3 lh-1      "
 					onClick={ () => setShowSpeakerModal(true)} 
+					disabled = {isCurrentUserHolding }
 				>
 					{
 						chatCallData.speakerOff ? <BsVolumeMute /> : <BsVolumeUp /> 
