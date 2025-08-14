@@ -49,14 +49,16 @@ const CustomerLayoutPage = () => {
 	const ICE_CONFIG = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }; 
 	let peerConRef = useRef(null); 
 	const audioCallRef = useRef(null);//ref for audio tag  for audio call
+	const videoCallRef = useRef(null);//ref for video tag  for video call
+	const localVideoRef  = useRef(null);//ref for local video tag  for video call
 	
 	
 	
 	const onOffer = useCallback(
 		async (payload) => {
-			await handleOffer(payload, ICE_CONFIG, peerConRef, audioCallRef, authToken, chatCallData, dispatch);
+			await handleOffer(payload, ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch);
 		},
-		[ICE_CONFIG, peerConRef, audioCallRef, authToken, chatCallData, dispatch]
+		[ICE_CONFIG, peerConRef, audioCallRef,  videoCallRef, localVideoRef, authToken, chatCallData, dispatch]
 	);
 
 	const onAnswer = useCallback(
@@ -75,9 +77,9 @@ const CustomerLayoutPage = () => {
 
  const onStartCall = useCallback(
 		async ( ) => {
-			await startCall(ICE_CONFIG, peerConRef, audioCallRef, authToken, chatCallData, dispatch);
+			await startCall(ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch);
 		},
-		[ICE_CONFIG, peerConRef, audioCallRef, authToken, chatCallData, dispatch]
+		[ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch]
 	);
 
  
@@ -189,7 +191,7 @@ const CustomerLayoutPage = () => {
 				{/*Audio In-call model*/}
 				<AudioCallModal audioCallRef = {audioCallRef} peerConRef={peerConRef} />
 				{/*Video In-call model*/}
-				<VideoCallModal  />
+				<VideoCallModal  videoCallRef = {videoCallRef} localVideoRef={localVideoRef} peerConRef={peerConRef}  />
 			
 			</>
 			

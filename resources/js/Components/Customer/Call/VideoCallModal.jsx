@@ -17,7 +17,11 @@ import serverConnection from '../../../CustomHook/serverConnection';
 import handleImageError from "../../../CustomHook/handleImageError";
 import useWindowHeight from "../../../CustomHook/useWindowHeight";
 
-const VideoCallModal = () => {
+const VideoCallModal = ({
+	videoCallRef,
+	localVideoRef,
+	peerConRef,
+}) => {
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));//get login info 
 	const authToken = useSelector((state) => state.auth.token); 
   const chatCallData = useSelector((state) => state.chatCallData);
@@ -37,6 +41,11 @@ const VideoCallModal = () => {
 	const windowHeight = useWindowHeight();
 	
   
+	
+	
+	
+	
+	
 	const resetHideTimer = useCallback(() => {
 		// Show controls
 		setShowUserManual(true);
@@ -119,6 +128,14 @@ const VideoCallModal = () => {
 					dispatch(updateChatMessageState({type : 'AddNewMessage', newMessage:newMessage}));
 					
 				}
+				if (peerConRef.current) {
+					peerConRef.current.getSenders().forEach(s => {
+						if (s.track) s.track.stop();
+					});
+					peerConRef.current.close();
+					peerConRef.current = null;
+				}
+				
 			}
 			else
 			{
@@ -160,6 +177,52 @@ const VideoCallModal = () => {
 					
 				}
 				dispatch(updateChatCallState({'type' : 'holdCall', 'holdData':holdData } ));
+				
+				const isCurrentUserHolding =
+								(holdData.callerHold && logedUserData.id === chatCallData.caller.id) ||
+								(holdData.receiverHold && logedUserData.id === chatCallData.receiver.id);
+								
+				if (peerConRef?.current)
+				{
+					//hold or unhold input device
+					peerConRef.current.getSenders().forEach(sender => {
+						if (!sender.track) return; 
+						if (isCurrentUserHolding) 
+						{
+								// Mute the track without stopping it
+								sender.track.enabled = false;
+								//console.log('stop input device');
+						} 
+						else 
+						{
+								// Unmute the track
+								sender.track.enabled = true;
+								//console.log('start input device');
+						}
+						
+					});
+					//hold or unhold output device
+					peerConRef.current.getReceivers().forEach(receiver  => {
+						if (!receiver.track) return; 
+						if (isCurrentUserHolding) 
+						{
+								// Mute the track without stopping it
+								receiver.track.enabled = false;
+								//console.log('stop output device');
+						} 
+						else 
+						{
+								// Unmute the track
+								receiver.track.enabled = true;
+								//console.log('start output device');
+						}
+						
+					});
+					
+					
+				}
+				
+				
 			}
 			else
 			{
@@ -179,7 +242,7 @@ const VideoCallModal = () => {
 		}
 		
 		  
-	}, [dispatch, authToken, chatCallData.callId]);
+	}, [dispatch, authToken, chatCallData, logedUserData]);
 	
 	
 	
@@ -196,11 +259,11 @@ const VideoCallModal = () => {
 				<div className="w-100 h-100 position-absolute   ">
 					<video  
 						className="w-100 h-100 object-fit-cover   "
+						ref={videoCallRef}
 						autoPlay
 						playsInline
 						loop={true}
-						muted={false}
-						id="remoteVideo"
+						muted={false} 
 						style={{ backgroundColor: "#000" }}
 					></video>
 				</div>
@@ -225,10 +288,10 @@ const VideoCallModal = () => {
 									<video 
 										className="w-100 h-100 object-fit-cover   "
 										style={{ backgroundColor: "#111" }}
+										ref={localVideoRef}
 										autoPlay
 										muted
-										playsInline
-										id="localVideo"
+										playsInline 
 										loop={true}
 									></video>
 								</div>
@@ -241,6 +304,7 @@ const VideoCallModal = () => {
 								callEndLoader={callEndLoader}
 								handleHoldCall={handleHoldCall}
 								holdCallLoader={holdCallLoader}
+								peerConRef={peerConRef}
 							/>
 							
 						</div>
