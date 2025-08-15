@@ -32,6 +32,7 @@ const CallControlActions = ({
 	handleHoldCall,
 	holdCallLoader,
 	peerConRef,
+	localVideoRef,
 }) => {
 	
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
@@ -65,13 +66,14 @@ const CallControlActions = ({
 				show={showCameraModal}
         onClose={() => setShowCameraModal(false)}
         peerConRef={peerConRef}
+        localVideoRef={localVideoRef}
 			/> 
 			 
 				
 				 
 				<Button 
 					variant={chatCallData.cameraOn ? "light" : "secondary"}
-					title="Camera Controll" 
+					title="Camera Controls" 
 					id="cameraControlBTN" 
 					className={` ${chatCallData.callType === 'audio' ? 'd-none' : 'd-block'} rounded-circle    fs-5 p-3  lh-1       `}
 					onClick={ () => setShowCameraModal(true)}
@@ -84,7 +86,7 @@ const CallControlActions = ({
 				
 				<Button 
 					variant={chatCallData.isMuted ? "secondary" : "light"}  
-					title="Mic Controll" 
+					title="Mic Controls" 
 					id="micControlBTN" 
 					className="   rounded-circle     fs-5 p-3 lh-1       "
 					onClick={ () => setShowMicModal(true)} 
@@ -98,7 +100,7 @@ const CallControlActions = ({
 				
 				<Button 
 					variant={chatCallData.speakerOff ? "secondary" : "light"} 
-					title="Sound Controll" 
+					title="Sound Controls" 
 					id="soundControlBTN" 
 					className="  rounded-circle     fs-5 p-3 lh-1      "
 					onClick={ () => setShowSpeakerModal(true)} 

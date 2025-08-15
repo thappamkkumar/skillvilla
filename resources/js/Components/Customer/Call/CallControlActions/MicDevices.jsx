@@ -33,66 +33,49 @@ const MicDevices = ({ show, onClose, peerConRef }) => {
       });
   }, [show]);
 
-  const handleSelect = async(deviceId) => {
-		
-		
-		//change mic for input
-		try
-		{
-			if (deviceId !== 'off') 
-			{
-				// Get the new microphone stream
-				const newStream = await navigator.mediaDevices.getUserMedia({
-					audio: { deviceId: { exact: deviceId } }
-				});
+   const handleSelect = async (deviceId) => {
+  try {
+    const sender = peerConRef.current
+      ?.getSenders()
+      .find(s => s.track && s.track.kind === 'audio');
 
-				const newTrack = newStream.getAudioTracks()[0];
+    if (deviceId === 'off') {
+      // Mute mic without stopping track
+      if (sender?.track) {
+        sender.track.enabled = false;
+      }
+    } else {
+      // Get the new microphone stream
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        audio: { deviceId: { exact: deviceId } }
+      });
+      const newTrack = newStream.getAudioTracks()[0];
 
-				// Replace track in the PeerConnection
-				const sender = peerConRef.current
-					?.getSenders()
-					.find(s => s.track && s.track.kind === 'audio');
-					
-				if (sender) 
-				{
-					sender.replaceTrack(newTrack);
-				}
-			} 
-			else 
-			{
-				// Mute by disabling the current track
-				const sender = peerConRef.current
-					?.getSenders()
-					.find(s => s.track && s.track.kind === 'audio');
-				if (sender?.track) 
-				{
-					sender.track.enabled = false;
-				}
-			}
-			
-			dispatch(updateChatCallState(
-				{
-					'type' : 'setMic', 
-					'micId':deviceId, 
-				}
-			)); 
-			onClose();
-		} 
-		catch (err) 
-		{
-			console.error('Error switching microphone:', err);
-		}
-		
-		
-		
-   
-  };
+      if (sender) {
+        await sender.replaceTrack(newTrack);
+        sender.track.enabled = true; // ensure unmuted after switch
+      }
+    }
+
+    // Update Redux state
+    dispatch(updateChatCallState({
+      type: 'setMic',
+      micId: deviceId
+    }));
+
+    onClose();
+  } catch (err) {
+    console.error('Error switching microphone:', err);
+    setError('Could not switch microphone');
+  }
+};
+
 
   if (!show) return null;
 
   return (
-    <div className="fixed-top w-100 h-100 bg-dark bg-opacity-50  d-flex justify-content-center align-items-center z-3">
-      <div className="bg-white rounded shadow-lg  ">
+    <div className="fixed-top w-100 h-100 bg-dark bg-opacity-50  d-flex justify-content-center align-items-center z-3 p-3">
+      <div className="bg-white rounded shadow-lg device-list-card ">
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
           <h5>Select Microphone</h5>

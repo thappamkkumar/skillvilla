@@ -50,9 +50,9 @@
 
 .dot-blink {
   animation: blink 1.4s infinite;
-  font-weight: bold;
+  /*font-weight: bold;
   font-size: 1.2rem;
-  line-height: 0;
+  line-height: 0;*/
 }
 
 .dot-blink:nth-child(2) {
@@ -101,6 +101,21 @@
 @media (max-height: 500px) {
   .local-video-container {
    display:none;
+  }
+
+}
+
+.device-list-card
+{
+	width:auto;
+	min-width:350px;
+}
+@media (max-width: 400px)
+{
+  .device-list-card
+	{
+		width:100%;
+		min-width:100%;
   }
 
 }

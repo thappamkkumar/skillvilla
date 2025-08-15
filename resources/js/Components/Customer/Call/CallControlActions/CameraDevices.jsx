@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateChatCallState } from '../../../../StoreWrapper/Slice/ChatCallSlice';
 
 
-const CameraDevices = ({ show, onClose, peerConRef }) => {
+const CameraDevices = ({ show, onClose, peerConRef, localVideoRef }) => {
 	
 	const chatCallData = useSelector((state) => state.chatCallData);
  
@@ -36,20 +36,23 @@ const CameraDevices = ({ show, onClose, peerConRef }) => {
   const handleSelect = async (deviceId) => {
 		try 
 		{
-			if (peerConRef?.current) 
-			{
-				if (deviceId === 'off') 
-				{
-					// Stop sending video
-					const senders = peerConRef.current.getSenders();
-					const videoSender = senders.find(s => s.track && s.track.kind === 'video');
-					if (videoSender) 
-					{
-						videoSender.track.stop();
-						videoSender.replaceTrack(null);
+			if (peerConRef?.current) {
+				const senders = peerConRef.current.getSenders();
+				const videoSender = senders.find(s => s.track && s.track.kind === 'video');
+
+				if (deviceId === 'off') {
+					// Just disable the video track (mute camera)
+					if (videoSender?.track) {
+						videoSender.track.enabled = false;
 					}
-				} 
-				else
+					
+					// Show black screen in preview
+					if (localVideoRef?.current) {
+						localVideoRef.current.srcObject = null;
+					}
+					
+				}
+				else 
 				{
 					// Get new camera stream
 					const newStream = await navigator.mediaDevices.getUserMedia({
@@ -57,15 +60,23 @@ const CameraDevices = ({ show, onClose, peerConRef }) => {
 					});
 					const newVideoTrack = newStream.getVideoTracks()[0];
 
-					// Replace video track in existing peer connection
-					const senders = peerConRef.current.getSenders();
-					const videoSender = senders.find(s => s.track && s.track.kind === 'video');
-					if (videoSender) 
-					{
+					if (videoSender) {
 						await videoSender.replaceTrack(newVideoTrack);
 					}
+
+					// Enable the track in case it was muted before
+					if (videoSender?.track) {
+						videoSender.track.enabled = true;
+					}
+					
+					// Update local preview
+					if (localVideoRef?.current) {
+						localVideoRef.current.srcObject = newStream;
+					}
+					
 				}
 			}
+
 
 			// Update Redux
 			dispatch(updateChatCallState({
@@ -86,8 +97,10 @@ const CameraDevices = ({ show, onClose, peerConRef }) => {
   if (!show) return null;
 
   return (
-    <div className="fixed-top w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center z-3">
-      <div className="bg-white rounded shadow-lg">
+    <div  className="fixed-top w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center z-3 p-3"  	>
+      <div 
+				className="bg-white rounded shadow-lg device-list-card " 
+			>
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
           <h5>Select Camera</h5>

@@ -42,10 +42,47 @@ const VideoCallModal = ({
 	
   
 	
+	// Play remote audio (video element can still play audio)
+	const playRemoteAudio = async (ref, sinkId = null) => {
+		if (ref?.current) {
+			try {
+				if (sinkId && typeof ref.current.setSinkId === "function") {
+					await ref.current.setSinkId(sinkId);
+				}
+				await ref.current.play();
+			} catch (error) {
+				console.warn("Video audio play/setSinkId failed:", error);
+			}
+		}
+	};
+
+	// Stop/mute remote audio
+	const muteRemoteAudio = (ref) => {
+		if (ref?.current) {
+			ref.current.muted = true;
+		}
+	};
+	const unmuteRemoteAudio = (ref) => {
+		if (ref?.current) {
+			ref.current.muted = false;
+		}
+	};
 	
+	//useEffect for mute or unmute audio and change speaker  of video call 
+	useEffect(() => {
+		const speakerId = chatCallData.speakerId || null;
+
+		if (chatCallData.speakerOff) {
+			muteRemoteAudio(videoCallRef);
+		} else {
+			unmuteRemoteAudio(videoCallRef);
+			playRemoteAudio(videoCallRef, speakerId);
+		}
+	}, [chatCallData.speakerId, chatCallData.speakerOff]);
+
+
 	
-	
-	
+	//helper function for reset time for hide show call manuals
 	const resetHideTimer = useCallback(() => {
 		// Show controls
 		setShowUserManual(true);
@@ -59,6 +96,7 @@ const VideoCallModal = ({
 		}, 30000);
 	}, []);
 
+	//useffect for set time to hide or show call manuals and use listeners
 	useEffect(() => {
 		// Start initial hide timer
 		resetHideTimer();
@@ -73,11 +111,15 @@ const VideoCallModal = ({
 		};
 	}, [resetHideTimer]);
 	 
+	
+	// hleper function for calcucate accurate time from date  string
 	const formatTime = (seconds) => {
 		const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
 		const secs = String(seconds % 60).padStart(2, "0");
 		return `${mins}:${secs}`;
 	};
+	  
+	//useEffect for start call duration timer
 	useEffect(() => {
 		if (!chatCallData?.startedAt) return;
 
@@ -147,7 +189,7 @@ const VideoCallModal = ({
 		catch(e)
 		{
 			//console.log(e);
-			 submitionMSG('An error occurred. Please try again.');setShowModel(true);
+			 setsubmitionMSG('An error occurred. Please try again.');setShowModel(true);
 		}
 		finally
 		{
@@ -157,6 +199,8 @@ const VideoCallModal = ({
 		
 	}, [authToken, chatCallData.callId]);
  
+ 
+ //handle hold or unhold call
 	const handleHoldCall = useCallback(async()=>{
 		try
 		{ 
@@ -248,7 +292,9 @@ const VideoCallModal = ({
 	
 	
   if (chatCallData.callStatus !== "in-call" || chatCallData.callType != 'video') return null;
-
+	
+	 
+	
   return (
     <div className="fixed-top w-100    call-container" style={{ height: windowHeight }}>
 			
@@ -256,7 +302,7 @@ const VideoCallModal = ({
       
 			<div className="position-relative w-100 h-100"  >
 				
-				<div className="w-100 h-100 position-absolute   ">
+				<div className="w-100 h-100 position-absolute z-1  ">
 					<video  
 						className="w-100 h-100 object-fit-cover   "
 						ref={videoCallRef}
@@ -268,33 +314,68 @@ const VideoCallModal = ({
 					></video>
 				</div>
 				
+				
+				
+				
 				<div
-					className={`position-absolute w-100 h-100 transition-opacity ${showUserManual ? 'opacity-100' : 'opacity-0'}`}
+					className={`position-absolute z-3 w-100 h-100 transition-opacity ${showUserManual ? 'opacity-100' : 'opacity-0'}`}
 					id="userMannual"
 					style={{ pointerEvents: showUserManual ? 'auto' : 'none', transition: 'opacity 0.3s ease' }}
 				>
 					<div className="w-100 h-100  p-3   d-flex flex-column">
 						<div className="flex-grow-1 text-white d-flex  flex-column justify-content-between">
 							
-							<div >
-								<div className="d-inline-block bg-dark bg-opacity-50   p-2 rounded">
-									<h5>{chatCallData.receiver?.name}</h5>
-									<small>{chatCallData?.startedAt ? formatTime(elapsedTime) : "Connecting..."}</small>
+							<div className={` ${ (chatCallData.isConnecting  ) && 'd-sm-flex  flex-row-reverse'} `}>
+								{ 
+									(chatCallData.isConnecting  )  
+									&&  
+									<div className="w-100 ">
+										<p className="text-light text-center fw-bold fs-5   m-0       "> 
+											<strong  >  	Connecting
+												<span className="dot-blink"> .</span>
+												<span className="dot-blink">.</span>
+												<span className="dot-blink">.</span>
+											</strong> 
+										</p>
+									</div>
+								}	 
+								<div >
+									<div className="d-inline-block bg-dark bg-opacity-50   p-2 rounded">
+										<h5>{chatCallData.receiver?.name}</h5>
+										<small>{chatCallData?.startedAt ? formatTime(elapsedTime) : "wait..."}</small>
+									</div> 
+									{ 
+										(chatCallData.callerHold || chatCallData.receiverHold)
+										&& 
+										 
+											<p className="text-light  dot-blink mt-4"> 
+												<strong  > On Hold </strong> 
+											</p>
+									 
+									}
+									
 								</div>
 							</div>
 							
 							<div className=" d-flex justify-content-end mb-4 mb-md-5 ">
-								<div className="rounded overflow-hidden local-video-container ">
+								<div className="rounded overflow-hidden position-relative   local-video-container   ">
 									<video 
 										className="w-100 h-100 object-fit-cover   "
-										style={{ backgroundColor: "#111" }}
+										style={{ backgroundColor: "#555" }}
 										ref={localVideoRef}
 										autoPlay
 										muted
 										playsInline 
 										loop={true}
-									></video>
-								</div>
+									></video> 
+									{ 
+									((logedUserData.id == chatCallData.caller.id && chatCallData.callerHold) || 
+										(logedUserData.id == chatCallData.receiver.id && chatCallData.receiverHold))
+										&& 
+										<div className="position-absolute top-0 start-0 w-100 h-100  y" style={{ backgroundColor: "#111" }}></div>
+									
+									}
+								</div>	
 							</div>
 							
 						</div>
@@ -305,12 +386,15 @@ const VideoCallModal = ({
 								handleHoldCall={handleHoldCall}
 								holdCallLoader={holdCallLoader}
 								peerConRef={peerConRef}
+								localVideoRef={localVideoRef}
 							/>
 							
 						</div>
 					</div> 
 				</div>
-			
+				
+				
+				
 			</div>
     </div>
   );

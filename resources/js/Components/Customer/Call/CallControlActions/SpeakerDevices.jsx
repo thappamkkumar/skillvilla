@@ -48,8 +48,8 @@ const SpeakerDevices = ({ show, onClose }) => {
   if (!show) return null;
 
   return (
-    <div className="fixed-top   w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center z-3">
-      <div className=" bg-white rounded shadow-lg  ">
+    <div className="fixed-top   w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center z-3 p-3">
+      <div className=" bg-white rounded shadow-lg device-list-card ">
         {/* Header */}
         <div className=" d-flex justify-content-between align-items-center p-3 border-bottom">
           <h5>Select Speaker</h5>

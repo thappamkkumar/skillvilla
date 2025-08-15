@@ -111,7 +111,7 @@ const AudioCallModal = ({
   const displayTime = chatCallData?.startedAt
     ? elapsedTime > 0
       ? formatTime(elapsedTime)
-      : "Connecting..."
+      : "wait..."
     : "Calling";
 
 	
@@ -305,14 +305,14 @@ const AudioCallModal = ({
 							(chatCallData.callerHold || chatCallData.receiverHold)  
 							&& 
 							<p className="text-light dot-blink mb-5"> 
-								<strong>  	on Hold </strong> 
+								<strong>On Hold </strong> 
 							</p>
 						}
 						{ 
 							(chatCallData.isConnecting  )  
 							&& 
 							<p className="text-light dot-blink  "> 
-								<strong>  	Connecting </strong> 
+								<strong>  	Connecting... </strong> 
 							</p>
 						}
 								 

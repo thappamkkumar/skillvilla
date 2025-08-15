@@ -219,7 +219,11 @@ const IncomingCallModal = () => {
               <strong>{chatCallData?.caller?.name || "Unknown Caller"}</strong>
             </h5>
             <p className="text-light">
-              <small><strong>Incoming Call</strong></small>
+              <small><strong>Incoming 
+											<span className="px-1">{
+												chatCallData.callType === 'audio' ? 'Audio' : 'Video'
+											}</span>
+											Call</strong></small>
               <span className="dot-blink">.</span>
               <span className="dot-blink">.</span>
               <span className="dot-blink">.</span>
