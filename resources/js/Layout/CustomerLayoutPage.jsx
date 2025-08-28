@@ -101,7 +101,7 @@ const CustomerLayoutPage = () => {
     try {
       const res = await serverConnection('/call/active', {}, authToken);
 			
-			//console.log(res);
+			 console.log(res);
       
 			if (res?.status && res.data) 
 			{
