@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { updateChatCallState } from '../../StoreWrapper/Slice/ChatCallSlice';
 
-const useCallAcceptWebsocket = (loggedUserData, callId, startCall = ()=>{}) => {
+const useCallRestoreWebsocket = (loggedUserData, callId, startCall = ()=>{}) => {
   const userRef = useRef(loggedUserData?.id);
   const dispatch = useDispatch();
 
@@ -17,26 +17,21 @@ const useCallAcceptWebsocket = (loggedUserData, callId, startCall = ()=>{}) => {
 
     const channelName = `call.${userRef.current}`;
 		 
-    const acceptCall_connectWebSocket = () => {
+    const reStoreCall_connectWebSocket = () => {
       window.Echo.private(channelName)
-        .listen('ChatCallAcceptedEvent', (e) => {
+        .listen('ChatCallRestoreEvent', (e) => {
          
-				 // console.log("  call accept event:", e);
-					
-				 if(callId !== e.callId){
+				  //console.log("  call restore event:", e);
+					if(callId !== e.callId){
 						return;
 					}
-					const callData = {
-						'callId': e.callId,
-						'startedAt': e.startedAt,
-					};   
-					dispatch(updateChatCallState({'type' : 'acceptCall', 'callData':callData } ));
-					//call function for start connectiong via webRTC
+				 
+					//call function for re-start or re-store connection via webRTC
           startCall();
         });
     };
 
-    acceptCall_connectWebSocket();
+    reStoreCall_connectWebSocket();
  
     return () => {
       window.Echo.leave(channelName);
@@ -44,4 +39,4 @@ const useCallAcceptWebsocket = (loggedUserData, callId, startCall = ()=>{}) => {
   }, [userRef.current, dispatch, loggedUserData ]);
 };
 
-export default useCallAcceptWebsocket;
+export default useCallRestoreWebsocket;

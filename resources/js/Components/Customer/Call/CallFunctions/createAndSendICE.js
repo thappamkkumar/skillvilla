@@ -38,6 +38,7 @@ const createAndSendICE = async (peerConRef, authToken, chatCallData, dispatch, c
                 );
               }
             } catch (err) {
+							//console.log(err);
               dispatch(
                 updateChatCallState({
                   type: 'setError',

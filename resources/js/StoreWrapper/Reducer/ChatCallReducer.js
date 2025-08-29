@@ -202,9 +202,9 @@ const ChatCallReducer = {
 					
 					state.callerHold = callData.callerHold;
 					state.receiverHold = callData.receiverHold; 
-					state.micId = callData.micId;
-					state.speakerId = callData.speakerId;
-					state.cameraId = callData.cameraId; 
+					
+					state.isConnecting = callData.isConnecting; 
+					  
 					
 					state.incomingCallData = callData.incomingCallData;
 					

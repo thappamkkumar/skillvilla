@@ -24,7 +24,7 @@ const useCallSignalWebsocket = (loggedUserData, callId, handleOffer = ()=>{}, ha
 					if ( e.callId !== callId) return;
 					if (e.type === 'offer') 
 					{
-						 handleOffer(e.payload);
+						handleOffer(e.payload);
 					}
 					if (e.type === 'answer') 
 					{

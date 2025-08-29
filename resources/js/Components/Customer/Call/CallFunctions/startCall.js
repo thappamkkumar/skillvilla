@@ -9,7 +9,7 @@ const startCall = async (ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, loc
   peerConRef.current = new RTCPeerConnection(ICE_CONFIG);
 	
 	//create ice and send to receiver
-	await createAndSendICE(peerConRef, authToken, chatCallData, true);
+	await createAndSendICE(peerConRef, authToken, chatCallData, dispatch, true);
 	
 	// Choose constraints based on call type
   const constraints =

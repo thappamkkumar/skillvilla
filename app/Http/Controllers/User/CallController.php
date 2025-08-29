@@ -14,6 +14,7 @@ use App\Models\ChatList;
 use App\Events\ChatCallIncomingEvent;
 use App\Events\ChatCallEndEvent;
 use App\Events\ChatCallAcceptedEvent;
+use App\Events\ChatCallRestoreEvent;
 use App\Events\SendMessageEvent;
 use App\Events\ChatCallHoldEvent;
 use App\Events\ChatCallSignalEvent;
@@ -58,7 +59,7 @@ class CallController extends Controller
         }
 				
 				
-				// Check if the call is initiated and created more than 1 minute ago
+				// Check if the call is initiated and created more than 1 minute ago, then end the call mark as missed call
         if ($activeCall->status === 'initiated') {
             $callCreated = \Carbon\Carbon::parse($activeCall->created_at);
             $now = now();
@@ -98,6 +99,14 @@ class CallController extends Controller
 
 				$messages = $activeCall->messages;
         $chatId = $messages->first()?->chat_list_id;
+				
+				 
+				
+				//dispatch event for call end
+				if($user->id === $activeCall->receiver->id && $activeCall->status === 'accepted')
+				{
+					ChatCallRestoreEvent::dispatch( $activeCall->caller_id , $activeCall->id  ); 
+				}
 				
 				$data = [
 					'chat_id' => $chatId,
@@ -326,7 +335,15 @@ class CallController extends Controller
             ], 403);
         }
 				
-				 // Update call status
+				//check  call is not already ended
+				if ($call->status ===  'ended' || $call->status === 'missed') {
+            return response()->json([
+                'status' => false,
+                'message' => 'Call is already ended.',
+            ], 403);
+        }
+				
+				// Update call status
         $call->status = $status;
         $call->ended_at = now(); // optional if you track end time
         $call->save();

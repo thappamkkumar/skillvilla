@@ -26,6 +26,7 @@ import useCommunityNewMessageWebsocket from '../Websockets/Community/useCommunit
 import useIncomingCallWebsocket from '../Websockets/Call/useIncomingCallWebsocket'; 
 import useCallEndWebsocket from '../Websockets/Call/useCallEndWebsocket'; 
 import useCallAcceptWebsocket from '../Websockets/Call/useCallAcceptWebsocket'; 
+import useCallRestoreWebsocket from '../Websockets/Call/useCallRestoreWebsocket'; 
 import useCallHoldWebsocket from '../Websockets/Call/useCallHoldWebsocket'; 
 import useCallSignalWebsocket from '../Websockets/Call/useCallSignalWebsocket'; 
  
@@ -82,6 +83,12 @@ const CustomerLayoutPage = () => {
 		[ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch]
 	);
 
+	const onReStartCall = useCallback(
+		async (callData) => {
+			await startCall(ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, callData, dispatch);
+		},
+		[ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken,  dispatch]
+	);
  
 	
 	
@@ -91,73 +98,93 @@ const CustomerLayoutPage = () => {
 	useIncomingCallWebsocket(logedUserData);
 	useCallEndWebsocket(logedUserData, peerConRef); 
 	useCallHoldWebsocket(logedUserData); 
-	useCallAcceptWebsocket(logedUserData,  onStartCall, ); 
+	useCallAcceptWebsocket(logedUserData, chatCallData.callId	, onStartCall, ); 
+	useCallRestoreWebsocket(logedUserData, chatCallData.callId	, onStartCall, ); 
 	useCallSignalWebsocket(	logedUserData,	chatCallData.callId	,	 onOffer, onAnswer, onICEConnection ); 
 	
+
+	/**
+	* Restore active call state on refresh
+	*/
 	useEffect(() => {
-  if (!authToken) return; // wait until token refresh finishes
-
-	const restoreCallState = async()=> {
-    try {
-      const res = await serverConnection('/call/active', {}, authToken);
-			
-			 console.log(res);
-      
-			if (res?.status && res.data) 
+		if (!authToken) return;
+		
+		
+		const restoreCallState = async () => {
+			try 
 			{
-				const callStatus = res.data.call_status; 
-				const isReceiver = res.data.is_receiver;
-				
-				if(callStatus === 'initiated')
+				const res = await serverConnection('/call/active', {}, authToken);
+				//console.log(res);
+				if (!res?.status || !res.data) 
 				{
-					let incomingCallData = null;
-					let initiatedCallStatus = 'calling';
-					if(isReceiver)
-					{
-						incomingCallData = res.data;
-						initiatedCallStatus = 'incoming';
-					}
-				 
-					 
-					
-					const callData = {
-						
-						chatId : res.data.chat_id,
-						callId : res.data.call_id,
-						callStatus : initiatedCallStatus,
-						callType : res.data.call_type,
-						startedAt : res.data.started_at,
-						initiatedAt : res.data.initiated_at,
-						
-						callRoomId : res.data.room_id,
-						callerHold : res.data.receiver_hold,
-						receiverHold : res.data.caller_hold,
-						caller : res.data.caller,
-						receiver : res.data.receiver,
-						
-						micId : null,
-						speakerId : null,
-						cameraId : null,
-						
-						incomingCallData : incomingCallData,
-					};
-					dispatch(updateChatCallState({ type: 'setActiveCallData', callData: callData }));
+					dispatch(updateChatCallState({ type: 'refresh' }));
+					return;
 				}
-				
-				if(callStatus === 'accepted')
-				{
-					console.log('show box with message you are in call. and btn for join and cancel');
-				}
-      } else {
-        dispatch(updateChatCallState({ type: 'refresh' }));
-      }
-    } catch (err) {
-      console.error('Error restoring call state:');
-    }
-  }
+				const { call_status, is_receiver, ...data } = res.data;
+				const incomingCallData = is_receiver ? res.data : null;
 
-  restoreCallState();
-}, [authToken, dispatch]);
+
+				const baseCallData = {
+					chatId: data.chat_id,
+					callId: data.call_id,
+					callType: data.call_type,
+					startedAt: data.started_at,
+					initiatedAt: data.initiated_at,
+					callRoomId: data.room_id,
+					callerHold: data.receiver_hold,
+					receiverHold: data.caller_hold,
+					caller: data.caller,
+					receiver: data.receiver,
+					incomingCallData,
+				};
+				 
+				if (call_status === 'initiated') 
+				{
+					dispatch(
+						updateChatCallState({
+							type: 'setActiveCallData',
+							callData: {
+								...baseCallData,
+								callStatus: is_receiver ? 'incoming' : 'calling',
+							},
+						})
+					);
+				}
+				if (call_status === 'accepted') 
+				{
+					dispatch(
+						updateChatCallState({
+							type: 'setActiveCallData',
+							callData: {
+								...baseCallData,
+								callStatus: 'in-call',
+								isConnecting: true,
+							},
+						})
+					);
+					
+					
+					
+				}
+				if (call_status === 'accepted' && !is_receiver) 
+				{
+					
+					onReStartCall({
+								...baseCallData,
+								callStatus: 'in-call',
+								isConnecting: true,
+							});
+				}
+			} 
+			catch (err) 
+			{
+				console.error('Error restoring call state:', err);
+			}
+		};	
+				
+		
+		restoreCallState();
+	}, [authToken, dispatch]); 
 
 /*
   useEffect(() => {
