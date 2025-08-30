@@ -71,7 +71,7 @@ const CustomerLayoutPage = () => {
 	
 	const onICEConnection = useCallback(
 		async (payload) => {
-			await handleICE(payload, peerConRef,dispatch);
+			await handleICE(payload, peerConRef);
 		},
 		[peerConRef]
 	);

@@ -1,7 +1,7 @@
  import { updateChatCallState } from '../../../../StoreWrapper/Slice/ChatCallSlice';
  
  
- const handleICE = async (payload, peerConRef, dispatch) => {
+ const handleICE = async (payload, peerConRef  ) => {
   try {
     if (Array.isArray(payload)) {
       for (const candidate of payload) {
@@ -20,14 +20,14 @@
     }
 
     
-    console.log('ICE candidates processed');
+    //console.log('ICE candidates processed');
   } catch (err) {
     console.error("Critical ICE handling error:", err);
     
   }
 	finally{
-		dispatch(updateChatCallState({'type' : 'setIsConnecting', 'isConnecting':false } ));
-		console.log('ICE candidates  ');
+		//dispatch(updateChatCallState({'type' : 'setIsConnecting', 'isConnecting':false } ));
+		//console.log('ICE candidates  ');
 	}
 };
 

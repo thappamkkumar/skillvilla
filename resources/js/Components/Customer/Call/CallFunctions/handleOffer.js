@@ -1,5 +1,6 @@
 import createAndSendAnswer from './createAndSendAnswer';
 import createAndSendICE from './createAndSendICE';
+import attachConnectionStateHandlers from './attachConnectionStateHandlers';
 
 const handleOffer = async (payload, ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch) => {
   
@@ -11,7 +12,9 @@ const handleOffer = async (payload, ICE_CONFIG, peerConRef, audioCallRef, videoC
 	//create ice and send to caller
 	await createAndSendICE(peerConRef, authToken, chatCallData, dispatch, false);
 	
-	
+	// Attach connection state listeners
+	attachConnectionStateHandlers(peerConRef, dispatch);
+
   // Choose constraints based on call type
   const constraints =
     callType === 'video'
