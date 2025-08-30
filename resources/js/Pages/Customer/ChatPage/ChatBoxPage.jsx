@@ -147,7 +147,7 @@ const ChatBoxPage = () => {
 						{
 							showScrollDownBTN &&
 							<Button variant="light"
-							className="   chatScrolDownBTN" 
+							className=" z-2  chatScrolDownBTN" 
 							id="scrolDownBTNID"
 							title="Scroll Down"
 							 onClick={scrollToBottom}

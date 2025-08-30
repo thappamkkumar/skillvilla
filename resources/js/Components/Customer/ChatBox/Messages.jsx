@@ -68,7 +68,7 @@ const Messages = ({ messages }) => {
       {sortedDates.reverse().map(( date ) => (
         <div key={date}   >
           {/* Display the date */}
-          <div className=" text-center  py-2     sticky-date ">
+          <div className=" text-center  py-2  z-1   sticky-date ">
 						<small className="fw-bold">{formatMessageDate(date)}</small>
           </div>
           

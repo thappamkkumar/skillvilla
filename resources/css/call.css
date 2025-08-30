@@ -4,8 +4,68 @@
 		backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-
-  
+.small-call-container
+{
+	width:80px;
+	height:80px;
+}
+.small-outgoing-call-avatar 
+{
+	width:50px;
+	height:50px;
+}
+@media (min-width: 200px) 
+{
+	.small-call-container
+	{
+		width:80px;
+		height:80px;
+	}
+	.small-outgoing-call-avatar 
+	{
+		width:50px;
+		height:50px;
+	}
+}
+@media (min-width: 200px) and (max-width: 576px) {
+  .small-call-container
+	{
+		width:120px;
+		height:120px;
+	}
+	.small-outgoing-call-avatar 
+	{
+		width:70px;
+		height:70px;
+	}
+}
+@media (min-width: 576px) and (max-width: 992px){
+  .small-call-container
+	{
+		width:150px;
+		height:150px;
+	} 
+	.small-outgoing-call-avatar 
+	{
+		width:100px;
+		height:100px;
+	}
+}
+ 
+@media (min-width: 992px){
+  .small-call-container
+	{
+		width:200px;
+		height:200px;
+	} 
+	.small-outgoing-call-avatar 
+	{
+		width:100px;
+		height:100px;
+	}
+}
+ 
+ 
 .call-card
 {
 	 

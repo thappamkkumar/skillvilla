@@ -85,7 +85,7 @@
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
+     
     background-color: rgba(var(--bg2-color),1);
     color: rgba(var(--text-color),1); 
     border: none;
@@ -106,7 +106,7 @@
 .sticky-date {
   position: sticky;
   top: 0; 
-  z-index: 10;   
+  /*z-index: 10;   */
 	 backdrop-filter: blur(3px);
 	 background-color: rgba(var(--bg-color),0.6); 
 }

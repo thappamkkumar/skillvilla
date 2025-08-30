@@ -4,7 +4,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSelector,useDispatch } from 'react-redux';
-import { BsTelephoneFill } from "react-icons/bs";
+import { BsTelephoneFill,  BsArrowsAngleContract, BsArrowsAngleExpand } from "react-icons/bs"; 
 
 import CallControlActions from './CallControlActions/CallControlActions';
 import MessageAlert from '../../../Components/MessageAlert';
@@ -32,6 +32,7 @@ const VideoCallModal = ({
 	const [callEndLoader, setCallEndLoader] = useState(false);
 	const [elapsedTime, setElapsedTime] = useState(0);
 	const [showUserManual, setShowUserManual] = useState(true);
+	const [resizeScreen, setResizeScreen] = useState(false);
 	
 	const timerRef = useRef(null); 
 	const hideTimerRef = useRef(null);
@@ -93,7 +94,7 @@ const VideoCallModal = ({
 		// Set timer to hide after 30s
 		hideTimerRef.current = setTimeout(() => {
 			setShowUserManual(false);
-		}, 30000);
+		}, 30000 );
 	}, []);
 
 	//useffect for set time to hide or show call manuals and use listeners
@@ -156,6 +157,8 @@ const VideoCallModal = ({
 			
 			if(resultData?.status )
 			{
+				setResizeScreen(false);//reset call container size
+				
 				dispatch(updateChatCallState({'type' : 'endCall', 'callId':chatCallData.callId } )); 
 				
 				const newMessage = resultData.newMessage
@@ -289,19 +292,45 @@ const VideoCallModal = ({
 	}, [dispatch, authToken, chatCallData, logedUserData]);
 	
 	
+	//handle resize screen (small or large)
+	const handleResize = useCallback(()=>{
+		 
+		setResizeScreen(pre => !pre);		
+	}, []);
 	
 	
   if (chatCallData.callStatus !== "in-call" || chatCallData.callType != 'video') return null;
 	
 	 
-	
-  return (
-    <div className="fixed-top w-100    call-container" style={{ height: windowHeight }}>
-			
+	return(
+		<div
+			className={`position-fixed top-0 overflow-hidden  call-container ${resizeScreen && 'small-call-container end-0  m-1 rounded-3'} `}
+			 style={!resizeScreen ? { height: windowHeight, width:'100%',  zIndex:900 } : { zIndex:900}}
+		>
 			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
-      
-			<div className="position-relative w-100 h-100"  >
+			
+			<div
+				className="w-100 h-100 position-relative   "
+			>
+				<div
+					className={`position-absolute     top-0 end-0 ${resizeScreen ? 'm-2' : 'm-3' } transition-opacity ${showUserManual ? 'opacity-100' : 'opacity-0'}`}
+					id="resizeBTNContainer"
+					style={{  transition: 'opacity 0.3s ease', zIndex:999 }}
+				>
+					<Button 
+							variant="light"
+							title="resize"
+							id="audioCallResizebtn1"
+							className="  "
+							onClick={handleResize}
+							size={`${resizeScreen ?'sm':'md' }`}
+						> 
+							{resizeScreen ? <BsArrowsAngleExpand />   : <BsArrowsAngleContract />  }
+						</Button> 
+				</div>
 				
+				
+				{/*remote video*/}
 				<div className="w-100 h-100 position-absolute z-1  ">
 					<video  
 						className="w-100 h-100 object-fit-cover   "
@@ -314,49 +343,46 @@ const VideoCallModal = ({
 					></video>
 				</div>
 				
-				
-				
+				{/*actions and local video container*/}
 				
 				<div
-					className={`position-absolute z-3 w-100 h-100 transition-opacity ${showUserManual ? 'opacity-100' : 'opacity-0'}`}
+					className={`position-absolute z-2 w-100 h-100 transition-opacity ${(  showUserManual) ? 'opacity-100  ' : 'opacity-0  '}`}
 					id="userMannual"
 					style={{ pointerEvents: showUserManual ? 'auto' : 'none', transition: 'opacity 0.3s ease' }}
 				>
-					<div className="w-100 h-100  p-3   d-flex flex-column">
+					<div className={`w-100 h-100  p-3   d-flex flex-column ${(!resizeScreen  ) ? 'opacity-100  ' : 'opacity-0  '}`}>
 						<div className="flex-grow-1 text-white d-flex  flex-column justify-content-between">
 							
-							<div className={` ${ (chatCallData.isConnecting  ) && 'd-sm-flex  flex-row-reverse'} `}>
+							 	 
+							<div >
+								<div className="d-inline-block bg-dark bg-opacity-50   p-2 rounded">
+									<h5>{chatCallData.receiver?.name}</h5>
+									<small>{chatCallData?.startedAt ? formatTime(elapsedTime) : "wait..."}</small>
+								</div> 
 								{ 
-									(chatCallData.isConnecting  )  
-									&&  
-									<div className="w-100 ">
-										<p className="text-light text-center fw-bold fs-5   m-0       "> 
-											<strong  >  	Connecting
-												<span className="dot-blink"> .</span>
-												<span className="dot-blink">.</span>
-												<span className="dot-blink">.</span>
-											</strong> 
-										</p>
-									</div>
-								}	 
-								<div >
-									<div className="d-inline-block bg-dark bg-opacity-50   p-2 rounded">
-										<h5>{chatCallData.receiver?.name}</h5>
-										<small>{chatCallData?.startedAt ? formatTime(elapsedTime) : "wait..."}</small>
-									</div> 
-									{ 
-										(chatCallData.callerHold || chatCallData.receiverHold)
-										&& 
-										 
-											<p className="text-light  dot-blink mt-4"> 
-												<strong  > On Hold </strong> 
-											</p>
+									(chatCallData.callerHold || chatCallData.receiverHold)
+									&& 
 									 
-									}
-									
-								</div>
+										<p className="text-light  dot-blink mt-2"> 
+											<strong  > On Hold </strong> 
+										</p>
+								 
+								}
+								{ 
+									(chatCallData.isConnecting)
+									&& 
+										<p className="text-light   fw-bold     mt-2       "> 
+										<strong  >  	Connecting
+											<span className="dot-blink"> .</span>
+											<span className="dot-blink">.</span>
+											<span className="dot-blink">.</span>
+										</strong> 
+									</p>
+								}
 							</div>
+							 
 							
+							{/*local video*/}
 							<div className=" d-flex justify-content-end mb-4 mb-md-5 ">
 								<div className="rounded overflow-hidden position-relative   local-video-container   ">
 									<video 
@@ -366,7 +392,7 @@ const VideoCallModal = ({
 										autoPlay
 										muted
 										playsInline 
-										loop={true}
+										loop={true} 
 									></video> 
 									{ 
 									((logedUserData.id == chatCallData.caller.id && chatCallData.callerHold) || 
@@ -379,6 +405,7 @@ const VideoCallModal = ({
 							</div>
 							
 						</div>
+						{/*control actions*/}
 						<div className=" ">
 							<CallControlActions 
 								handleCallEnd={handleCallEnd}
@@ -396,8 +423,10 @@ const VideoCallModal = ({
 				
 				
 			</div>
-    </div>
-  );
+		</div>
+	
+	);
+   
 };
 
 export default VideoCallModal;

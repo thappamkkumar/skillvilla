@@ -2,7 +2,7 @@ import {useState, useEffect, useRef, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import { useSelector,useDispatch } from 'react-redux';
-import { BsTelephoneFill } from "react-icons/bs";
+import { BsTelephoneFill, BsArrowsAngleContract, BsArrowsAngleExpand 	  } from "react-icons/bs";
 
 import MessageAlert from '../../../Components/MessageAlert';
 import CallControlActions from './CallControlActions/CallControlActions';
@@ -24,6 +24,7 @@ const OutgoingCallModal = () => {
 	const [showModel, setShowModel] = useState(false); //state for alert message   
 	const [callEndLoader, setCallEndLoader] = useState(false);
 	const [autoEndTriggered, setAutoEndTriggered] = useState(false);
+	const [resizeScreen, setResizeScreen] = useState(false);
 	
 	const callingToneRef = useRef(null);
   const noResponseToneRef = useRef(null); 
@@ -154,6 +155,8 @@ const playAudio = async (ref, loop = false, sinkId = null) => {
 			
 			if(resultData?.status )
 			{
+				setResizeScreen(false);//reset call container size
+				
 				dispatch(updateChatCallState({'type' : 'endCall', 'callId':chatCallData.callId } )); 
 				
 				const newMessage = resultData.newMessage
@@ -168,6 +171,8 @@ const playAudio = async (ref, loop = false, sinkId = null) => {
 					dispatch(updateChatMessageState({type : 'AddNewMessage', newMessage:newMessage}));
 					
 				}
+				
+				
 			}
 			else
 			{
@@ -189,51 +194,108 @@ const playAudio = async (ref, loop = false, sinkId = null) => {
 		
 	}, [authToken, chatCallData.callId]);
  
-
+	
+	
+	//handle resize screen (small or large)
+	const handleResize = useCallback(()=>{
+		 
+		setResizeScreen(pre => !pre);		
+	}, []);
+	
   if (chatCallData.callStatus !== "calling") return null;
-
-  return (
-    <div className="fixed-top w-100   d-flex justify-content-center align-items-center call-container" style={{ height: windowHeight }}>
-			
+	
+	return(
+		<>
 			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
-      <audio ref={callingToneRef} src="/audio/calling-indicator.mp3" loop />
-      <audio ref={noResponseToneRef} src="/audio/busy-indicator.mp3" />
+			<audio ref={callingToneRef} src="/audio/calling-indicator.mp3" loop />
+			<audio ref={noResponseToneRef} src="/audio/busy-indicator.mp3" />
       
-       
-        <div className="   p-3   d-flex flex-column call-card "   >
-          <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center  ">
-            <img
-              src={chatCallData.receiver?.image || "/images/profile_icon.png"}
-              alt="User Avatar"
-              className="rounded-circle img-fluid outgoing-call-avatar mb-3"
-              onError={(event) => {
-                handleImageError(event, "/images/profile_icon.png");
-              }}
-            />
-            <h5 className="fw-semibold text-white">
-              <strong>{chatCallData.receiver?.name}</strong>
-            </h5>
-            <p className="text-light">
-              <small><strong>Calling</strong></small>
-              <span className="dot-blink">.</span>
-              <span className="dot-blink">.</span>
-              <span className="dot-blink">.</span>
-            </p>
-          </div>
+			{
+				!resizeScreen && 
+				
+				<div className="fixed-top w-100  call-container  " style={{ height: windowHeight }}>
+					<div 
+						className="w-100 h-100 position-relative  d-flex justify-content-center align-items-center "
+					>
+						<Button 
+							variant="light"
+							title="resize"
+							id="outgoingCallResizebtn1"
+							className="position-absolute   top-0 end-0 m-3"
+							onClick={handleResize}
+						> 
+							<BsArrowsAngleContract />  
+						</Button>
+						
+						<div className="   p-3   d-flex flex-column call-card "   >
+							<div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center  ">
+								<img
+									src={chatCallData.receiver?.image || "/images/profile_icon.png"}
+									alt="User Avatar"
+									className="rounded-circle img-fluid outgoing-call-avatar mb-3"
+									onError={(event) => {
+										handleImageError(event, "/images/profile_icon.png");
+									}}
+								/>
+								<h5 className="fw-semibold text-white">
+									<strong>{chatCallData.receiver?.name}</strong>
+								</h5>
+								<p className="text-light">
+									<small><strong>Calling</strong></small>
+									<span className="dot-blink">.</span>
+									<span className="dot-blink">.</span>
+									<span className="dot-blink">.</span>
+								</p>
+							</div>
 
-          <div className="d-flex justify-content-center">
-						<CallControlActions 
-							handleCallEnd={handleCallEnd}
-							callEndLoader={callEndLoader}
-							handleHoldCall={()=>{}}
-							holdCallLoader={false}
+							<div className="d-flex justify-content-center">
+								<CallControlActions 
+									handleCallEnd={handleCallEnd}
+									callEndLoader={callEndLoader}
+									handleHoldCall={()=>{}}
+									holdCallLoader={false}
+								/>
+								 
+							</div>
+						</div>
+								
+					</div>
+				</div>
+				
+			}
+			
+			{
+				resizeScreen && 
+				<div className="position-fixed top-0 end-0 z-3 m-1 rounded-3   call-container small-call-container "  >
+					<div
+						className="w-100 h-100 position-relative d-flex justify-content-center align-items-center"
+					>
+						<Button 
+							variant="light"
+							title="resize"
+							id="outgoingCallResizebtn1"
+							className="position-absolute top-0 end-0 m-2  "
+							onClick={handleResize}
+							size="sm"
+						> 
+							<BsArrowsAngleExpand />  
+						</Button>
+						
+						<img
+							src={chatCallData.receiver?.image || "/images/profile_icon.png"}
+							alt="User Avatar"
+							className="rounded-circle img-fluid small-outgoing-call-avatar  "
+							onError={(event) => {
+								handleImageError(event, "/images/profile_icon.png");
+							}}
 						/>
-             
-          </div>
-        </div>
-       
-    </div>
-  );
+					</div>
+				</div>
+			}
+			
+		</>
+	);
+   
 };
 
 export default OutgoingCallModal;
