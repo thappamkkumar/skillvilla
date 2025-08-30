@@ -26,7 +26,7 @@
     
   }
 	finally{
-		dispatch(updateChatCallState({ type: 'setConnected' }));
+		dispatch(updateChatCallState({'type' : 'setIsConnecting', 'isConnecting':false } ));
 		console.log('ICE candidates  ');
 	}
 };

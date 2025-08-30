@@ -25,8 +25,14 @@ const useCallRestoreWebsocket = (loggedUserData, callId, startCall = ()=>{}) => 
 					if(callId !== e.callId){
 						return;
 					}
-				 
-					//call function for re-start or re-store connection via webRTC
+					dispatch(updateChatCallState({'type' : 'setIsConnecting', 'isConnecting':true } ));
+					
+					if(!e.isCaller)
+					{console.log('not Caller');
+						return;
+					}
+					
+					//call function for re-start or re-store connection via webRTC , refresh by receiver and call restart by caller
           startCall();
         });
     };

@@ -176,9 +176,9 @@ const ChatCallReducer = {
 					break;  
 				} 
 				
-				 case "setConnected": 
+				case "setIsConnecting": 
 				{
-					state.isConnecting = false; 
+					state.isConnecting = action.payload.isConnecting; 
 					break;  
 				} 
 				

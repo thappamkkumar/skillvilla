@@ -20,11 +20,13 @@ class ChatCallRestoreEvent implements ShouldBroadcast
 		 
 		public $toUserId;
     public $callId;
+    public $isCaller;
 		
-    public function __construct( $toUserId, $callId)
+    public function __construct( $toUserId, $callId, $isCaller)
     { 
 			$this->toUserId = $toUserId;
 			$this->callId = $callId;
+			$this->isCaller = $isCaller;
     }
 
     /**
