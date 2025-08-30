@@ -105,7 +105,12 @@ class CallController extends Controller
 				//dispatch event for call end
 				if(  $activeCall->status === 'accepted')
 				{
-					ChatCallRestoreEvent::dispatch( $activeCall->caller_id , $activeCall->id, $user->id === $activeCall->caller->id  ); 
+					$caller_id = $activeCall->caller_id;
+					$receiver_id = $activeCall->receiver_id;
+
+					$otherUserId = $user->id == $caller_id ? $receiver_id : $caller_id;
+
+					ChatCallRestoreEvent::dispatch( $otherUserId , $activeCall->id, $user->id === $caller_id ); 
 				}
 				
 				$data = [

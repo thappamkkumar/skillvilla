@@ -27,8 +27,8 @@ const useCallRestoreWebsocket = (loggedUserData, callId, startCall = ()=>{}) => 
 					}
 					dispatch(updateChatCallState({'type' : 'setIsConnecting', 'isConnecting':true } ));
 					
-					if(!e.isCaller)
-					{console.log('not Caller');
+					if(e.isCaller)
+					{ 
 						return;
 					}
 					
