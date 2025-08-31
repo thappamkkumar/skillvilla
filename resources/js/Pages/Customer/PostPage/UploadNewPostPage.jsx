@@ -62,7 +62,7 @@ const UploadNewPostPage = ( ) => {
 			}
 			if(tags.length <= 0)
 			{
-				setsubmitionMSG( 'Category is required');
+				setsubmitionMSG( 'Tags is required');
 				setShowModel(true);
 				return;
 			}

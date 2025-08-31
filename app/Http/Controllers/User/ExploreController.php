@@ -279,7 +279,7 @@ class ExploreController extends Controller
 		
 		
 		
-		//function for fetching explore workfolio
+		//function for fetching explore problem
 		function getExploreProblem(Request $request)
 		{
 				try {

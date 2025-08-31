@@ -28,7 +28,7 @@ const AddWorkPage = ( ) => {
 	const [formData, setFormData] = useState({
         title: '',
         description: '',
-        category: [],
+        tags: [],
         images: null,
         video: null,
         other: null,
@@ -52,7 +52,7 @@ const AddWorkPage = ( ) => {
 			// Validate text inputs
 			if (!formData.title) newErrors.title = 'Title is required.';
 			if (!formData.description) newErrors.description = 'Description is required.';
-			if (formData.category.length === 0) newErrors.category = 'At least one category is required.'; // Validate categories
+			if (formData.tags.length === 0) newErrors.tags = 'At least one tags is required.'; // Validate categories
 
 
 			// Validate images
@@ -143,7 +143,7 @@ const AddWorkPage = ( ) => {
 							setFormData({
 									title: '',
 									description: '',
-									category: [],
+									tags: [],
 									images: null,
 									video: null,
 									other: null,

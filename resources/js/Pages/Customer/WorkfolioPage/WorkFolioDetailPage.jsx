@@ -164,7 +164,7 @@ const WorkFolioDetailPage = () => {
 											<hr className="border-2 my-5   border-secondary"/>
 											
 											<div className="px-2  px-md-3 px-lg-4  ">
-														<h4 className="pb-1">Categories</h4>
+														<h4 className="pb-1">Tags</h4>
 														<PostDetailTags postID={workfolioDetail.id} tags={workfolioDetail.tags} />
 													</div>
 											

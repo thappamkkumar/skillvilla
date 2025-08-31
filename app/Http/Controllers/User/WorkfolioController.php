@@ -29,7 +29,7 @@ class WorkfolioController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-						'category' => 'required|array', 
+						'tags' => 'required|array', 
             'images.*' => 'nullable|image|mimes:jpg,png,jpeg',  
             'video' => 'nullable|mimes:mp4|max:512000', // max 500MB for video
             'other' => 'nullable|mimes:zip,pdf|max:512000', // max 100MB for other files
@@ -44,7 +44,7 @@ class WorkfolioController extends Controller
         $workfolio->user_id = $user->id; // Assuming the user is authenticated
         $workfolio->title = $request->input('title');
         $workfolio->description = $request->input('description');
-        $workfolio->category = $request->input('category', []);  
+        $workfolio->tags = $request->input('tags', []);  
         $workfolio->save();
 				
 				
@@ -167,7 +167,7 @@ class WorkfolioController extends Controller
 				->where(function ($query) use ($userInterests, $followingIds) {
 					if (!empty($userInterests)) {
 						foreach ($userInterests as $interest) {
-							$query->orWhereJsonContains('category', $interest);
+							$query->orWhereJsonContains('tags', $interest);
 						}
 					}
 
@@ -324,7 +324,7 @@ class WorkfolioController extends Controller
 				$user = JWTAuth::parseToken()->authenticate();
 				
         // Retrieve posts from users whom the authenticated user is following
-				$workfolioDetail = Workfolio::select('id', 'title', 'description', 'category', 'images', 'video', 'other', 'created_at', 'user_id')
+				$workfolioDetail = Workfolio::select('id', 'title', 'description', 'tags', 'images', 'video', 'other', 'created_at', 'user_id')
 				->with([
 					'user:id,userID',
 					'user.customer:id,user_id,image', 				

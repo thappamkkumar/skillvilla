@@ -13,7 +13,7 @@ import { BsX, BsEye } from 'react-icons/bs';
 import TextEditor from '../../Common/TextEditor';  
   
 const AddWorkForm = ({ formData, setFormData, errors, onSubmit, setPreviewImages, setWatchVideo,setPreviewOtherFile}) => {
-  const [newCategory, setNewCategory] = useState(''); // State for new category input
+  const [newTags, setNewTags] = useState(''); // State for new category input
 
 	 // Handle input changes
     const handleChange = (e) => {
@@ -40,23 +40,23 @@ const AddWorkForm = ({ formData, setFormData, errors, onSubmit, setPreviewImages
     };
 		
 		
-		// Handle adding a category
-  const handleAddCategory = () => {
-    const trimmedCategory = newCategory.trim();
-    if (trimmedCategory && !formData.category.includes(trimmedCategory)) {
+		// Handle adding a Tags
+  const handleAddTags = () => {
+    const trimmedTags = newTags.trim();
+    if (trimmedTags && !formData.tags.includes(trimmedTags)) {
       setFormData((prevData) => ({
         ...prevData,
-        category: [...prevData.category, trimmedCategory],
+        tags: [...prevData.tags, trimmedTags],
       }));
-      setNewCategory('');
+      setNewTags('');
     }
   };
 
-  // Handle removing a category
-  const handleRemoveCategory = (index) => {
+  // Handle removing a Tags
+  const handleRemoveTags = (index) => {
     setFormData((prevData) => ({
       ...prevData,
-      category: prevData.category.filter((_, i) => i !== index),
+      tags: prevData.tags.filter((_, i) => i !== index),
     }));
   };
 	
@@ -107,18 +107,18 @@ const AddWorkForm = ({ formData, setFormData, errors, onSubmit, setPreviewImages
 				 {/* Categories Section */}
         <Row className="w-100 m-0 mb-3">
           <Col xs={12} className="m-0">
-            <Form.Label>Categories <small className="text-danger">*</small></Form.Label>
-            {formData.category.length > 0 && (
+            <Form.Label>Tags <small className="text-danger">*</small></Form.Label>
+            {formData.tags.length > 0 && (
               <div className="d-flex flex-wrap pb-2">
-                {formData.category.map((cat, index) => (
+                {formData.tags.map((tag, index) => (
                   <span key={index} className="border border-0 mx-1 my-1 p-1 px-2 rounded tech_skill">
-                    <span className="pe-3">{cat}</span>
+                    <span className="pe-3">{tag}</span>
                     <Button
                       variant="danger"
-                      title={`Remove category ${index}`}
-                      id={`removeCategory${index}`}
+                      title={`Remove tag ${index}`}
+                      id={`removeTags${index}`}
                       className="p-0 mb-1   tech_skill_remove_btn"
-                      onClick={() => handleRemoveCategory(index)}
+                      onClick={() => handleRemoveTags(index)}
                     >
                       <BsX className="fs-5" style={{ strokeWidth: '1.5' }} />
                     </Button>
@@ -128,24 +128,24 @@ const AddWorkForm = ({ formData, setFormData, errors, onSubmit, setPreviewImages
             )}
           </Col>
           <Col xs={8} className=" ">
-            <Form.Group className=" " controlId="workfolioCategory">
+            <Form.Group className=" " controlId="workfolioTag">
               <Form.Control
                 type="text"
                 className="formInput"
-                placeholder="Add a category"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-								isInvalid={!!errors.title}
+                placeholder="Add a tag"
+                value={newTags}
+                onChange={(e) => setNewTags(e.target.value)}
+								isInvalid={!!errors.tags}
               />
             </Form.Group>
           </Col>
           <Col xs={4} className=" ">
-            <Button variant="secondary" title="Add category" id="addCategory" className="w-100   " onClick={handleAddCategory}>
+            <Button variant="secondary" title="Add tag" id="addCategory" className="w-100   " onClick={handleAddTags}>
               Add  
             </Button>
           </Col>
 					
-					<small className="text-danger mt-1">{errors.category}</small>
+					<small className="text-danger mt-1">{errors.tags}</small>
         </Row>
 				 
 				 
