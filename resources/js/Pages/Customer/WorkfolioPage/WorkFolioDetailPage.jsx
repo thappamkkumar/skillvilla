@@ -13,7 +13,7 @@ import ProblemAttachment from '../../../Components/Customer/Problem/ProblemAttac
 import WorkfolioReviews from '../../../Components/Customer/Workfolio/WorkfolioReviews.jsx';
 import PostDate from '../../../Components/Customer/Post/PostDate'; 
 import LargeText from '../../../Components/Common/LargeText';
-import PostDetailCategory from '../../../Components/Customer/PostDetail/PostDetailCategory';
+import PostDetailTags from '../../../Components/Customer/PostDetail/PostDetailTags';
 import Share from '../../../Components/Customer/Share/Share'; 
 import PageSeo from '../../../Components/Common/PageSeo';  // for SEO, change document title and meta data (name and description of meta data)
 
@@ -165,7 +165,7 @@ const WorkFolioDetailPage = () => {
 											
 											<div className="px-2  px-md-3 px-lg-4  ">
 														<h4 className="pb-1">Categories</h4>
-														<PostDetailCategory postID={workfolioDetail.id} categories={workfolioDetail.category} />
+														<PostDetailTags postID={workfolioDetail.id} tags={workfolioDetail.tags} />
 													</div>
 											
 											<hr className="border-2 my-5   border-secondary"/>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {useSelector } from 'react-redux'; 
 //import manageVisitedUrl from '../../../CustomHook/manageVisitedUrl';
 
-const PostTags= ({postID, tags, total}) => { 
+const PostTaggedUsers= ({postID, tags, total}) => { 
 
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));//get login info 
 	const navigate = useNavigate(); //geting reference of useNavigate into navigate
@@ -47,4 +47,4 @@ const PostTags= ({postID, tags, total}) => {
 	
 };
 
-export default memo(PostTags);
+export default memo(PostTaggedUsers);

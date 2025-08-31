@@ -19,7 +19,7 @@ import LoadMoreButton from '../../Common/LoadMoreButton';
 import serverConnection from '../../../CustomHook/serverConnection';
 import handleImageError from '../../../CustomHook/handleImageError';
 
-const UploadNewPostTag = ({taggedUser, setTaggedUser  }) => { 
+const UploadNewPostTaggedUser = ({taggedUser, setTaggedUser  }) => { 
 	const authToken = useSelector((state) => state.auth.token); //selecting token from store
 	
 	const [searchError, setSearchError] = useState(false);
@@ -274,4 +274,4 @@ const UploadNewPostTag = ({taggedUser, setTaggedUser  }) => {
 	
 };
 
-export default memo(UploadNewPostTag);
+export default memo(UploadNewPostTaggedUser);

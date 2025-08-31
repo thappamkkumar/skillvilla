@@ -13,12 +13,12 @@ class Post extends Model
         'user_id',
         'attachment',
         'description', 
-        'category', 
+        'tags', 
     ];
 
     protected $casts = [ 
 				'attachment' => 'array',
-				'category' => 'array',
+				'tags' => 'array',
     ];
 		
 		protected $appends = ['created_at_human_readable','created_at_formated']; 
@@ -92,7 +92,7 @@ class Post extends Model
 		*
 		* @return array<string, string>
 		*/ 
-		public function tags()
+		public function taggedUsers()
     {
         return $this->belongsToMany(User::class, 'post_tags');
     }

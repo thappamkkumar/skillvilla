@@ -107,7 +107,7 @@ class HomeController extends Controller
             ->where(function ($query) use ($userInterests, $followingIds) {
                 if (!empty($userInterests)) {
                     foreach ($userInterests as $interest) {
-                        $query->orWhereJsonContains('category', $interest);
+                        $query->orWhereJsonContains('tags', $interest);
                     }
                 }
 
@@ -183,7 +183,7 @@ class HomeController extends Controller
 				{
 					if (!empty($userInterests)) {
 						foreach ($userInterests as $interest) {
-							$query->orWhereJsonContains('category', $interest);
+							$query->orWhereJsonContains('tags', $interest);
 						}
 					}
 

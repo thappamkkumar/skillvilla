@@ -12,7 +12,7 @@ import PostLikeCommentCount from '../../../Components/Admin/Post/PostLikeComment
 import PostTags from '../../../Components/Admin/Post/PostTags';
 import PostDate from '../../../Components/Customer/Post/PostDate'; 
 import PostDetailAttachmentList from '../../../Components/Customer/PostDetail/PostDetailAttachmentList';
-import PostDetailCategory from '../../../Components/Customer/PostDetail/PostDetailCategory';  
+import PostDetailTags from '../../../Components/Customer/PostDetail/PostDetailTags';  
 import LargeText from '../../../Components/Common/LargeText';
   
 import PageSeo from '../../../Components/Common/PageSeo';  // for SEO, change document title and meta data (name and description of meta data)
@@ -173,11 +173,11 @@ const PostDetailPage = () =>
 													
 													<hr className="mb-2 mt-0"/>
 													
-													{postDetail.tags.length > 0 &&<PostTags postID={postDetail.id} tags={postDetail.tags} />}
+													{postDetail.tags.length > 0 &&<PostTags postID={postDetail.id} tags={postDetail.tagged_users} />}
 													
 													<div className="px-0 pt-4  ">
 														<h4 className="pb-1">Categories</h4>
-														<PostDetailCategory postID={postDetail.id} categories={postDetail.category} />
+														<PostDetailTags postID={postDetail.id} tags={postDetail.tags} />
 													</div>
 
 													

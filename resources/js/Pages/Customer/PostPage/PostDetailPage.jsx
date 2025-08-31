@@ -9,10 +9,10 @@ import Col from 'react-bootstrap/Col';
   
 import PostHeader from '../../../Components/Customer/Post/PostHeader'; 
 import PostAction from '../../../Components/Customer/Post/PostAction';
-import PostTags from '../../../Components/Customer/Post/PostTags';
+import PostTaggedUsers from '../../../Components/Customer/Post/PostTaggedUsers';
 import PostDate from '../../../Components/Customer/Post/PostDate'; 
 import PostDetailAttachmentList from '../../../Components/Customer/PostDetail/PostDetailAttachmentList';
-import PostDetailCategory from '../../../Components/Customer/PostDetail/PostDetailCategory';
+import PostDetailTags from '../../../Components/Customer/PostDetail/PostDetailTags';
 import PostComments from '../../../Components/Customer/PostComment/PostComments'; 
 import LargeText from '../../../Components/Common/LargeText';
 import Share from '../../../Components/Customer/Share/Share'; 
@@ -175,11 +175,11 @@ const PostDetailPage = () =>
 												
 												<hr className="mb-2 mt-0"/>
 												
-												{postDetail.tags.length > 0 &&<PostTags postID={postDetail.id} tags={postDetail.tags} />}
+												{postDetail.tagged_users.length > 0 &&<PostTaggedUsers postID={postDetail.id} tags={postDetail.tagged_users} />}
 												
 												<div className="px-0 pt-4  ">
-													<h4 className="pb-1">Categories</h4>
-													<PostDetailCategory postID={postDetail.id} categories={postDetail.category} />
+													<h4 className="pb-1">Tags</h4>
+													<PostDetailTags postID={postDetail.id} tags={postDetail.tags} />
 												</div>
 
 												

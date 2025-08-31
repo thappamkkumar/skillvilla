@@ -15,7 +15,7 @@ class Workfolio extends Model
         'user_id',
         'title',
         'description',
-        'category',
+        'tags',
         'images',
         'video',
         'other',
@@ -23,7 +23,7 @@ class Workfolio extends Model
 
     protected $casts = [
         'images' => 'array', 
-        'category' => 'array', 
+        'tags' => 'array', 
     ];
 		
 		protected $appends = ['created_at_human_readable','created_at_formated']; 

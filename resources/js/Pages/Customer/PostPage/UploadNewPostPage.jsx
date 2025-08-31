@@ -9,8 +9,8 @@ import Form from 'react-bootstrap/Form';
  
 
 import UploadNewPostAttachment from '../../../Components/Customer/UploadPost/UploadNewPostAttachment';
-import UploadNewPostTag from '../../../Components/Customer/UploadPost/UploadNewPostTag';
-import UploadNewPostCategory from '../../../Components/Customer/UploadPost/UploadNewPostCategory';
+import UploadNewPostTaggedUser from '../../../Components/Customer/UploadPost/UploadNewPostTaggedUser';
+import UploadNewPostTags from '../../../Components/Customer/UploadPost/UploadNewPostTags';
 import UploadNewPostDescription from '../../../Components/Customer/UploadPost/UploadNewPostDescription';
 import PageSeo from '../../../Components/Common/PageSeo';  // for SEO, change document title and meta data (name and description of meta data)
 
@@ -25,7 +25,7 @@ const UploadNewPostPage = ( ) => {
 	const authToken = useSelector((state) => state.auth.token); //selecting token from store
 	const navigate = useNavigate(); //geting reference of useNavigate into navigate
 	const [taggedUser, setTaggedUser] = useState([]);
-	const [category, setCategory] = useState([]);
+	const [tags, setTags] = useState([]);
 	//const [taggedProject, setTaggedProject] = useState(null);
 	const [files, setFiles] = useState(null);
 	const [description, setDescription] = useState('');
@@ -60,7 +60,7 @@ const UploadNewPostPage = ( ) => {
 				setShowModel(true);
 				return;
 			}
-			if(category.length <= 0)
+			if(tags.length <= 0)
 			{
 				setsubmitionMSG( 'Category is required');
 				setShowModel(true);
@@ -73,14 +73,14 @@ const UploadNewPostPage = ( ) => {
 		 
 			const formData = {
 				attachment: files, 
-				category: category, 
+				tags: tags, 
 				description: description,
-				tags: taggedUserID,
+				tagged_user: taggedUserID,
 			};
 			// console.log(formData);
 			let contentType = 'multipart/form-data'; 
 			const resultData = await serverConnection('/upload-new-post', formData, authToken, contentType ); 
-			//console.log(resultData);
+			 //console.log(resultData);
 			if(resultData.status == true)
 			{   
 			 // Clear form fields 
@@ -100,7 +100,7 @@ const UploadNewPostPage = ( ) => {
 			} 
 			setDescription(''); 
 			setTaggedUser([]);//set taggedUser empty array to refresh the form
-			setCategory([]);//set  Category empty array to refresh the form
+			setTags([]);//set  Category empty array to refresh the form
 		} 
 		catch (error)
 		{
@@ -116,7 +116,7 @@ const UploadNewPostPage = ( ) => {
 				setSubmitting(false);
        
     }
-	}, [authToken, files, taggedUser, description,category ]);
+	}, [authToken, files, taggedUser, description, tags ]);
 	 
 	return ( 
 	 
@@ -136,8 +136,8 @@ const UploadNewPostPage = ( ) => {
 								<h3 className="pb-2 fw-bold">Uplaod New Post  </h3>
 								<Form onSubmit={submitPostUpload} autoComplete="off"> 
 									 <UploadNewPostAttachment setFiles={setFiles}   />	
-									 <UploadNewPostTag taggedUser={taggedUser} setTaggedUser={setTaggedUser} />	
-										<UploadNewPostCategory categories={category} setCategories={setCategory}/>	 
+									 <UploadNewPostTaggedUser taggedUser={taggedUser} setTaggedUser={setTaggedUser} />	
+										<UploadNewPostTags tags={tags} setTags={setTags}/>	 
 									 <UploadNewPostDescription description={description}  setDescription={setDescription}/>	
 										
 									 <div className="pt-5 pb-3  ">

@@ -124,16 +124,16 @@ class ExploreController extends Controller
                           ->orWhere('email', 'like', "%$searchInput%");
                 });
 								
-                // Compare each word with the category field
+                // Compare each word with the tags field
                 foreach ($searchWords as $word) 
 								{
-                  $query->orWhereJsonContains('category', $word);
+                  $query->orWhereJsonContains('tags', $word);
                 }
             });
         } else {
            $postListQuery->where(function ($query) use ($userInterests) {
 						foreach ($userInterests as $interest) {
-								$query->orWhereJsonContains('category', $interest);  // Check if the 'category' JSON contains the interest
+								$query->orWhereJsonContains('tags', $interest);   
 						}
 					});
         }
@@ -232,7 +232,7 @@ class ExploreController extends Controller
 						foreach ($searchWords as $word) 
 						{
 								$query->orWhere('title', 'like', "%$word%")
-											->orWhereJsonContains('category', $word);
+											->orWhereJsonContains('tags', $word);
 						}
 					});
 					
@@ -243,7 +243,7 @@ class ExploreController extends Controller
 					// Compare user's interests with the skill_required for the job
 					$worksQuery->where(function ($query) use ($userInterests) {
 						foreach ($userInterests as $interest) {
-							$query->orWhereJsonContains('category', $interest);  // Check if the 'category' JSON contains the interest
+							$query->orWhereJsonContains('tags', $interest);   
 						}
 					});
         }
@@ -438,7 +438,7 @@ class ExploreController extends Controller
                           ->orWhere('name', 'like', "%$searchInput%")
                           ->orWhere('email', 'like', "%$searchInput%");
 								});
-                // Compare each word with the category field and title
+                 
                 foreach ($searchWords as $word) {
                     $query->orWhere('title', 'like', "%$word%")
 										->orWhereJsonContains('skill_required', $word);
@@ -450,7 +450,7 @@ class ExploreController extends Controller
 						{
 							foreach ($userInterests as $interest) 
 							{
-								$query->orWhereJsonContains('skill_required', $interest); // Check if the 'category' JSON contains the interest
+								$query->orWhereJsonContains('skill_required', $interest);  
 							}
             });
         }
@@ -543,7 +543,7 @@ class ExploreController extends Controller
                           ->orWhere('name', 'like', "%$searchInput%")
                           ->orWhere('email', 'like', "%$searchInput%");
 								});
-								// Compare each word with the category field and title
+								 
                 foreach ($searchWords as $word) {
                     $query->orWhere('title', 'like', "%$word%")
 										->orWhereJsonContains('skill_required', $word);
@@ -553,7 +553,7 @@ class ExploreController extends Controller
             // Compare user's interests with the skill_required for the job
             $freelanceListQuery->where(function ($query) use ($userInterests) {
                 foreach ($userInterests as $interest) {
-                    $query->orWhereJsonContains('skill_required', $interest); // Check if the 'category' JSON contains the interest
+                    $query->orWhereJsonContains('skill_required', $interest);  
                 }
             });
         }

@@ -66,7 +66,7 @@ class PostController extends Controller
 				->where(function ($query) use ($userInterests, $followingIds) {
 					if (!empty($userInterests)) {
 						foreach ($userInterests as $interest) {
-							$query->orWhereJsonContains('category', $interest);
+							$query->orWhereJsonContains('tags', $interest);
 						}
 					}
 
@@ -222,14 +222,14 @@ class PostController extends Controller
 				'user_id',
         'attachment',
         'description', 
-        'category',
+        'tags',
 				'created_at',
 				)
 				 ->with([
 							'user:id,userID,name',
 							'user.customer:id,user_id,image',
 								
-							'tags:id,userID',
+							'taggedUsers:id,userID',
 					])
 					->withCount('likes') 
 					->withExists(['likes as has_liked' => function ($query) use ($user) {
@@ -296,6 +296,9 @@ class PostController extends Controller
 			return response()->json($data);
 		}
 	}
+
+
+
 
 	//function for like and unlike the post
 	function likePost(Request $request) 
@@ -574,7 +577,7 @@ class PostController extends Controller
         // Retrieve posts from users whom the authenticated user is following
          
 				//$postList = Post::select('id', 'attachment',   'created_at', 'user_id') 
-			$postList = Post::whereHas('tags', function ($query) use ($user) {
+			$postList = Post::whereHas('taggedUsers', function ($query) use ($user) {
 					$query->where('post_tags.user_id', $user->id);  
 					})
 					->select('id', 'attachment', 'created_at', 'user_id')
@@ -642,6 +645,8 @@ class PostController extends Controller
 		}
 	}
 	
+
+
 	//function for get saved post-
 	function getSavedPost(Request $request)
 	{
@@ -730,6 +735,8 @@ class PostController extends Controller
 		}
 	}
 
+
+
 	/*function getUserProject(Request $request)
 	{
 		try
@@ -754,18 +761,20 @@ class PostController extends Controller
 		}
 	}*/
 
+	
+	
 	// function to add new post
 	function uploadNewPost(Request$request)
 	{
 		$messages = [
 				'attachment.required' => 'The attachment is required.', 
-				'category.required' => 'The attachment is required.', 
+				'tags.required' => 'The attachment is required.', 
 		];
 		// Validate the request  
 		$validator = Validator::make($request->all(), [
 				'attachment' => 'required',
-				'category' => 'required',
-				'tags' => 'nullable', 
+				'tags' => 'required',
+				'tagged_user' => 'nullable', 
 		], $messages);
 		if ($validator->fails()) {
 				// Return validation errors within the try block
@@ -783,7 +792,7 @@ class PostController extends Controller
 			$post = new Post();
 			$post->user_id = $user->id;
 			$post->attachment = []; 
-			$post->category =  $request->input('category', []);; 
+			$post->tags =  $request->input('tags', []);; 
 			$post->description = $request->description; 
 			$post->save();
 			
@@ -822,12 +831,12 @@ class PostController extends Controller
 			$post->attachment = $attachmentFile;
 			$post->save();
 			
-			$tagsArray =$request->tags; 
+			$tagsArray =$request->tagged_user; 
 			// Attach tags if provided
 			 if ($tagsArray != null && count($tagsArray)>0) 
 			{
 					$tag = array_map('intval', $tagsArray); // Ensure all tags are integers
-					$post->tags()->attach($tag);
+					$post->taggedUsers()->attach($tag);
 			}
 			
 			
@@ -898,8 +907,8 @@ class PostController extends Controller
 		}
 		catch(Exception $e)
 		{
-			$data = ['status' => false,'message'=> 'Oops! Something went wrong.'];
-			//$data = ['status'=>false, 'message'=>$e->getMessage()];
+			//$data = ['status' => false,'message'=> 'Oops! Something went wrong.'];
+			$data = ['status'=>false, 'message'=>$e->getMessage()];
 			return response()->json($data);
 		}
 	}
