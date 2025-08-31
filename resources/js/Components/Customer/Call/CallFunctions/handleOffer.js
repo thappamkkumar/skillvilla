@@ -2,7 +2,7 @@ import createAndSendAnswer from './createAndSendAnswer';
 import createAndSendICE from './createAndSendICE';
 import attachConnectionStateHandlers from './attachConnectionStateHandlers';
 
-const handleOffer = async (payload, ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch) => {
+const handleOffer = async (payload, ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, logedUserData, chatCallData, dispatch) => {
   
 	const callType = chatCallData.callType; //audio or video
 	
@@ -13,7 +13,7 @@ const handleOffer = async (payload, ICE_CONFIG, peerConRef, audioCallRef, videoC
 	await createAndSendICE(peerConRef, authToken, chatCallData, dispatch, false);
 	
 	// Attach connection state listeners
-	attachConnectionStateHandlers(peerConRef, dispatch);
+	attachConnectionStateHandlers(peerConRef, authToken, logedUserData, chatCallData, dispatch);
 
   // Choose constraints based on call type
   const constraints =

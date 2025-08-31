@@ -57,9 +57,9 @@ const CustomerLayoutPage = () => {
 	
 	const onOffer = useCallback(
 		async (payload) => {
-			await handleOffer(payload, ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch);
+			await handleOffer(payload, ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, logedUserData, chatCallData, dispatch);
 		},
-		[ICE_CONFIG, peerConRef, audioCallRef,  videoCallRef, localVideoRef, authToken, chatCallData, dispatch]
+		[ICE_CONFIG, peerConRef, audioCallRef,  videoCallRef, localVideoRef, authToken, logedUserData, chatCallData, dispatch]
 	);
 
 	const onAnswer = useCallback(
@@ -78,16 +78,16 @@ const CustomerLayoutPage = () => {
 
  const onStartCall = useCallback(
 		async ( ) => {
-			await startCall(ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch);
+			await startCall(ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, logedUserData, chatCallData, dispatch);
 		},
-		[ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch]
+		[ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, logedUserData, chatCallData, dispatch   ]
 	);
 
 	const onReStartCall = useCallback(
 		async (callData) => {
-			await startCall(ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, callData, dispatch);
+			await startCall(ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, logedUserData, callData, dispatch);
 		},
-		[ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken,  dispatch]
+		[ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken,logedUserData,  dispatch]
 	);
  
 	

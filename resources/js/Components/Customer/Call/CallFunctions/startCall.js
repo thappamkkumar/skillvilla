@@ -2,21 +2,21 @@ import createAndSendOffer from './createAndSendOffer';
 import createAndSendICE from './createAndSendICE';
 import attachConnectionStateHandlers from './attachConnectionStateHandlers';
 
-const startCall = async (ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, chatCallData, dispatch) => {
+const startCall = async (ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, logedUserData, chatCallData, dispatch) => {
 	
 	const callType = chatCallData.callType; //audio or video
 	
   // Create RTCPeerConnection instance
   peerConRef.current = new RTCPeerConnection(ICE_CONFIG);
 	
-	
-	// Attach connection state listeners
-	attachConnectionStateHandlers(peerConRef, dispatch);
-	
-	
-
+	 
 	//create ice and send to receiver
 	await createAndSendICE(peerConRef, authToken, chatCallData, dispatch, true);
+	
+	
+		// Attach connection state listeners
+	 attachConnectionStateHandlers(peerConRef, authToken, logedUserData, chatCallData, dispatch);
+	
 	
 	// Choose constraints based on call type
   const constraints =
