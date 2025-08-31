@@ -2,6 +2,26 @@ import createAndSendOffer from './createAndSendOffer';
 import createAndSendICE from './createAndSendICE';
 import attachConnectionStateHandlers from './attachConnectionStateHandlers';
 
+
+// shared helper for hold/unhold state
+const applyHoldState = (peerConRef, isHolding) => {
+  if (!peerConRef?.current) return;
+
+  // Local devices
+  peerConRef.current.getSenders().forEach(sender => {
+    if (sender.track) sender.track.enabled = !isHolding;
+  });
+
+  // Remote devices
+  peerConRef.current.getReceivers().forEach(receiver => {
+    if (receiver.track) receiver.track.enabled = !isHolding;
+  });
+};
+
+
+
+
+
 const startCall = async (ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, localVideoRef, authToken, logedUserData, chatCallData, dispatch) => {
 	
 	const callType = chatCallData.callType; //audio or video
@@ -59,6 +79,16 @@ const startCall = async (ICE_CONFIG, peerConRef, audioCallRef, videoCallRef, loc
     }
 		 
   };
+	
+	// After everything is set up, check if this user is holding
+  const isCurrentUserHolding =
+    (chatCallData.callerHold && logedUserData.id === chatCallData.caller.id) ||
+    (chatCallData.receiverHold && logedUserData.id === chatCallData.receiver.id);
+
+  if (isCurrentUserHolding) {
+    applyHoldState(peerConRef, true);
+  }
+	
 	
 	//call function for creating and sending sdp offer to receiver
 	createAndSendOffer(peerConRef, authToken, chatCallData, dispatch);

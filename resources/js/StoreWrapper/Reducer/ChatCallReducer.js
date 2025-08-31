@@ -84,6 +84,7 @@ const ChatCallReducer = {
 					state.callStatus = 'in-call';
 					state.startedAt = callData.startedAt;  //remove it
 					state.isConnecting = true; 
+					state.error = null;
 					break;  
 					
 				}
@@ -204,7 +205,7 @@ const ChatCallReducer = {
 					state.receiverHold = callData.receiverHold; 
 					
 					state.isConnecting = callData.isConnecting; 
-					  
+					state.error = null;
 					
 					state.incomingCallData = callData.incomingCallData;
 					
