@@ -480,7 +480,28 @@ class User extends Authenticatable  implements JWTSubject
 		{
 				return $this->hasMany(Call::class, 'receiver_id');
 		}
+	
+	
+		 // Live streams published by this user
+    public function liveStreams()
+    {
+        return $this->hasMany(LiveStream::class, 'publisher_id');
+    }
 
+    // Quick streams this user has joined
+    public function quickStreamViewers()
+    {
+        return $this->hasMany(LiveQuickStreamViewer::class, 'viewer_id');
+    }
+
+    // Professional session viewers
+    public function professionalSessionViewers()
+    {
+        return $this->hasMany(LiveProfessionalStreamSessionViewer::class, 'viewer_id');
+    }
+		
+		
+			
 		
 		
 		
