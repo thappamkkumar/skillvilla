@@ -57,6 +57,8 @@ import ShareStatsReducer from '../Slice/ShareStatsSlice';
 
 import FeedReducer from '../Slice/FeedSlice';
 
+import LiveStreamReducer from '../Slice/LiveStreamSlice';
+
 
 
 //admin
@@ -126,6 +128,8 @@ const RootReducer = combineReducers(
 		
 		
 		feedList: FeedReducer,  //for mix feed in home page
+		
+		LiveStreamData : LiveStreamReducer,  //for live stream data
 		
 		
 		

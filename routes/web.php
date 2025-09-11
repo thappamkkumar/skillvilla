@@ -79,6 +79,9 @@ Route::middleware(['api', 'auth:api'])->group(function () {
 	 
 	//Route group controller for communities messages feature
   require_once __DIR__.'/customerWebRoutes/communityMessageRoutes.php';
+	
+	//Routes for live streaming
+	require_once __DIR__.'/customerWebRoutes/liveStreamRoutes.php';
 });		 
 		
 		

@@ -1,6 +1,6 @@
 //state for live stream
 
-const liveData = {
+const liveStreamState = {
 	liveId: null,
 	liveType: null,
 	startedAt: null,
@@ -10,7 +10,7 @@ const liveData = {
 	liveSession: null, //{id, title, description,etc}
 	liveDetail: null, //if(type prof. stream) && {id, title, description,etc}
 	
-	publisherHold: false
+	publisherHold: false,	
 	publisher: null,
 	
 	viewerList: [],//[{id,name,user id, image, can_msg, can_live, is_live},{}]
@@ -30,3 +30,5 @@ const liveData = {
 	
 	joinedRequest: [],
 };
+
+export default liveStreamState;
