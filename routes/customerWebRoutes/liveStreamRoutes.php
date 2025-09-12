@@ -62,7 +62,7 @@
 		Route::post('get-selected-user-professional-live-stream', 'getSelectedUserProfessionalLiveStream')->name('user.getSelectedUserProfessionalLiveStream');
 		
 		//Route for get detail of professional live stream 
-		Route::post('get-professional-live-stream-detail', 'getProfessionalLiveStreamDetail')-.name('user.getProfessionalLiveStreamDetail');
+		Route::post('get-professional-live-stream-detail', 'getProfessionalLiveStreamDetail')->name('user.getProfessionalLiveStreamDetail');
 		
 		//Route for get session of professional live stream 
 		Route::post('get-professional-live-stream-sessions', 'getProfessionalLiveStreamSessions')->name('user.getProfessionalLiveStreamSessions');
@@ -101,10 +101,10 @@
 		//PROF. LIVE SESSION GO LIVE 
 		
 		//route for professional live stream start  
-		Route::post('professional-live-stream-start', 'professionalLiveStreamStart')->name('user.professionalLiveStreamStart')
+		Route::post('professional-live-stream-start', 'professionalLiveStreamStart')->name('user.professionalLiveStreamStart');
 		
 		//route for professional live stream end
-		Route::post('professional-live-stream-end', 'professionalLiveStreamEnd')->name('user.professionalLiveStreamEnd')
+		Route::post('professional-live-stream-end', 'professionalLiveStreamEnd')->name('user.professionalLiveStreamEnd');
 	
 	//------------------------------------------------------------------------------	
 	//------------------------------------------------------------------------------	
@@ -120,7 +120,7 @@
 		Route::post('live-stream-new-viewer', 'liveStreamNewViewer')->name('user.liveStreamNewViewer');
 		
 		//Route for viewer leave stream 
-		Route::post('live-stream-viewer-leave', 'liveStreamViewerLeave')->name('user.liveStreamViewerLeave')
+		Route::post('live-stream-viewer-leave', 'liveStreamViewerLeave')->name('user.liveStreamViewerLeave');
 		
 		
 		
