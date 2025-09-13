@@ -9,6 +9,7 @@ import AddFreelanceWorkPage from '../../Pages/Customer/FreelancePage/AddFreelanc
 import AddNewCommunityPage from '../../Pages/Customer/CommunityPage/AddNewCommunityPage';
 import RegisterCompanyPage from '../../Pages/Customer/CompanyPage/RegisterCompanyPage';
 import AddStoriesPage from '../../Pages/Customer/StoriesPage/AddStoriesPage';
+import CreateLiveStreamPage from '../../Pages/Customer/LiveStreamPage/CreateLiveStreamPage';
   
 
 const CreateContentRoutes = () => (
@@ -24,6 +25,7 @@ const CreateContentRoutes = () => (
 			<Route path="freelance" element={<AddFreelanceWorkPage />} /> 
 			<Route path="community" element={<AddNewCommunityPage />} /> 
 			<Route path="story" element={<AddStoriesPage />} />
+			<Route path="live-stream" element={<CreateLiveStreamPage />} />
 		</Route>
 );
 

@@ -15,6 +15,7 @@ const CreateType = ({communityId=0}) => {
     { to: `/create/problem`, label: 'Problem' },
     { to: `/create/job`, label: 'Job' },
     { to: `/create/freelance`, label: 'Freelance' }, 
+    { to: `/create/live-stream`, label: 'Live' }, 
   ];
 	
 	 const handleNavItemClick = useCallback((url) => {
