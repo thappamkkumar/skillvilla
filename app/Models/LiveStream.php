@@ -30,5 +30,10 @@ class LiveStream extends Model
         return $this->hasMany(LiveProfessionalStream::class, 'live_stream_id');
     }
 		
+		public function messages()
+    {
+        return $this->hasMany(LiveStreamMessages::class, 'live_stream_id');
+    }
+		
 		
 }

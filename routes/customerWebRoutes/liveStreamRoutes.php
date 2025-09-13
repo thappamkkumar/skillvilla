@@ -12,7 +12,7 @@
 		//Route for create professional live stream 
 		Route::post('create-professional-live-stream', 'createProfessionalLiveStream')->name('user.createProfessionalLiveStream');
 		
-		//Route for create session professional for live stream
+		//Route for create session  for professional  live stream
 		Route::post('create-live-stream-session', 'createLiveStreamSession')->name('user.createLiveStreamSession');
 		
 		
@@ -141,7 +141,7 @@
 		//MEMBER EXIT
 		
 	
-		//Route for exiting from member list  of live stream 
+		//Route for exiting from member list  of live stream (but still at viewer list of live stream)
 		Route::post('live-stream-member-exit', 'liveStreamMemberExit')->name('user.liveStreamMemberExit');
 		
 		
@@ -163,7 +163,7 @@
 		//Route for publisher hold live stream 
 		Route::post('live-stream-publisher-hold', 'liveStreamPublisherHold')->name('user.liveStreamPublisherHold');
 		
-		//Route for live stream member hold  
+		//Route for live stream hold (by member), only stop sharing data from member side, who put itself on hold 
 		Route::post('live-stream-member-hold', 'liveStreamMemberHold')->name('user.liveStreamMemberHold');
 		
 		
@@ -179,5 +179,6 @@
 		
 		
 	}
+	
  );
  
