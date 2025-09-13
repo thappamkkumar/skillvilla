@@ -16,19 +16,19 @@ use App\Models\LiveStream;
 //use App\Models\LiveStreamMessages;
  
  
-use App\Events\LiveStream\Ended.php;
-use App\Events\LiveStream\Hold.php;
-use App\Events\LiveStream\JoinedRequest.php;
-use App\Events\LiveStream\JoinRequestAccepted.php;
-use App\Events\LiveStream\JoinRequestCancelled.php;
-use App\Events\LiveStream\Message.php;
-use App\Events\LiveStream\Reaction.php;
-use App\Events\LiveStream\Signal.php;
-use App\Events\LiveStream\Started.php;
-use App\Events\LiveStream\ViewerHold.php;
-use App\Events\LiveStream\ViewerJoined.php;
-use App\Events\LiveStream\ViewerLeft.php;
-use App\Events\LiveStream\ViewerPaused.php; 
+use App\Events\LiveStream\Ended;
+use App\Events\LiveStream\Hold;
+use App\Events\LiveStream\JoinedRequest;
+use App\Events\LiveStream\JoinRequestAccepted;
+use App\Events\LiveStream\JoinRequestCancelled;
+use App\Events\LiveStream\Message;
+use App\Events\LiveStream\Reaction;
+use App\Events\LiveStream\Signal;
+use App\Events\LiveStream\Started;
+use App\Events\LiveStream\ViewerHold;
+use App\Events\LiveStream\ViewerJoined;
+use App\Events\LiveStream\ViewerLeft;
+use App\Events\LiveStream\ViewerPaused; 
  
 
 use JWTAUTH;
