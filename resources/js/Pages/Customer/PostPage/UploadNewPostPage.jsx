@@ -141,7 +141,7 @@ const UploadNewPostPage = ( ) => {
 									 <UploadNewPostDescription description={description}  setDescription={setDescription}/>	
 										
 									 <div className="pt-5 pb-3  ">
-										<Button    type="submit"  variant="dark"    id="uploadPostSubmitBTNID" title="upload new post" className="    w-100 "   >  Submit </Button>
+										<Button    type="submit"  variant="dark"    id="uploadPostSubmitBTNID" title="Submit new post" className="    w-100 "   >  Submit </Button>
 									 </div>
 									 
 									

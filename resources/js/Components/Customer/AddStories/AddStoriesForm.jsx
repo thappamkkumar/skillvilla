@@ -41,8 +41,8 @@ const AddProblemForm = ({ formData, setFormData, errors, onSubmit,   }) => {
 								 
                  
 
-                <Button variant="dark" type="submit"   className="w-100 mt-3  " title="Upload you story" id="addStoriesFormSubmitButton">
-                    Upload
+                <Button variant="dark" type="submit"   className="w-100 mt-3  " title="Submit your story" id="addStoriesFormSubmitButton">
+                    Submit
                 </Button>
             </Form>
 

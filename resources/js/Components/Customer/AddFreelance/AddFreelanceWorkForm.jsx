@@ -274,7 +274,7 @@ const AddFreelanceWorkForm = ({ formData, setFormData, errors, setErrors, onSubm
 								<Row  className="w-100   m-0">
                     <Col xs={12}>
                         	{/* Submit Button */}
-												<Button type="submit" className="w-100 mt-3 " variant="dark" id="submitFormButton" disabled={submitting}>
+												<Button type="submit" className="w-100 mt-3 " variant="dark" id="submitFormButton" title="Submit Freelance gig." disabled={submitting}>
 													{update ? 'Save changes' : 'Submit'}
 											</Button>
                     </Col>
