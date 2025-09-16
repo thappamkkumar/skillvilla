@@ -4,7 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
- 
+use Illuminate\Support\Facades\DB;
+
 
 use App\Models\LiveStream;
 //use App\Models\LiveQuickStream;
@@ -31,7 +32,7 @@ use App\Events\LiveStream\ViewerLeft;
 use App\Events\LiveStream\ViewerPaused; 
  
 
-use JWTAUTH;
+use JWTAuth;
 use Exception;
 
 class LiveStreamController extends Controller
@@ -296,11 +297,42 @@ class LiveStreamController extends Controller
 			try
 			{
 				// Get logged-in user
-				$user = JWTAUTH::parseToken()->authenticate();
+				$user = JWTAuth::parseToken()->authenticate();
 				
+				// Start a database transaction (so if one fails, both rollback)
+        DB::beginTransaction();
 				
-				$data = ['status'=> true, 'message' => ''];
+				// 1. Create LiveStream
+				$liveStream = LiveStream::create(['publisher_id'=> $user->id	]);
 				
+				  // 2. Create QuickStream linked to LiveStream
+				$liveStream->quickStreams()->create([
+            'is_recording' => false,
+            'started_at'   => now(),
+            'on_hold'      => false,
+            'can_chat'     => true,
+            'speaker_off'  => false,
+            'camera_off'   => false,
+            'mic_off'      => false,
+        ]);
+				
+				// End  database transaction 
+        DB::commit();
+				
+				 // ?? Load quickStreams into the liveStream model
+        $liveStream->load('quickStreams');
+				
+        return response()->json([
+            'status'  => true,
+            'message' => 'LiveStream and QuickStream created successfully.',
+            'data'    => [
+                'live_stream'  => $liveStream, 
+            ],
+        ]);
+
+				
+				$data = ['status'=> true, 'message' => 'utyutyu'];
+				return response()->json($data);
 			}
 			catch(Exception $e)
 			{

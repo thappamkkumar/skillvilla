@@ -31,13 +31,26 @@ const QuickLiveStream = ({
 		try
 		{
 			setSubmitting(true);
-			 
-			setsubmitionMSG('live');
+			
+			//call api to create quick live stream
+			
+			const result = await serverConnection('/quick-live-stream-start', [], authToken);
+			console.log(result);
+			if(result?.status == true)
+			{
+				setsubmitionMSG("Live stated.");
+			}
+			else
+			{
+				setsubmitionMSG(result?.message || 'Failed to create quick live stream. Please try again.');
+			}
+			
 			
 		}
 		catch(e)
 		{
-			setsubmitionMSG('error:- ' + e);
+			setsubmitionMSG('An error occurred. Please try again.');
+			console.log('error:- ' + e);
 		}
 		finally
 		{
