@@ -23,12 +23,17 @@ import manageVisitedUrl from '../CustomHook/manageVisitedUrl';
 import useWindowHeight  from '../CustomHook/useWindowHeight';
 
 import useCommunityNewMessageWebsocket from '../Websockets/Community/useCommunityNewMessageWebsocket'; 
+
+//call websockets
 import useIncomingCallWebsocket from '../Websockets/Call/useIncomingCallWebsocket'; 
 import useCallEndWebsocket from '../Websockets/Call/useCallEndWebsocket'; 
 import useCallAcceptWebsocket from '../Websockets/Call/useCallAcceptWebsocket'; 
 import useCallRestoreWebsocket from '../Websockets/Call/useCallRestoreWebsocket'; 
 import useCallHoldWebsocket from '../Websockets/Call/useCallHoldWebsocket'; 
-import useCallSignalWebsocket from '../Websockets/Call/useCallSignalWebsocket'; 
+import useCallSignalWebsocket from '../Websockets/Call/useCallSignalWebsocket';
+
+//live stream websockets  
+import useLiveStreamStartWebsocket from '../Websockets/LiveStream/useLiveStreamStartWebsocket'; 
  
  
  import { updateChatCallState } from '../StoreWrapper/Slice/ChatCallSlice';
@@ -95,6 +100,8 @@ const CustomerLayoutPage = () => {
 	
 	// Call the  hook for websockets event listeners for community message
 	useCommunityNewMessageWebsocket();
+	
+	//call hook for call websockets
 	useIncomingCallWebsocket(logedUserData);
 	useCallEndWebsocket(logedUserData, peerConRef); 
 	useCallHoldWebsocket(logedUserData); 
@@ -102,6 +109,9 @@ const CustomerLayoutPage = () => {
 	useCallRestoreWebsocket(logedUserData, chatCallData.callId	, onStartCall, ); 
 	useCallSignalWebsocket(	logedUserData,	chatCallData.callId	,	 onOffer, onAnswer, onICEConnection ); 
 	
+	//call hook for live stream websockets 
+	
+	useLiveStreamStartWebsocket(logedUserData);
 
 	/**
 	* Restore active call state on refresh

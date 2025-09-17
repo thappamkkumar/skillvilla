@@ -270,4 +270,9 @@ Broadcast::channel('call.{userId}', function ($user, $userId) {
     return (int) $user->id === (int) $userId;
 });
 
+//channel for all events related to live stream
+Broadcast::channel('live-stream.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId; 
+});
+
   

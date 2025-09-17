@@ -49,11 +49,12 @@ const QuickLiveStream = ({
 					}
 				));
 				
-				setsubmitionMSG("Live stated.");
+				 
 			}
 			else
 			{
 				setsubmitionMSG(result?.message || 'Failed to create quick live stream. Please try again.');
+				setShowModel(true);
 			}
 			
 			
@@ -62,10 +63,10 @@ const QuickLiveStream = ({
 		{
 			setsubmitionMSG('An error occurred. Please try again.');
 			console.log('error:- ' + e);
+			setShowModel(true);
 		}
 		finally
-		{
-			setShowModel(true);
+		{ 
 			setSubmitting(false);
 		}
 		

@@ -341,6 +341,23 @@ class LiveStreamController extends Controller
 				}	
 				
 				
+				// Example: fetch followers of logged-in user
+				$followers = $user->followers()->pluck('follower_id'); // adjust relation name
+				 
+						
+				//dispatch event for broadcast 
+				Started::dispatch([
+								'follower_ids' => $followers,
+								'publisher'=> $liveStream->publisher ,
+								'live_stream_id' => $liveStream->id,
+								'live_type' => 'quick', 
+								'started_at'=> $quickStream->started_at,
+						]);
+				 				
+				 
+				
+				
+				
 				$data = [
 						'status'  => true,
 						'message' => 'LiveStream and QuickStream created successfully.',
