@@ -1,19 +1,31 @@
 // reducer for live stream
 
 const LiveStreamReducer = {
-	updateLiveStram(state, action){
+	
+	updateLiveStreamState(state, action){
 		
 		switch(action.payload.type)
 		{
 			
 			case "liveStreamStart":
 			{
+				const liveStreamData = action.payload.data;
+				 
+				state.liveId = liveStreamData.id;
+				state.liveStatus = 'live';
+				
+				state.publisher = liveStreamData.publisher;
+				state.liveType = liveStreamData.live_type;
+				
+				state.startedAt = liveStreamData.started_at; 
+				
 				
 				break;
 			}
 			
 			case "refresh":
 			{
+				 
 				state.liveId = null;
 				state.liveType = null;
 				state.startedAt = null;
@@ -53,6 +65,7 @@ const LiveStreamReducer = {
 		
 		
 	},
+
 };
 
 export default LiveStreamReducer;

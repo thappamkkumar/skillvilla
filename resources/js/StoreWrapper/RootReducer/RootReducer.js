@@ -129,7 +129,7 @@ const RootReducer = combineReducers(
 		
 		feedList: FeedReducer,  //for mix feed in home page
 		
-		LiveStreamData : LiveStreamReducer,  //for live stream data
+		liveStreamData : LiveStreamReducer,  //for live stream data
 		
 		
 		

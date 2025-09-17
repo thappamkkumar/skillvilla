@@ -7,9 +7,9 @@ const LiveStreamSlice = createSlice({
 	
 	name: 'liveStreamData',
 	initialState: liveStreamState,
-	reducer:LiveStreamReducer,
+	reducers: LiveStreamReducer,
 	
 });
 
-export const {updateLiveStram} = LiveStreamSlice.actions;
+export const {updateLiveStreamState} = LiveStreamSlice.actions;
 export default LiveStreamSlice.reducer;

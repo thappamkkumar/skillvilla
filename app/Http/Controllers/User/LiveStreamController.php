@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 use App\Models\LiveStream;
@@ -319,19 +320,41 @@ class LiveStreamController extends Controller
 				// End  database transaction 
         DB::commit();
 				
-				 // ?? Load quickStreams into the liveStream model
-        $liveStream->load('quickStreams');
-				
-        return response()->json([
-            'status'  => true,
-            'message' => 'LiveStream and QuickStream created successfully.',
-            'data'    => [
-                'live_stream'  => $liveStream, 
-            ],
+				 //   Load quickStreams and publisher into the liveStream model
+         $liveStream->load([
+            'quickStreams',
+            'publisher:id,userID,name', // adjust to your actual User columns
+            'publisher.customer:id,user_id,image'
         ]);
 
+				 
+       
 				
-				$data = ['status'=> true, 'message' => 'utyutyu'];
+				$quickStream = $liveStream->quickStreams->last(); // collection helper
+				
+				
+				if ($liveStream->publisher->customer != null && !filter_var($liveStream->publisher->customer->image, FILTER_VALIDATE_URL)) 
+				{ 
+					$liveStream->publisher->customer->image = $liveStream->publisher->customer->image
+					? url(Storage::url('profile_image/' . $liveStream->publisher->customer->image))  
+					: null; 
+				}	
+				
+				
+				$data = [
+						'status'  => true,
+						'message' => 'LiveStream and QuickStream created successfully.',
+						'data'    => [
+								'live_stream' => [
+										'id'           => $liveStream->id,
+										'publisher' => $liveStream->publisher ,
+										'live_type' => 'quick' ,
+									  'started_at'    => $quickStream->started_at,
+										 
+								],
+						],
+				];
+
 				return response()->json($data);
 			}
 			catch(Exception $e)

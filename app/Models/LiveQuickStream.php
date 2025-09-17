@@ -22,6 +22,18 @@ class LiveQuickStream extends Model
 		'mic_off',    
 		];
 		
+		protected function casts(): array
+		{
+				return [  
+						'on_hold' => 'boolean',
+						'can_chat' => 'boolean',
+						'is_recording' => 'boolean',
+						'speaker_off' => 'boolean',
+						'camera_off' => 'boolean',
+						'mic_off' => 'boolean',
+					];
+		}
+		
 		public function liveStream()
     {
         return $this->belongsTo(LiveStream::class, 'live_stream_id');

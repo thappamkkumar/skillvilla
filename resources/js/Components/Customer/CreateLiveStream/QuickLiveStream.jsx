@@ -11,17 +11,18 @@ import { BsBroadcast } from "react-icons/bs";
 
 import serverConnection from '../../../CustomHook/serverConnection';
 
+import {updateLiveStreamState} from '../../../StoreWrapper/Slice/LiveStreamSlice';
 
 const QuickLiveStream = ({
 	setShowModel,
 	setsubmitionMSG,
 }) => {
 	const authToken = useSelector((state) => state.auth.token); //selecting token from store 
+	const liveStreamData = useSelector((state) => state.liveStreamData); //selecting token from store 
 	const [submitting, setSubmitting] = useState(null);
 	const dispatch = useDispatch(); 
 	
-	
-	
+	   
 	//function go for quick live  
 	const goQuickLive = useCallback(async()=>{
 		if(!authToken)
@@ -35,9 +36,19 @@ const QuickLiveStream = ({
 			//call api to create quick live stream
 			
 			const result = await serverConnection('/quick-live-stream-start', [], authToken);
-			console.log(result);
+			 console.log(result);
+			
 			if(result?.status == true)
 			{
+				const liveStreamData =  result.data.live_stream;
+				
+				dispatch(updateLiveStreamState(
+					{ 
+					'type':'liveStreamStart',  
+					'data': liveStreamData
+					}
+				));
+				
 				setsubmitionMSG("Live stated.");
 			}
 			else
