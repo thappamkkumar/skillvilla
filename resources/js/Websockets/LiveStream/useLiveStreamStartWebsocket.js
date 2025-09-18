@@ -25,13 +25,14 @@ const useLiveStreamStartWebsocket = (loggedUserData) => {
           //console.log("Live Stream Start Data:", e.data);
 					
 					const liveStreamData = e.data
-					dispatch(updateLiveStreamState(
+				/*	dispatch(updateLiveStreamState(
 					{ 
 						'type':'liveStreamStart',  
 						'data': liveStreamData
 						}
 					));
-					
+					*/
+					console.log('add live stream active live list state. dont start live directly');
         });
     };
 
