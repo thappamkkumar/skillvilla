@@ -14,7 +14,7 @@ import { updateChatMessageState } from '../../../StoreWrapper/Slice/ChatMessageS
 import { updateChatCallState } from '../../../StoreWrapper/Slice/ChatCallSlice';
  
 import serverConnection from '../../../CustomHook/serverConnection';  
-import handleImageError from "../../../CustomHook/handleImageError";
+//import handleImageError from "../../../CustomHook/handleImageError";
 import useWindowHeight from "../../../CustomHook/useWindowHeight";
 
 const VideoCallModal = ({
