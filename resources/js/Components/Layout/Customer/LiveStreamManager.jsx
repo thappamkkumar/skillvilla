@@ -22,8 +22,7 @@ const LiveStreamManager = () => {
 	
   return(
 		<>
-			<LiveStreamModel 
-				ICE_CONFIG = {ICE_CONFIG}	
+			<LiveStreamModel  	
 				peerConRef = {peerConRef}	
 				publisherVideoRef = {publisherVideoRef}	
 			/>
