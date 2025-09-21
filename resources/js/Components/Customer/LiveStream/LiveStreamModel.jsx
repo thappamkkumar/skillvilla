@@ -5,6 +5,7 @@ import  Row from "react-bootstrap/Row";
 import  Col from "react-bootstrap/Col";
 
 import PublisherStream from './VideoStreamViews/PublisherStream';
+import StreamControlActions from './StreamControlActions/StreamControlActions';
 import MessageAlert from '../../../Components/MessageAlert';
 
 import useWindowHeight from "../../../CustomHook/useWindowHeight";
@@ -37,21 +38,30 @@ const LiveStreamModel = ({
 							main header timer->left side,  (btn-> resize model, open/close side panel)->right side
 						</div>
 						{/*BODY*/} 
-						<div className="flex-grow-1   ">
+						<div className="flex-grow-1    ">
 							<Row className="w-100 h-100 m-0">
 								<Col
 									sm={12} lg={7} xl={8} 
-									className=" p-0 m-0bg-success ">
+									className="   p-0 m-0 ">
+										<div className="w-100 h-100 position-relative " >
+											{/*publisher video*/}
+											<PublisherStream 
+												publisherVideoRef={publisherVideoRef}
+												setShowModel={setShowModel}
+												setsubmitionMSG={setsubmitionMSG}
+											/>
+											
+											{/*manual controller*/}
+											{
+												!resizeScreen &&
+												<StreamControlActions 
+													peerConRef={peerConRef}
+													setShowModel={setShowModel}
+													setsubmitionMSG={setsubmitionMSG}
+												/>
+											}
 										
-										{/*publisher video*/}
-										<PublisherStream 
-											publisherVideoRef={publisherVideoRef}
-											setShowModel={setShowModel}
-											setsubmitionMSG={setsubmitionMSG}
-										/>
-										
-										{/*manual controller*/}
-										
+										</div>
 									</Col>
 								<Col
 									sm={12} lg={5} xl={4} 

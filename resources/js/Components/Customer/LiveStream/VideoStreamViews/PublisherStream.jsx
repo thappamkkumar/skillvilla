@@ -19,9 +19,12 @@ const PublisherStream = ({
 			try
 			{ 
 				// Get local   stream
-				const localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+				//const localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
 				if (publisherVideoRef.current) { 
-					publisherVideoRef.current.srcObject = localStream; 
+					//publisherVideoRef.current.srcObject = localStream; 
+					console.log('uncomment above live');
+					setsubmitionMSG('publisher media start.');
+					setShowModel(true);
 				}
 			}
 			catch(e)
@@ -38,10 +41,10 @@ const PublisherStream = ({
 			getPublisherMedia();
 		}
 	
-	}, [logedUserData, liveStreamData]);
+	}, []);
 	
 	return(
-		<div className="w-100 h-100    ">
+		<div className="w-100 h-100  position-absolute left-0 top-0 z-1   ">
 			<video  
 				className="w-100 h-100 object-fit-cover   "
 				ref={publisherVideoRef}
