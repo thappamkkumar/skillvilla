@@ -24,7 +24,7 @@ const LiveStreamModel = ({
 
 	const windowHeight = useWindowHeight();
 	
-	
+ 
 	return(
 			<div
 				className={`position-fixed top-0 overflow-hidden  bg-dark ${resizeScreen && 'small-call-container end-0  m-1 rounded-3'} `}

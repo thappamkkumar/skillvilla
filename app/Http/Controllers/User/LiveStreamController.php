@@ -386,14 +386,29 @@ class LiveStreamController extends Controller
 		//quick live stream end
 		function quickLiveStreamEnd(Request $request)
 		{
+			 
 			try
-			{
+			{ 
+				$liveId = $request->liveId;
+				if(!$liveId)
+				{
+					$data = ['status' => false,'message'=> "Live Stream Id Not Found In Request."];
+					return response()->json($data);
+				}
+				 
 				// Get logged-in user
 				$user = JWTAUTH::parseToken()->authenticate();
 				
+				$live = LiveStream::find($liveId);
+				if(!$live)
+				{
+					$data = ['status' => false,'message'=> "Live Stream Not Found."];
+					return response()->json($data);
+				}
+				$live->delete();
 				
-				$data = ['status'=> true, 'message' => ''];
-				
+				$data = ['status'=> true, 'message' => 'Quick Live Stream Ended Successfully.', 'live'=>$live];
+				return response()->json($data);
 			}
 			catch(Exception $e)
 			{

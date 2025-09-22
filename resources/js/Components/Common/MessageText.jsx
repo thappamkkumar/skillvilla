@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import Button from 'react-bootstrap/Button';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 
@@ -34,4 +34,4 @@ const MessageText = ({ text, id }) => {
   );
 };
 
-export default MessageText;
+export default memo(MessageText);

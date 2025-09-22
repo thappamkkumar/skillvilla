@@ -165,7 +165,7 @@ const CallManager = () => {
 			} 
 			catch (err) 
 			{
-				console.error('Error restoring call state:', err);
+				console.error('Error restoring call state:');
 			}
 		};	
 				

@@ -1,6 +1,6 @@
 
 
-import   { useEffect } from 'react';
+import   { useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 
 const PublisherStream = ({
@@ -34,14 +34,13 @@ const PublisherStream = ({
 				setShowModel(true);
 			}
 			
-		};
-		
+		}; 
 		if(logedUserData?.id === liveStreamData?.publisher?.id)
 		{
 			getPublisherMedia();
 		}
 	
-	}, []);
+	}, [logedUserData,liveStreamData]); 
 	
 	return(
 		<div className="w-100 h-100  position-absolute left-0 top-0 z-1   ">
@@ -58,4 +57,4 @@ const PublisherStream = ({
 	);
 };
 
-export  default PublisherStream;
+export  default memo(PublisherStream);

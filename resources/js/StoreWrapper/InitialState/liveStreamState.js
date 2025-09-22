@@ -14,7 +14,7 @@ const liveStreamState = {
 	publisher: null,
 	
 	viewerList: [],//[{id,name,user id, image, can_msg, can_live, is_live},{}]
-	currentViewer: null, //{id,name,user id, image}
+	currentViewer: null, //{id,name,user id, image,...}
 	
   isMuted: false,
   cameraOn: true,
