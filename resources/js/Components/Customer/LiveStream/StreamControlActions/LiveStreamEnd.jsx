@@ -94,32 +94,68 @@ const LiveStreamEnd = ({
 	},[authToken, liveStreamData,]);
 	
 	//leave live stream by viewer 
-	const leaveLiveStream = useCallback(()=>{
+	const leaveLiveStream = useCallback(async()=>{
 		
 		try
 		{
 			let url = "/live-stream-viewer-leave";
-			console.log('leave -> remove or delete user from quick_live_viewer table.');
-		
-		}
-		catch (err) 
+			const requestData = {
+					liveId: liveStreamData.liveId, 
+				};
+				
+			const result = await serverConnection(url, requestData, authToken);
+			
+			 console.log(result);
+			
+			if(result?.status === true)
 			{
-				setsubmitionMSG('An error occurred. Please try again.');
-				console.log('error:- ' + e);
+				dispatch(updateLiveStreamState(
+					{ 
+						'type':'refresh',   
+					}
+				));
+			
+			}
+			else
+			{
+				setsubmitionMSG(result?.message || 'Failed to leave live stream. Please try again.');
 				setShowModel(true);
 			}
+				
+			 
+		}
+		catch (err) 
+		{
+			setsubmitionMSG('An error occurred. Please try again.');
+			console.log('error:- ' + e);
+			setShowModel(true);
+		}
 		
 	},[authToken, liveStreamData,]);
 	
 	
 	//exit live stream as member by viewer 
-	const exitLiveStream = useCallback(()=>{
+	const exitLiveStream = useCallback(async()=>{
 		
 		try
 		{
 			let url = "/live-stream-member-exit";
+			const requestData = {
+					liveId: liveStreamData.liveId, 
+				};
+				
+			const result = await serverConnection(url, requestData, authToken);
 			
-			console.log('exit -> update quick_live_viewer table where is_sharing into false to exit as member ');
+			 console.log(result);
+			
+			if(result?.status === true)
+			{
+				/*dispatch(updateLiveStreamState(
+					{ 
+						'type':'refresh',   
+					}
+				));*/
+			}
 		}
 		catch (err) 
 		{

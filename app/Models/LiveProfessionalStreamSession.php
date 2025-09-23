@@ -18,7 +18,7 @@ class LiveProfessionalStreamSession extends Model
         'is_recording',
         'recording_type',
         'recording_url',
-        'status',
+        'status',//live,idle,scheduled
         'started_at',
         'ended_at',
         'scheduled_at',

@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 
 use App\Models\LiveStream;
 //use App\Models\LiveQuickStream;
-//use App\Models\LiveQuickStreamViewer;
-//use App\Models\LiveProfessionalStreamSessionViewer;
+use App\Models\LiveQuickStreamViewer;
+use App\Models\LiveProfessionalStreamSessionViewer;
 //use App\Models\LiveProfessionalStreamSession;
 //use App\Models\LiveProfessionalStreamCategory;
 //use App\Models\LiveProfessionalStream;
@@ -485,14 +486,55 @@ class LiveStreamController extends Controller
 		// viewer live the live stream
 		function liveStreamViewerLeave(Request $request)
 		{
+			 
 			try
 			{
+				
+				$liveStreamId = $request->liveId;
+				if(!$liveStreamId)
+				{
+					$data = ['status' => false,'message'=> "Live Stream Id Not Found In Request."];
+					return response()->json($data);
+				}
 				// Get logged-in user
-				$user = JWTAUTH::parseToken()->authenticate();
+				$user = JWTAUTH::parseToken()->authenticate(); 
+        $viewerId = $user->id;
 				
+				// 2. Fetch the LiveStream with related streams
+        $liveStream = LiveStream::with(['quickStreams', 'professionalStreams'])->find($liveStreamId);
+
+				if (!$liveStream) {
+            return response()->json(['status'=> fasle, 'message' => 'Live stream not found']);
+        }
 				
-				$data = ['status'=> true, 'message' => ''];
+				 // 3. Quick Stream: direct delete
+        if ($liveStream->quickStreams) 
+				{
+            LiveQuickStreamViewer::where('viewer_id', $viewerId)
+                ->where('live_quick_stream_id', $liveStream->quickStream->id)
+                ->delete();  
+        } // 4. Professional Stream: go through live sessions
+				else if($liveStream->professionalStreams)
+				{
+          $liveSession = $liveStream->professionalStreams->sessions()
+                ->where('status', 'live')
+                ->first();
+					if ($liveSession) 
+					{
+						LiveProfessionalStreamSessionViewer::where('viewer_id', $viewerId)
+								->where('live_professional_stream_session_id', $liveSession->id)
+								->delete();
+					}
+
+        } 
+				else 
+				{
+            return response()->json(['status'=> false, 'message' => 'Stream type not found']);
+        }
+
 				
+				$data = ['status'=> true, 'message' => 'Successfully leave the live stream.'];
+				return response()->json($data);
 			}
 			catch(Exception $e)
 			{
@@ -571,12 +613,51 @@ class LiveStreamController extends Controller
 		{
 			try
 			{
+				$liveStreamId = $request->liveId;
+				if(!$liveStreamId)
+				{
+					$data = ['status' => false,'message'=> "Live Stream Id Not Found In Request."];
+					return response()->json($data);
+				}
 				// Get logged-in user
-				$user = JWTAUTH::parseToken()->authenticate();
+				$user = JWTAUTH::parseToken()->authenticate(); 
+        $viewerId = $user->id;
 				
+				// 2. Fetch the LiveStream with related streams
+        $liveStream = LiveStream::with(['quickStreams', 'professionalStreams'])->find($liveStreamId);
+
+				if (!$liveStream) {
+            return response()->json(['status'=> fasle, 'message' => 'Live stream not found']);
+        }
 				
-				$data = ['status'=> true, 'message' => ''];
+				 // 3. Quick Stream: direct delete
+        if ($liveStream->quickStreams) 
+				{
+            LiveQuickStreamViewer::where('viewer_id', $viewerId)
+                ->where('live_quick_stream_id', $liveStream->quickStream->id)
+               ->update(['is_sharing' => false]); 
+        } // 4. Professional Stream: go through live sessions
+				else if($liveStream->professionalStreams)
+				{
+          $liveSession = $liveStream->professionalStreams->sessions()
+                ->where('status', 'live')
+                ->first();
+					if ($liveSession) 
+					{
+						LiveProfessionalStreamSessionViewer::where('viewer_id', $viewerId)
+								->where('live_professional_stream_session_id', $liveSession->id)
+								->update(['is_sharing' => false]);
+					}
+
+        } 
+				else 
+				{
+            return response()->json(['status'=> false, 'message' => 'Stream type not found']);
+        }
+
 				
+				$data = ['status'=> true, 'message' => 'Successfully exit as member.'];
+				return response()->json($data);
 			}
 			catch(Exception $e)
 			{
