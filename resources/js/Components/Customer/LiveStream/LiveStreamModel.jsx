@@ -56,6 +56,7 @@ const LiveStreamModel = ({
 												!resizeScreen &&
 												<StreamControlActions 
 													peerConRef={peerConRef}
+													publisherVideoRef={publisherVideoRef}
 													setShowModel={setShowModel}
 													setsubmitionMSG={setsubmitionMSG}
 												/>

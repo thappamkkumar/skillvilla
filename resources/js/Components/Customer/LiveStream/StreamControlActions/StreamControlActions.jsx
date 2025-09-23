@@ -1,10 +1,11 @@
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import LiveStreamEnd from './LiveStreamEnd';
 
 const StreamControlActions = ({
 	peerConRef,
+	publisherVideoRef,
 	setShowModel,
 	setsubmitionMSG,
 }) => {
@@ -12,17 +13,21 @@ const StreamControlActions = ({
 	const liveStreamData = useSelector((state) => state.liveStreamData);
   
 	const [visible, setVisible] = useState(true);
-  const timerRef = useRef(null);
+  const timerRef = useRef(null); 
 	
-	
-	 // Start or restart auto-hide timer
-  const startTimer = () => {
+	 // Start or restart auto-hide timer 
+	const startTimer = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => setVisible(false), 30000); // 30 seconds
-  };
+  }, []);
 
   // Toggle visibility on interaction
-  const handleInteraction = () => {
+  const handleInteraction = useCallback((event) => {
+		if (!publisherVideoRef.current) return;
+
+    // Only toggle if the interaction happened on the video element
+    if (!publisherVideoRef.current.contains(event.target)) return;
+
     setVisible((prev) => {
       if (prev) {
         // If visible ? hide immediately
@@ -34,40 +39,35 @@ const StreamControlActions = ({
         return true;
       }
     });
-  };
+   }, [publisherVideoRef, startTimer]);
 
   useEffect(() => {
     // Start initial timer
     startTimer();
 
-    // Add global event listeners
-    window.addEventListener('pointerdown', handleInteraction); // covers click, touch, stylus
-    window.addEventListener('keydown', handleInteraction);     // keyboard
-    window.addEventListener('mousemove', startTimer);          // optional: reset timer on mouse move
-    window.addEventListener('touchmove', startTimer);          // optional: reset timer on touch move
-    window.addEventListener('scroll', startTimer);             // optional: reset timer on scroll
+    if (!publisherVideoRef.current) return;
 
+    // Add event listeners only on publisher video
+    const videoEl = publisherVideoRef.current;
+    videoEl.addEventListener('pointerdown', handleInteraction);
+     
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      window.removeEventListener('pointerdown', handleInteraction);
-      window.removeEventListener('keydown', handleInteraction);
-      window.removeEventListener('mousemove', startTimer);
-      window.removeEventListener('touchmove', startTimer);
-      window.removeEventListener('scroll', startTimer);
+      videoEl.removeEventListener('pointerdown', handleInteraction);
+       
     };
-  }, []);
+  }, [publisherVideoRef, handleInteraction, startTimer]);
 
-  if (!visible) return null;
-
-
+  
+  if (!visible) return null; 
 
 	
 	return(
-		<div  
-			 className={`w-100 position-absolute left-0 bottom-0 z-2 px-3 d-flex justify-content-center align-items-center transition-opacity duration-300 ${
+		<div   
+			 className={`  w-auto position-absolute start-50 bottom-0 z-2 px-3 d-flex justify-content-center align-items-center transition-opacity duration-300 ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
-      style={{ pointerEvents: visible ? 'auto' : 'none' }}
+      style={{ pointerEvents: visible ? 'auto' : 'none', transform: 'translateX(-50%)' }}
 		
 		>
 			<div 
