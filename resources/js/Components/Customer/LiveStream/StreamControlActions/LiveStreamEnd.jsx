@@ -68,6 +68,8 @@ const LiveStreamEnd = ({
 				
 				//console.log(result);
 				
+				console.log('also remove media from peer connection after end.');
+				
 				if(result?.status === true)
 				{
 					dispatch(updateLiveStreamState(

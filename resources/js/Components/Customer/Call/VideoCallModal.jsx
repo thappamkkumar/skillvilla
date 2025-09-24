@@ -346,7 +346,7 @@ const VideoCallModal = ({
 				{/*actions and local video container*/}
 				
 				<div
-					className={`position-absolute z-2 w-100 h-100 transition-opacity ${(  showUserManual) ? 'opacity-100  ' : 'opacity-0  '}`}
+					className={`position-absolute z-2 w-100 h-100   ${(  showUserManual) ? 'opacity-100  ' : 'opacity-0  '}`}
 					id="userMannual"
 					style={{ pointerEvents: showUserManual ? 'auto' : 'none', transition: 'opacity 0.3s ease' }}
 				>

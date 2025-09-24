@@ -45,13 +45,12 @@ const PublisherStream = ({
 	return(
 		<div className="w-100 h-100  position-absolute left-0 top-0 z-1   ">
 			<video  
-				className="w-100 h-100 object-fit-cover   "
+				className="w-100 h-100 object-fit-cover bg-dark  "
 				ref={publisherVideoRef}
 				autoPlay
 				playsInline
 				loop={true}
-				muted 
-				style={{ backgroundColor: "#000" }}
+				muted  
 			></video>
 		</div>
 	);

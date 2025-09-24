@@ -1,5 +1,5 @@
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, memo } from 'react';
 import { useSelector } from 'react-redux';
 import LiveStreamEnd from './LiveStreamEnd';
 
@@ -64,7 +64,7 @@ const StreamControlActions = ({
 	
 	return(
 		<div   
-			 className={`  w-auto position-absolute start-50 bottom-0 z-2 px-3 d-flex justify-content-center align-items-center transition-opacity duration-300 ${
+			 className={`  w-100 position-absolute start-50 bottom-0 z-2 px-3 d-flex justify-content-center align-items-center transition-opacity duration-300 ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
       style={{ pointerEvents: visible ? 'auto' : 'none', transform: 'translateX(-50%)' }}
@@ -96,4 +96,4 @@ const StreamControlActions = ({
 
 };
 
-export default StreamControlActions;
+export default memo(StreamControlActions);
