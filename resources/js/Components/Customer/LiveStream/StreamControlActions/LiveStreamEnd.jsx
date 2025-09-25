@@ -215,7 +215,7 @@ const LiveStreamEnd = ({
 			</>
 		);
 	}
-	else if(logedUserData?.id ===  liveStreamData?.currentViewer?.user_id)
+	else if(logedUserData?.id ===  liveStreamData?.currentViewer?.user_id && liveStreamData?.currentViewer?.is_sharing === true)
 	{
 		return(
 			<>
@@ -277,7 +277,8 @@ const LiveStreamEnd = ({
 			</>
 		);
 	}
-	else{
+	else if(logedUserData?.id ===  liveStreamData?.currentViewer?.user_id && liveStreamData?.currentViewer?.is_sharing === false) 
+	{
 		
 		return(
 			<>
@@ -297,6 +298,12 @@ const LiveStreamEnd = ({
 			</>
 		);
 	}
+	else
+	{
+		return null;
+	}
+	
+	
 };
 
 export default memo(LiveStreamEnd);

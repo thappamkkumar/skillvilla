@@ -1,12 +1,22 @@
 
-import {memo} from 'react';
+import {memo, useState, useCallback} from 'react';
 
+import SidePanelHeader from './SidePanelHeader';
 
 const SidePanel = ({ 
 	sidePanel,
 	largeScreen,	
 }) => {
 	
+	const [selectedPanel, setSelectedPanel] = useState('chat');
+	
+	 // Map panel codes to their content
+  const panelContent = {
+    chat: <div>Chat</div>,
+    viewer: <div>Viewer</div>,
+    request: <div>Request</div>,
+    member: <div>Member</div>,
+  };
 	
 	return(
 		<div
@@ -19,7 +29,16 @@ const SidePanel = ({
 			`}
 		>
 			<div className="w-100 h-100 bg-dark border-start border-2 border-secondary ">
-			
+				<SidePanelHeader 
+					selectedPanel={selectedPanel}
+					setSelectedPanel={setSelectedPanel}
+				/>
+				<div className="text-white">
+				
+					{panelContent[selectedPanel] || <div>Unknown panel</div>} 
+					 
+				</div>
+				
 			
 			</div>
 		</div>
