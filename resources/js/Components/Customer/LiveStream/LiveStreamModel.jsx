@@ -7,6 +7,7 @@ import  Col from "react-bootstrap/Col";
 
 import MainHeader from './MainHeader/MainHeader';
 import PublisherStream from './VideoStreamViews/PublisherStream';
+import SidePanel from './SidePanel/SidePanel';
 import StreamControlActions from './StreamControlActions/StreamControlActions';
 import MessageAlert from '../../../Components/MessageAlert';
 
@@ -20,6 +21,7 @@ const LiveStreamModel = ({
 }) =>{
 	const liveStreamData = useSelector((state) => state.liveStreamData);
   
+	const [largeScreen, setLargeScreen] = useState(() => window.innerWidth >= 992);
 	const [sidePanel, setSidePanel] = useState(() => window.innerWidth >= 992);
 	const [resizeScreen, setResizeScreen] = useState(false);
 	const [submitionMSG, setsubmitionMSG] = useState(null); //state for store info about form submition  
@@ -30,6 +32,8 @@ const LiveStreamModel = ({
 	useEffect(() => {
     const handleResize = debounce(() => {
       const shouldBeOpen = window.innerWidth >= 992;
+			 
+      setLargeScreen(prev => (prev !== shouldBeOpen ? shouldBeOpen : prev));
       setSidePanel(prev => (prev !== shouldBeOpen ? shouldBeOpen : prev));
     }, 150); // wait 150ms after resize stops
 
@@ -58,8 +62,9 @@ const LiveStreamModel = ({
 							setSidePanel={setSidePanel}
 							resizeScreen={resizeScreen}
 							setResizeScreen={setResizeScreen}
-						/>
+						/> 
 						
+							
 						{/*BODY*/} 
 						<div className="flex-grow-1     ">
 							<div className="w-100 h-100 d-flex position-relative  "> 
@@ -84,26 +89,18 @@ const LiveStreamModel = ({
 									
 									</div>
 									
-										{
-											!resizeScreen &&  
-											<div 
-											className={`d-none d-lg-block p-0 m-0 h-100 bg-info live-stream-side-panel-large ${
-													sidePanel ? "open" : "closed"
-												}`}
-											 
-											>
-												side panel for large screen	
-											</div>
-										}
-									{
-										!resizeScreen && 
-										<div 
-										className={`d-block d-lg-none p-0 m-0 h-100 bg-danger 		position-absolute top-0 end-0 z-3 live-stream-side-panel-small ${ sidePanel ? "open" : "closed"	}`}
-										 
-										>
-											side panel for small screen	
-										</div>
-									}
+									 
+									
+									{/* Side Panel*/}
+									{!resizeScreen && (
+									
+										<SidePanel 
+											sidePanel={sidePanel}
+											largeScreen={largeScreen}
+										/>
+										
+									)}
+
 									
 							</div>
 						</div>
