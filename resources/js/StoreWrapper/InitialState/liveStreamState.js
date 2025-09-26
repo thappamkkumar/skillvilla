@@ -16,6 +16,9 @@ const liveStreamState = {
 	viewerList: [],//[{id,name,user id, image, can_msg, can_live, is_live},{}]
 	currentViewer: null, //{id,name,user id, image,...}
 	
+	joinedRequest: [],
+	chatMessages: [],
+	
   isMuted: false,
   cameraOn: true,
   speakerOff: false, 
@@ -28,7 +31,6 @@ const liveStreamState = {
 	
 	error: null,
 	
-	joinedRequest: [],
 };
 
 export default liveStreamState;

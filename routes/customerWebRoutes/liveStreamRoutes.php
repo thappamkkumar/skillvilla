@@ -172,7 +172,7 @@
 		//MESSAGE AND REATION
 		
 		//Route for live stream chat or messages 
-		Route::post('/live-stream-massage', 'liveStreamMessage')->name('user.liveStreamMessage');
+		Route::post('/live-stream-massage-send', 'liveStreamMessageSend')->name('user.liveStreamMessageSend');
 		
 		//route for live stream reaction
 		Route::post('/live-stream-reaction', 'liveStreamReaction')->name('user.liveStreamReaction');

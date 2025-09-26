@@ -43,7 +43,7 @@ const SidePanelHeader = ({
           variant="outline-secondary"
           id={`${code}PaneltoggleBtn`}
           title={title}
-					className={`${selectedPanel == code ? 'bg-secondary text-white' : 'text-light'} border-0 `}
+					className={`${selectedPanel == code ? 'bg-secondary text-white' : 'text-light'} bg-opacity-75 border-0 `}
           onClick={() => setSelectedPanel(code)} // call function with code
         >
           {title}

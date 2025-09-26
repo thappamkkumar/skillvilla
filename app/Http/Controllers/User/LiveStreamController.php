@@ -753,8 +753,8 @@ class LiveStreamController extends Controller
 		}
 
 
-		// live stream messages
-		function liveStreamMessage(Request $request)
+		// live stream messages send
+		function liveStreamMessageSend(Request $request)
 		{
 			try
 			{
@@ -762,8 +762,8 @@ class LiveStreamController extends Controller
 				$user = JWTAUTH::parseToken()->authenticate();
 				
 				
-				$data = ['status'=> true, 'message' => ''];
-				
+				$data = ['status'=> true, 'message' => '', 'live_tream_d'=> $request->liveStreamId, 'live_message'=>$request->message];
+						return response()->json($data);
 			}
 			catch(Exception $e)
 			{
@@ -784,7 +784,7 @@ class LiveStreamController extends Controller
 				
 				
 				$data = ['status'=> true, 'message' => ''];
-				
+				return response()->json($data);
 			}
 			catch(Exception $e)
 			{

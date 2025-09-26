@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
+//import InputGroup from 'react-bootstrap/InputGroup';
 import { BsFillSendFill, BsPaperclip, BsX } from "react-icons/bs";
 
 import serverConnection from '../../../CustomHook/serverConnection'; 

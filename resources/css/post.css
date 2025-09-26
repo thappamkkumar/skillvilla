@@ -289,8 +289,8 @@
  .comment_profile_image
  {
 		width:2rem;
-		max-width:2rem;
-		max-height:2rem;
+		max-width:1.7rem;
+		max-height:1.7rem;
 		aspect-ratio:1/1;
 		object-fit:fit;
 		border-radius:50%;
