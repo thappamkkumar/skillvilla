@@ -5,7 +5,8 @@ import  Button from "react-bootstrap/Button";
 import {   
  BsArrowsAngleContract,
  BsArrowsAngleExpand ,
- BsList 
+ BsChevronCompactLeft, 
+ BsChevronCompactRight, 
  } from "react-icons/bs"; 
 
 const MainHeader = ({
@@ -86,14 +87,18 @@ const MainHeader = ({
 					!resizeScreen &&
 				 
 					<Button 
-						variant="outline-secondary"
+						variant="secondary"
 						id="sidePanelShowHideBtn"
-						title={`${sidePanel ?'Close':'Open' }`}
+						title={`${sidePanel ?'Close Panel':'Open Panel' }`}
 						className="border-0 text-light"
 						size={`${resizeScreen ?'sm':'md' }`}
 						onClick={panelHandlle}
-					>
-					<BsList  />
+					> 
+						{sidePanel ? 
+								<BsChevronCompactRight  />
+							: 
+								<BsChevronCompactLeft  />
+							}
 					</Button>
 				
 				}

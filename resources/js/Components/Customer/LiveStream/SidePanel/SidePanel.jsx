@@ -2,6 +2,10 @@
 import {memo, useState, useCallback} from 'react';
 
 import SidePanelHeader from './SidePanelHeader';
+import ChatPanel from './Panels/ChatPanel';
+import ViewersPanel from './Panels/ViewersPanel';
+import RequestsPanel from './Panels/RequestsPanel';
+import MembersPanel from './Panels/MembersPanel';
 
 const SidePanel = ({ 
 	sidePanel,
@@ -12,10 +16,10 @@ const SidePanel = ({
 	
 	 // Map panel codes to their content
   const panelContent = {
-    chat: <div>Chat</div>,
-    viewer: <div>Viewer</div>,
-    request: <div>Request</div>,
-    member: <div>Member</div>,
+    chat: <ChatPanel />,
+    viewer: <ViewersPanel  />,
+    request: <RequestsPanel />,
+    member: <MembersPanel />,
   };
 	
 	return(
