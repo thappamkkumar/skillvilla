@@ -40,7 +40,7 @@ const PublisherStream = ({
 			getPublisherMedia();
 		}
 	
-	}, [logedUserData,liveStreamData]); 
+	}, [ ]); 
 	
 	return(
 		<div className="w-100 h-100  position-absolute left-0 top-0 z-1   ">

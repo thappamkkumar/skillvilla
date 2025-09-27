@@ -1,6 +1,7 @@
 
-import {memo} from 'react';
+import {memo, useCallback} from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate  } from "react-router-dom";
 import Image from 'react-bootstrap/Image'; 
 import Button from 'react-bootstrap/Button'; 
 
@@ -10,133 +11,18 @@ const ChatMessages= () => {
 	const liveStreamData = useSelector((state) => state.liveStreamData);
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 
-	const messages = liveStreamData.chatMessages.length > 0 ? liveStreamData.chatMessages : [
-		{
-			id:1,
-			message:'hello',
-			live_stream_id:3,
-			sender_id: 1,
-			sender: {
-				id:1,
-				userID: 'adasdasd', 
-				customer: {
-					id:2, 
-					user_id:1, 
-					image:'image1.png',
-				}
-			}
-		},
-		{
-				id:2,
-			message:'werwe rewrew',
-			live_stream_id:3,
-			sender_id: 1,
-			sender: {
-				id:1,
-				userID: 'adasdasd', 
-				customer: {
-					id:2, 
-					user_id:1, 
-					image:'image1.png',
-				}
-			}
-		},
-		{
-				id:3,
-			message:'ewrew rewrew ew rewre wrew ewrew rewrew ewrew rewrew',
-			live_stream_id:3,
-			sender_id: 1,
-			sender: {
-				id:1,
-				userID: 'adasdasd', 
-				customer: {
-					id:2, 
-					user_id:1, 
-					image:'image1.png',
-				}
-			}
-		},
-		{
-				id:4,
-			message:'ewrew rewrew ew rewre wrew ewrew rewrew ewrew rewrew',
-			live_stream_id:3,
-			sender_id: 21,
-			sender: {
-				id:21,
-				userID: 'adasdasd', 
-				customer: {
-					id:2, 
-					user_id:1, 
-					image:'image1.png',
-				}
-			}
-		},
-		
-		
-		{
-			id:5,
-			message:'hello',
-			live_stream_id:3,
-			sender_id: 1,
-			sender: {
-				id:1,
-				userID: 'adasdasd', 
-				customer: {
-					id:2, 
-					user_id:1, 
-					image:'image1.png',
-				}
-			}
-		},
-		{
-				id:6,
-			message:'werwe rewrew',
-			live_stream_id:3,
-			sender_id: 1,
-			sender: {
-				id:1,
-				userID: 'adasdasd', 
-				customer: {
-					id:2, 
-					user_id:1, 
-					image:'image1.png',
-				}
-			}
-		},
-		{
-				id:7,
-			message:'ewrew rewrew ew rewre wrew ewrew rewrew ewrew rewrew',
-			live_stream_id:3,
-			sender_id: 1,
-			sender: {
-				id:1,
-				userID: 'adasdasd', 
-				customer: {
-					id:2, 
-					user_id:1, 
-					image:'image1.png',
-				}
-			}
-		},
-		{
-				id:8,
-			message:'ewrew rewrew ew rewre wrew ewrew rewrew ewrew rewrew',
-			live_stream_id:3,
-			sender_id: 21,
-			sender: {
-				id:21,
-				userID: 'adasdasd', 
-				customer: {
-					id:2, 
-					user_id:1, 
-					image:'image1.png',
-				}
-			}
-		},
+  const navigate = useNavigate();
 	
-	];
 	
-	 
+	const messages =   liveStreamData.chatMessages ;
+	
+	
+	const navigateToSenderProfile = useCallback((ID,userID)=>{
+		const url = logedUserData.id == ID ? '/profile' : `/user/${userID}/${ID}/profile` ;
+		navigate(url); 
+		
+	},[]);
+	
 	return( 
 		<div className="flex-grow-1  h-100 overflow-auto ">
 		 	<div className="  py-4  d-flex flex-column justify-content-end ">{/*use justify-content-end   for reverse rendering. mean onload  div start from bottom not from top */}
@@ -161,6 +47,7 @@ const ChatMessages= () => {
 										id={`senderProfileLink${message?.sender?.userID}${message?.id}`}
 										title="Sender Profile"
 										className="d-flex justify-content-start align-items-center gap-1 border-0 text-white-50 rounded-1 p-1 overflow-hidden "
+										onClick={()=>{navigateToSenderProfile(message?.sender?.id, message?.sender?.userID)}}
 									>
 										<Image
 											src={message?.sender?.customer?.image || '/images/login_icon.png'}

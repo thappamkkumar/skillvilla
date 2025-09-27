@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator; 
 
 
 use App\Models\LiveStream;
@@ -611,6 +611,8 @@ class LiveStreamController extends Controller
 		//member exit the live stream (remove user from member, but still as viewer of live stream)
 		function liveStreamMemberExit(Request $request)
 		{
+			
+			
 			try
 			{
 				$liveStreamId = $request->liveId;
@@ -756,14 +758,65 @@ class LiveStreamController extends Controller
 		// live stream messages send
 		function liveStreamMessageSend(Request $request)
 		{
+			
+			$messages = [
+				'message.required' => 'The message is required.', 
+				'liveStreamId.required' => 'The stream id is required.', 
+				'liveStreamId.exists' => 'The stream id is not exist in table.', 
+			];
+			
+			// Validate the request  
+			$validator = Validator::make($request->all(), [
+					'message' => 'required',
+					'liveStreamId' => 'required|exists:live_streams,id', 
+			], $messages);
+			if ($validator->fails()) {
+					// Return validation errors within the try block
+					return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+				 
+			}
+			
+			
 			try
 			{
 				// Get logged-in user
 				$user = JWTAUTH::parseToken()->authenticate();
 				
+				$liveStream = LiveStream::find($request->liveStreamId);
 				
-				$data = ['status'=> true, 'message' => '', 'live_tream_d'=> $request->liveStreamId, 'live_message'=>$request->message];
-						return response()->json($data);
+				if (!$liveStream) {
+            return response()->json(['status'=> fasle, 'message' => 'Live stream not found']);
+        }
+				
+				$liveStreamChat = $liveStream->messages()->create([
+					'message' => $request->message,
+					'sender_id' => $user->id ,
+				]);
+				
+				
+				// Load sender (user) with customer
+				$liveStreamChat->load([
+						'sender:id,userID',
+						'sender.customer:id,user_id,image'
+						
+				]);
+						 
+
+				  
+				if ($liveStreamChat->sender->customer != null && !filter_var($liveStreamChat->sender->customer->image, FILTER_VALIDATE_URL)) 
+				{ 
+					$liveStreamChat->sender->customer->image = $liveStreamChat->sender->customer->image
+					? url(Storage::url('profile_image/' . $liveStreamChat->sender->customer->image))  
+					: null; 
+				}	
+				
+				 
+				$data = [
+				'status'=> true, 
+				'message' => 'Message sent successfully', 
+				'newMessage'=> $liveStreamChat->only(['id', 'live_stream_id','message', 'sender_id', 'sender']),  
+				];
+				return response()->json($data);
 			}
 			catch(Exception $e)
 			{

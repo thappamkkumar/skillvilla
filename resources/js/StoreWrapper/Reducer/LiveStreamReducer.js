@@ -23,6 +23,26 @@ const LiveStreamReducer = {
 				break;
 			}
 			
+			
+			case "newMessage":
+			{
+				const {messageId, liveId, newMessage, senderId, sender} = action.payload.data;
+				if(liveId !== state.liveId) return;
+				 
+				const message = {
+					id: messageId,
+					message: newMessage,
+					live_stream_id: liveId,
+					sender_id: senderId,
+					sender: sender,
+				};
+
+				state.chatMessages = [...state.chatMessages, message];
+
+			 
+				break;
+			}
+			
 			case "refresh":
 			{
 				 
@@ -54,6 +74,7 @@ const LiveStreamReducer = {
 				state.error = null;
 				
 				state.joinedRequest = [];
+				state.chatMessages = [];
 			}
 			
 			default : {
