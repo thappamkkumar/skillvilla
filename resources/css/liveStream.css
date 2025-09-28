@@ -21,3 +21,11 @@
   transform: translateX(0);
  
 }
+
+
+/*live page main header nav bar*/
+.live_page_nav_bar .active_live_nav.active
+{
+	background:rgba(var(--danger-color),1); 
+	color:#fff;
+}

@@ -1,7 +1,7 @@
 import {   memo, useRef, useEffect} from 'react'; 
-import { useParams, Outlet } from 'react-router-dom'; 
+import {  Outlet } from 'react-router-dom'; 
 import { useSelector, useDispatch } from 'react-redux';  
-import _ from "lodash";
+import { debounce } from "lodash";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col'; 
 
@@ -19,7 +19,7 @@ import useCommunityRequestRejectedWebsocket from '../../../Websockets/Community/
 import useCommunityRequestCancelWebsocket from '../../../Websockets/Community/useCommunityRequestCancelWebsocket'; 
  
 const CommunityPage = () => { 
-	const { communityId } = useParams();  
+	 
 	const scrollRef = useRef(null);
 	const timeoutId = useRef(null);
   
@@ -76,7 +76,7 @@ const CommunityPage = () => {
 	
 	
 	 // Debounced scroll position update
-  const handleScroll = _.debounce(() => {
+  const handleScroll = debounce(() => {
     if (scrollRef.current) {
       const scrollTop = scrollRef.current.scrollTop;
         
@@ -107,7 +107,7 @@ const CommunityPage = () => {
 				 
 				<Col sx={12} sm={12} md={5} xxl={4} className="  p-0 m-0    ">
            
-						 <SuggestionCommunityList  communityId={communityId} />
+						 <SuggestionCommunityList    />
 				  
         </Col>
 					 
