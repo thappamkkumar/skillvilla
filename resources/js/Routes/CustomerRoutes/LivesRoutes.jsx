@@ -3,13 +3,13 @@ import { Route, Navigate } from 'react-router-dom';
   
 import ActiveLivePage from '../../Pages/Customer/LivePage/ActiveLivePage';
 import MyLivePage from '../../Pages/Customer/LivePage/MyLivePage';
-import LivePage from '../../Pages/Customer/LivePage/LivePage';
+import FollowingLivePage from '../../Pages/Customer/LivePage/FollowingLivePage';
 
 const LivesRoutes = () => (
     <> 
 			  
 				<Route path="lives/my-lives" element={<MyLivePage />} />  
-				<Route path="lives/following-lives" element={<LivePage />} />  
+				<Route path="lives/following-lives" element={<FollowingLivePage />} />  
 				<Route path="lives/active" element={<ActiveLivePage   />} />  
 				
 				

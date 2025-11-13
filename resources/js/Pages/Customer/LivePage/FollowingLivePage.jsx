@@ -1,13 +1,12 @@
   
-import {   memo, useRef, useEffect} from 'react'; 
-import {  Outlet } from 'react-router-dom'; 
+import {   memo, useRef, useEffect} from 'react';  
 import { useSelector, useDispatch } from 'react-redux';  
 import { debounce } from "lodash";
 
 
 import MainPageHeader from "./../../../Components/Customer/LiveList/MainPageHeader";
 
-const LivePage = () => { 
+const FollowingLivePage = () => { 
 	 const dispatch = useDispatch(); 
 	
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user)); // get login info
@@ -21,11 +20,11 @@ const LivePage = () => {
 				<MainPageHeader />
 				 
 				
-				<h2 className="pt-3">Lives </h2>
+				<h2 className="pt-3">Following Live</h2>
         
       </div>
      
   );
 };
 
-export default  memo(LivePage);
+export default  memo(FollowingLivePage);
