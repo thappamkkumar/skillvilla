@@ -9,7 +9,7 @@ import AddFreelanceWorkPage from '../../Pages/Customer/FreelancePage/AddFreelanc
 import AddNewCommunityPage from '../../Pages/Customer/CommunityPage/AddNewCommunityPage';
 import RegisterCompanyPage from '../../Pages/Customer/CompanyPage/RegisterCompanyPage';
 import AddStoriesPage from '../../Pages/Customer/StoriesPage/AddStoriesPage';
-import CreateLiveStreamPage from '../../Pages/Customer/LiveStreamPage/CreateLiveStreamPage';
+import CreateLiveStreamPage from '../../Pages/Customer/LivePage/CreateLiveStreamPage';
   
 
 const CreateContentRoutes = () => (

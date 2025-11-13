@@ -19,7 +19,7 @@ const MainPageHeader = () => {
 							<Nav.Item className=" ">
 								<Nav.Link
 										as={NavLink}
-										to="/lives/following" 
+										to="/lives/following-lives" 
 										className="navigation_link   px-2 "
 										title="Following Lives"
 								>
@@ -45,7 +45,7 @@ const MainPageHeader = () => {
                 <Nav.Item className=" ">
                     <Nav.Link
                         as={NavLink}
-                        to="/lives/active-lives" 
+                        to="/lives/active" 
                         className=" exploreFilterClearBTN active_live_nav  px-2 "
                         title="Active Lives"
                     >

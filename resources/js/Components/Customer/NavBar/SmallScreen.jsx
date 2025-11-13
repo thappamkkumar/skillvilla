@@ -115,7 +115,7 @@ const SmallScreen = ( ) => {
     { to: '/chats', icon: BsChatRightDots, label: 'Chat' },
     { to: '/communities', icon: BsPeople, label: 'Communities' },
     { to: '/stories', icon: BsCamera, label: 'Stories' },
-    { to: '/lives', icon: BsCameraReels, label: 'Lives' },
+    { to: '/lives/active', icon: BsCameraReels, label: 'Lives' },
 		{ to: '/create', icon: BsPlusSquare, label: 'Create' },
     { to: '/posts', icon: BsPostcard, label: 'Posts' },
     { to: '/workfolio', icon: BsFolderPlus, label: 'Workfolio' },
