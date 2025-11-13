@@ -13,8 +13,8 @@ const ActiveLivePage = () => {
 	const liveList = useSelector((state) => state.activeLiveList); 
 	
 	const scrollRef = useRef(null);
-	 
-	 console.log(liveList);
+	
+	
 	
 	return (
      <div  ref={scrollRef} className="  p-0 m-0 main_container customListGroupContainer" >
