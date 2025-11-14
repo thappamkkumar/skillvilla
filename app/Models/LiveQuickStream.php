@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Carbon\Carbon;
 class LiveQuickStream extends Model
 {
     use HasFactory;
@@ -33,6 +34,14 @@ class LiveQuickStream extends Model
 						'mic_off' => 'boolean',
 					];
 		}
+		
+		protected $appends = ['started_at_human_readable']; 
+		
+		
+		public function getStartedAtHumanReadableAttribute()
+    { 
+        return Carbon::parse($this->attributes['started_at'])->diffForHumans();
+    }
 		
 		public function liveStream()
     {

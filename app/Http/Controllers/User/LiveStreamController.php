@@ -174,9 +174,34 @@ class LiveStreamController extends Controller
 				// Get logged-in user
 				$user = JWTAUTH::parseToken()->authenticate();
 				
+				// Retrieve the IDs of the users whom the authenticated user is following
+        $followingIds = $user->following()->pluck('following_id');
+
+				$lives = LiveStream::select('id', 'publisher_id',   'created_at')
+				->with([
+						'publisher:id,userID,name',
+            'publisher.customer:id,user_id,image', 
+						'quickStreams:id,live_stream_id,started_at'
+        ])				
+				->whereIn('publisher_id', $followingIds)
+				->whereHas('quickStreams')
+				->cursorPaginate(10);
 				
-				$data = ['status'=> true, 'message' => ''];
+				foreach ($lives as $live) {
+					//user profile
+					if ($live->publisher->customer != null && !filter_var($live->publisher->customer->image, FILTER_VALIDATE_URL)) 
+					{ 
+						$live->publisher->customer->image = $live->publisher->customer->image
+						? url(Storage::url('profile_image/' . $live->publisher->customer->image))  
+						: null; 
+					}	
 				
+				}
+				
+				$data = ['status'=> true, 'message' => 'Quick lives are ready', 'lives'=>$lives];
+				
+				return response()->json($data);
+
 			}
 			catch(Exception $e)
 			{
