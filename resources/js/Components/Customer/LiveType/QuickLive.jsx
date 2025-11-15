@@ -118,7 +118,7 @@ const QuickLive = () =>{
 				
 				{	
 					loading && (
-					<div className="text-center px-3 px-xl-0 ">
+					<div className="text-center px-3 px-xl-0 pt-xl-4 ">
 						<Spinner animation="border" size="md" />
 					</div>
 				)}
@@ -127,7 +127,7 @@ const QuickLive = () =>{
 
 			 { liveList.quickLiveHasMore && !loading &&
 					(
-						<div className="flex-shrink-0 ps-2 ps-xl-0 pe-3 pe-xl-0">
+						<div className="flex-shrink-0 ps-2 ps-xl-0 pe-3 pe-xl-0 ">
 							<LoadMoreButton apiCall={apiCall} loading={loading} />
 						</div>
 					)
