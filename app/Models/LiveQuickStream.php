@@ -35,14 +35,14 @@ class LiveQuickStream extends Model
 					];
 		}
 		
-		protected $appends = ['started_at_human_readable']; 
+		/*protected $appends = ['started_at_human_readable']; 
 		
 		
 		public function getStartedAtHumanReadableAttribute()
     { 
         return Carbon::parse($this->attributes['started_at'])->diffForHumans();
     }
-		
+		*/
 		public function liveStream()
     {
         return $this->belongsTo(LiveStream::class, 'live_stream_id');

@@ -36,7 +36,7 @@ const QuickLiveStream = ({
 			//call api to create quick live stream
 			
 			const result = await serverConnection('/quick-live-stream-start', [], authToken);
-			 console.log(result);
+			// console.log(result);
 			
 			if(result?.status == true)
 			{

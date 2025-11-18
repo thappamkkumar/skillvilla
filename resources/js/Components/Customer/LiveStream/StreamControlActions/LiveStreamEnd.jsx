@@ -32,8 +32,7 @@ const LiveStreamEnd = ({
 	const [confirmMessage, setConfirmMessage] = useState("");
 
 	const dispatch = useDispatch();	
-	
-	
+	 
 	
 	// Generic confirm handler
 	const handleConfirm = async () => {
@@ -215,7 +214,7 @@ const LiveStreamEnd = ({
 			</>
 		);
 	}
-	else if(logedUserData?.id ===  liveStreamData?.currentViewer?.user_id && liveStreamData?.currentViewer?.is_sharing === true)
+	else if(logedUserData?.id ===  liveStreamData?.currentViewer?.viewer_id && liveStreamData?.currentViewer?.is_sharing === true)
 	{
 		return(
 			<>
@@ -277,7 +276,7 @@ const LiveStreamEnd = ({
 			</>
 		);
 	}
-	else if(logedUserData?.id ===  liveStreamData?.currentViewer?.user_id && liveStreamData?.currentViewer?.is_sharing === false) 
+	else if(logedUserData?.id ===  liveStreamData?.currentViewer?.viewer_id && liveStreamData?.currentViewer?.is_sharing === false) 
 	{
 		
 		return(

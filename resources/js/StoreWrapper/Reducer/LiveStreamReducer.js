@@ -23,6 +23,21 @@ const LiveStreamReducer = {
 				break;
 			}
 			
+			case "viewerStartWatchingStream":
+			{
+				const liveData = action.payload.data;
+				
+				state.liveId = liveData.liveId;
+				state.liveStatus = 'live';
+				
+				state.currentViewer = liveData.viewer;
+				
+				state.startedAt = liveData.startedAt;
+				
+				state.chatMessages = liveData.messages; 
+				
+				break;
+			}
 			
 			case "newMessage":
 			{

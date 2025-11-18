@@ -30,12 +30,12 @@ class LiveStream extends Model
         return $this->belongsTo(User::class, 'publisher_id');
     }
 
-    public function quickStreams()
+    public function quickStream()
     {
         return $this->hasOne(LiveQuickStream::class, 'live_stream_id');
     }
 
-    public function professionalStreams()
+    public function professionalStream()
     {
         return $this->hasOne(LiveProfessionalStream::class, 'live_stream_id');
     }

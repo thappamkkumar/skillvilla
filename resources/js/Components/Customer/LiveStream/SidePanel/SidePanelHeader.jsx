@@ -11,7 +11,7 @@ const SidePanelHeader = ({
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 
   const isPublisher = logedUserData?.id === liveStreamData?.publisher?.id;
-  const isCurrentViewer = logedUserData?.id === liveStreamData?.currentViewer?.user_id;
+  const isCurrentViewer = logedUserData?.id === liveStreamData?.currentViewer?.viewer_id;
   const isSharing = liveStreamData?.currentViewer?.is_sharing;
 
   const buttons = [];

@@ -181,10 +181,11 @@ class LiveStreamController extends Controller
 				->with([
 						'publisher:id,userID,name',
             'publisher.customer:id,user_id,image', 
-						'quickStreams:id,live_stream_id,started_at'
+						'quickStream:id,live_stream_id,started_at'
         ])				
 				->whereIn('publisher_id', $followingIds)
-				->whereHas('quickStreams')
+				->whereHas('quickStream')
+				->orderBy('id','desc')
 				->cursorPaginate(10);
 				
 				foreach ($lives as $live) {
@@ -333,7 +334,7 @@ class LiveStreamController extends Controller
 				$liveStream = LiveStream::create(['publisher_id'=> $user->id	]);
 				
 				  // 2. Create QuickStream linked to LiveStream
-				$liveStream->quickStreams()->create([
+				$liveStream->quickStream()->create([
             'is_recording' => false,
             'started_at'   => now(),
             'on_hold'      => false,
@@ -348,7 +349,7 @@ class LiveStreamController extends Controller
 				
 				 //   Load quickStreams and publisher into the liveStream model
          $liveStream->load([
-            'quickStreams',
+            'quickStream',
             'publisher:id,userID,name', // adjust to your actual User columns
             'publisher.customer:id,user_id,image'
         ]);
@@ -356,7 +357,7 @@ class LiveStreamController extends Controller
 				 
        
 				
-				$quickStream = $liveStream->quickStreams->last(); // collection helper
+				$quickStream = $liveStream->quickStream; // collection helper
 				
 				
 				if ($liveStream->publisher->customer != null && !filter_var($liveStream->publisher->customer->image, FILTER_VALIDATE_URL)) 
@@ -495,9 +496,90 @@ class LiveStreamController extends Controller
 				// Get logged-in user
 				$user = JWTAUTH::parseToken()->authenticate();
 				
+				$liveStreamId = $request->liveId;
+				if(!$liveStreamId)
+				{
+					$data = ['status' => false,'message'=> "Live Stream Id Not Found In Request."];
+					return response()->json($data);
+				} 
 				
-				$data = ['status'=> true, 'message' => ''];
+				// 2. Fetch the LiveStream with related streams
+        $liveStream = LiveStream::with(['quickStream'])->find($liveStreamId);
+
+				if (!$liveStream) {
+            return response()->json(['status'=> false, 'message' => 'Live stream not found']);
+        }
 				
+				$viewer = null;
+				if ($liveStream->quickStream) 
+				{ 
+					$existing = LiveQuickStreamViewer::where('live_quick_stream_id', $liveStream->quickStream->id)
+							->where('viewer_id', $user->id)
+							->first();
+
+					if ($existing) 
+					{
+						$viewer  = $existing;
+					}
+					else
+					{ 
+						$viewer = LiveQuickStreamViewer::create([
+								'live_quick_stream_id' => $liveStream->quickStream->id,
+								'viewer_id'            => $user->id,        // the logged-in viewer
+								'joined_at'            => now(),
+								'left_at'              => null,
+								'is_suspended'         => false,
+								'can_live'             => true,            // viewer cannot share until allowed
+								'can_message'          => true,
+								'is_sharing'           => false,
+						]);
+					}
+					// ?? Load user + customer
+					$viewer->load([
+							'user:id,userID,name',
+							'user.customer:id,user_id,image'
+					]);
+					// ?? Fix URL of customer image if not full URL
+					if ($viewer->user->customer && 
+							!filter_var($viewer->user->customer->image, FILTER_VALIDATE_URL)) 
+					{
+							$viewer->user->customer->image =
+									$viewer->user->customer->image
+											? url(Storage::url('profile_image/' . $viewer->user->customer->image))
+											: null;
+					}
+
+		
+        }
+				
+				
+				//load message related to live stream 
+				$liveStream->load([
+					'messages:id,message,sender_id,live_stream_id',
+					'messages.sender:id,userID,name',
+					'messages.sender.customer:id,user_id,image',
+				]);
+				
+				foreach ($liveStream->messages as $msg) {
+					if ($msg->sender && $msg->sender->customer &&
+							!filter_var($msg->sender->customer->image, FILTER_VALIDATE_URL))
+					{
+							$msg->sender->customer->image =
+									$msg->sender->customer->image
+											? url(Storage::url('profile_image/' . $msg->sender->customer->image))
+											: null;
+					}
+				}
+
+				
+				 
+				$data = [
+				'status'=> true, 
+				'message' => 'Viewer data is ready.', 
+				'viewer'=>$viewer,
+				'messages'=>$liveStream->messages
+				];
+				return response()->json($data);
 			}
 			catch(Exception $e)
 			{
@@ -526,22 +608,22 @@ class LiveStreamController extends Controller
         $viewerId = $user->id;
 				
 				// 2. Fetch the LiveStream with related streams
-        $liveStream = LiveStream::with(['quickStreams', 'professionalStreams'])->find($liveStreamId);
+        $liveStream = LiveStream::with(['quickStream', 'professionalStream'])->find($liveStreamId);
 
 				if (!$liveStream) {
-            return response()->json(['status'=> fasle, 'message' => 'Live stream not found']);
+            return response()->json(['status'=> false, 'message' => 'Live stream not found']);
         }
 				
 				 // 3. Quick Stream: direct delete
-        if ($liveStream->quickStreams) 
+        if ($liveStream->quickStream) 
 				{
             LiveQuickStreamViewer::where('viewer_id', $viewerId)
                 ->where('live_quick_stream_id', $liveStream->quickStream->id)
                 ->delete();  
         } // 4. Professional Stream: go through live sessions
-				else if($liveStream->professionalStreams)
+				else if($liveStream->professionalStream)
 				{
-          $liveSession = $liveStream->professionalStreams->sessions()
+          $liveSession = $liveStream->professionalStream->sessions()
                 ->where('status', 'live')
                 ->first();
 					if ($liveSession) 
@@ -651,22 +733,22 @@ class LiveStreamController extends Controller
         $viewerId = $user->id;
 				
 				// 2. Fetch the LiveStream with related streams
-        $liveStream = LiveStream::with(['quickStreams', 'professionalStreams'])->find($liveStreamId);
+        $liveStream = LiveStream::with(['quickStream', 'professionalStream'])->find($liveStreamId);
 
 				if (!$liveStream) {
-            return response()->json(['status'=> fasle, 'message' => 'Live stream not found']);
+            return response()->json(['status'=> false, 'message' => 'Live stream not found']);
         }
 				
 				 // 3. Quick Stream: direct delete
-        if ($liveStream->quickStreams) 
+        if ($liveStream->quickStream) 
 				{
             LiveQuickStreamViewer::where('viewer_id', $viewerId)
                 ->where('live_quick_stream_id', $liveStream->quickStream->id)
                ->update(['is_sharing' => false]); 
         } // 4. Professional Stream: go through live sessions
-				else if($liveStream->professionalStreams)
+				else if($liveStream->professionalStream)
 				{
-          $liveSession = $liveStream->professionalStreams->sessions()
+          $liveSession = $liveStream->professionalStream->sessions()
                 ->where('status', 'live')
                 ->first();
 					if ($liveSession) 

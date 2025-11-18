@@ -15,12 +15,22 @@ class LiveProfessionalStreamSessionViewer extends Model
         'live_professional_stream_session_id',
         'viewer_id',
         'joined_at',
-        'left_at',
+        'lefted_at',
         'is_suspended',
         'can_live',
         'can_message',
         'is_sharing',
     ];
+		
+		protected function casts(): array
+		{
+				return [   
+						'can_message' => 'boolean',
+						'is_suspended' => 'boolean', 
+						'is_sharing' => 'boolean', 
+						'can_live' => 'boolean', 
+					];
+		}
 		
 		public function session()
     {
