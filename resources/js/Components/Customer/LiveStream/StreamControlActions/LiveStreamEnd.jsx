@@ -18,6 +18,8 @@ import {updateLiveStreamState} from '../../../../StoreWrapper/Slice/LiveStreamSl
 
 const LiveStreamEnd = ({
 	peerConRef,
+	publisherVideoRef,
+	localMediaRef,
 	setShowModel,
 	setsubmitionMSG
 	
@@ -66,17 +68,33 @@ const LiveStreamEnd = ({
 				const result = await serverConnection(url, requestData, authToken);
 				
 				//console.log(result);
-				
-				console.log('also remove media from peer connection after end.');
-				
+				 
 				if(result?.status === true)
 				{
 					dispatch(updateLiveStreamState(
 						{ 
 							'type':'refresh',   
 						}
-					));
-				
+					)); 
+					
+					
+					if (localMediaRef.current) { 
+							localMediaRef.current.getTracks().forEach(track => track.stop());
+							localMediaRef.current = null;
+					}
+
+					if(publisherVideoRef.current)
+					{
+						publisherVideoRef.current = null;
+					}
+					if (peerConRef.current) {
+						
+						peerConRef.current.getSenders().forEach(s => {
+							if (s.track) s.track.stop();
+						});
+						peerConRef.current.close();
+						peerConRef.current = null;
+					}
 				}
 				else
 				{
@@ -88,7 +106,7 @@ const LiveStreamEnd = ({
 			catch (err) 
 			{
 				setsubmitionMSG('An error occurred. Please try again.');
-				console.log('error:- ' + e);
+				console.log('error:- ' + err);
 				setShowModel(true);
 			}
 		

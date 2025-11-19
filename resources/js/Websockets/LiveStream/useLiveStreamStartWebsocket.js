@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { updateLiveStreamState } from '../../StoreWrapper/Slice/LiveStreamSlice';
+import {updateActiveLiveState} from '../../StoreWrapper/Slice/ActiveLiveSlice';
 
 const useLiveStreamStartWebsocket = (loggedUserData) => {
   const userRef = useRef(loggedUserData?.id);
@@ -22,17 +22,10 @@ const useLiveStreamStartWebsocket = (loggedUserData) => {
     const liveStreamStart_connectWebSocket = () => {
       window.Echo.private(channelName)
         .listen('.live-stream.started', (e) => {
-          //console.log("Live Stream Start Data:", e.data);
+          //console.log("Live Stream Start Data:", e.liveStream);
 					
-					const liveStreamData = e.data
-				/*	dispatch(updateLiveStreamState(
-					{ 
-						'type':'liveStreamStart',  
-						'data': liveStreamData
-						}
-					));
-					*/
-					console.log('add live stream active live list state. dont start live directly');
+					const liveStreamData = e.liveStream;
+					dispatch(updateActiveLiveState({type : 'addNewQuickLive', newQuickLive: liveStreamData}));  
         });
     };
 

@@ -14,8 +14,8 @@ import useWindowHeight from "../../../CustomHook/useWindowHeight";
 
 const LiveStreamModel = ({ 
 	peerConRef,
-	publisherVideoRef 
-	
+	publisherVideoRef,
+	localMediaRef
 }) =>{
 	const liveStreamData = useSelector((state) => state.liveStreamData);
   
@@ -69,17 +69,19 @@ const LiveStreamModel = ({
 									<div className=" flex-grow-1 	h-100 position-relative overflow-hidden" >
 										{/*publisher video*/}
 										<PublisherStream 
+											localMediaRef={localMediaRef}
 											publisherVideoRef={publisherVideoRef}
 											setShowModel={setShowModel}
 											setsubmitionMSG={setsubmitionMSG}
 										/>
-										
+									
 										{/*manual controller*/}
 										{
 											!resizeScreen &&
 											<StreamControlActions 
 												peerConRef={peerConRef}
 												publisherVideoRef={publisherVideoRef}
+												localMediaRef={localMediaRef}
 												setShowModel={setShowModel}
 												setsubmitionMSG={setsubmitionMSG}
 											/>

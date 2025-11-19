@@ -76,7 +76,9 @@
 		//GET ACTIVE LIVE STREAM
 		
 		//Route for get active live stream (quick and professional)
-		Route::post('/get-following-active-live-streams', 'getFollowingActiveLiveStreams')->name('user.getFollowingActiveLiveStreams');
+		Route::post('/get-following-active-professional-live-streams', 'getFollowingActiveProfessionalLiveStreams')->name('user.getFollowingActiveProfessionalLiveStreams');
+		
+		Route::post('/get-following-active-quick-live-streams', 'getFollowingActiveQuickLiveStreams')->name('user.getFollowingActiveQuickLiveStreams');
 		
 		
 		

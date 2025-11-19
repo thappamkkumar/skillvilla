@@ -172,36 +172,7 @@ class LiveStreamController extends Controller
 			try
 			{
 				// Get logged-in user
-				$user = JWTAUTH::parseToken()->authenticate();
 				
-				// Retrieve the IDs of the users whom the authenticated user is following
-        $followingIds = $user->following()->pluck('following_id');
-
-				$lives = LiveStream::select('id', 'publisher_id',   'created_at')
-				->with([
-						'publisher:id,userID,name',
-            'publisher.customer:id,user_id,image', 
-						'quickStream:id,live_stream_id,started_at'
-        ])				
-				->whereIn('publisher_id', $followingIds)
-				->whereHas('quickStream')
-				->orderBy('id','desc')
-				->cursorPaginate(10);
-				
-				foreach ($lives as $live) {
-					//user profile
-					if ($live->publisher->customer != null && !filter_var($live->publisher->customer->image, FILTER_VALIDATE_URL)) 
-					{ 
-						$live->publisher->customer->image = $live->publisher->customer->image
-						? url(Storage::url('profile_image/' . $live->publisher->customer->image))  
-						: null; 
-					}	
-				
-				}
-				
-				$data = ['status'=> true, 'message' => 'Quick lives are ready', 'lives'=>$lives];
-				
-				return response()->json($data);
 
 			}
 			catch(Exception $e)
@@ -298,8 +269,55 @@ class LiveStreamController extends Controller
 		}
 		
 		
-		//get active live stream (quick and professional)
-		function getFollowingActiveLiveStreams(Request $request)
+		//get active live stream (quick )
+		function getFollowingActiveQuickLiveStreams(Request $request)
+		{
+			try
+			{
+				// Get logged-in user
+				$user = JWTAUTH::parseToken()->authenticate();
+				
+				// Retrieve the IDs of the users whom the authenticated user is following
+        $followingIds = $user->following()->pluck('following_id');
+
+				$lives = LiveStream::select('id', 'publisher_id',   'created_at')
+				->with([
+						'publisher:id,userID,name',
+            'publisher.customer:id,user_id,image', 
+						'quickStream:id,live_stream_id,started_at'
+        ])				
+				->whereIn('publisher_id', $followingIds)
+				->whereHas('quickStream')
+				->orderBy('id','desc')
+				->cursorPaginate(10);
+				
+				foreach ($lives as $live) {
+					//user profile
+					if ($live->publisher->customer != null && !filter_var($live->publisher->customer->image, FILTER_VALIDATE_URL)) 
+					{ 
+						$live->publisher->customer->image = $live->publisher->customer->image
+						? url(Storage::url('profile_image/' . $live->publisher->customer->image))  
+						: null; 
+					}	
+				
+				}
+				
+				$data = ['status'=> true, 'message' => 'Quick lives are ready', 'lives'=>$lives];
+				
+				return response()->json($data);
+				
+			}
+			catch(Exception $e)
+			{
+				//$data = ['status' => false, 'message' => 'Oops! Something went wrong.',];
+				$data = ['status' => false, 'message' => $e->getMessage(),];
+				return response()->json($data);
+			}
+		}
+		
+		
+		//get active live stream (professional)
+		function getFollowingActiveProfessionalLiveStreams(Request $request)
 		{
 			try
 			{
@@ -349,7 +367,7 @@ class LiveStreamController extends Controller
 				
 				 //   Load quickStreams and publisher into the liveStream model
          $liveStream->load([
-            'quickStream',
+            'quickStream:id,live_stream_id,started_at',
             'publisher:id,userID,name', // adjust to your actual User columns
             'publisher.customer:id,user_id,image'
         ]);
@@ -375,10 +393,7 @@ class LiveStreamController extends Controller
 				//dispatch event for broadcast 
 				Started::dispatch([
 								'follower_ids' => $followers,
-								'publisher'=> $liveStream->publisher ,
-								'live_stream_id' => $liveStream->id,
-								'live_type' => 'quick', 
-								'started_at'=> $quickStream->started_at,
+								'liveStream'=>  $liveStream, 
 						]);
 				 				
 				 
@@ -388,6 +403,7 @@ class LiveStreamController extends Controller
 				$data = [
 						'status'  => true,
 						'message' => 'LiveStream and QuickStream created successfully.',
+					 
 						'data'    => [
 								'live_stream' => [
 										'id'           => $liveStream->id,

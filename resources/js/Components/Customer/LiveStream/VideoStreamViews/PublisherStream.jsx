@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 const PublisherStream = ({
 	publisherVideoRef,
+	localMediaRef,
 	setShowModel,
 	setsubmitionMSG,
 }) => {
@@ -19,12 +20,17 @@ const PublisherStream = ({
 			try
 			{ 
 				// Get local   stream
-				//const localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+				const localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+				
+				
+				localMediaRef.current = localStream; 
+				 
+				
 				if (publisherVideoRef.current) { 
-					//publisherVideoRef.current.srcObject = localStream; 
-					console.log('uncomment above live');
+					publisherVideoRef.current.srcObject = localStream; 
+					/*console.log('uncomment above live');
 					setsubmitionMSG('publisher media start.');
-					setShowModel(true);
+					setShowModel(true);*/
 				}
 			}
 			catch(e)

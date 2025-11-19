@@ -11,8 +11,8 @@ const LiveStreamManager = () => {
   
 	const ICE_CONFIG = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }; 
 	let peerConRef = useRef(null); 
-	const publisherVideoRef  = useRef(null);//ref for local video tag  for video c
-	
+	const publisherVideoRef  = useRef(null);  
+	const localMediaRef  = useRef(null);  
 	
   // Call the websocket hook
   useLiveStreamStartWebsocket(logedUserData);
@@ -25,6 +25,7 @@ const LiveStreamManager = () => {
 			<LiveStreamModel  	
 				peerConRef = {peerConRef}	
 				publisherVideoRef = {publisherVideoRef}	
+				localMediaRef = {localMediaRef}	
 			/>
 			
 		</>

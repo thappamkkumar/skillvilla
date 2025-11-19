@@ -26,10 +26,10 @@ const QuickLive = () =>{
 		try
 		{
 			setLoading(true);
-			const url = `/get-following-professional-live-stream?cursor=${liveList.quickLiveCursor}`;
+			const url = `/get-following-active-quick-live-streams?cursor=${liveList.quickLiveCursor}`;
 			//call the function fetcg post data fron server
 			let data = await serverConnection(url, { }, authToken);
-			console.log(data);
+			//console.log(data);
 			
 			if(data?.status)
 			{

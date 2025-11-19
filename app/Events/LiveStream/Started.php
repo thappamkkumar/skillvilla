@@ -36,6 +36,14 @@ class Started implements ShouldBroadcast
             ->toArray();
     }
 		
+		
+		public function broadcastWith(): array
+		{
+				return [
+						'liveStream' => $this->data['liveStream']
+				];
+		}
+
 		public function broadcastAs(): string
 		{
 				return 'live-stream.started';

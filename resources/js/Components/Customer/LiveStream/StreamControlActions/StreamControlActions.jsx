@@ -6,6 +6,7 @@ import LiveStreamEnd from './LiveStreamEnd';
 const StreamControlActions = ({
 	peerConRef,
 	publisherVideoRef,
+	localMediaRef,
 	setShowModel,
 	setsubmitionMSG,
 }) => {
@@ -86,6 +87,8 @@ const StreamControlActions = ({
 					 
 					<LiveStreamEnd 
 						peerConRef={peerConRef}
+						publisherVideoRef={publisherVideoRef}
+						localMediaRef={localMediaRef}
 						setShowModel={setShowModel}
 						setsubmitionMSG={setsubmitionMSG}
 					/>
