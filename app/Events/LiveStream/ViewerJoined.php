@@ -10,16 +10,18 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ViewerJoined
+class ViewerJoined implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+		 
+		public $data;
+    public function __construct($data)
     {
-        //
+      $this->data = $data;
     }
 
     /**
@@ -30,7 +32,20 @@ class ViewerJoined
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new PrivateChannel("live-stream.".$this->data['publisher_id']),
         ];
     }
+		
+		public function broadcastWith(): array
+		{
+				return [
+						'new_viewer' => $this->data['new_viewer'],
+						'live_stream_id' => $this->data['live_stream_id']
+				];
+		}
+
+		public function broadcastAs(): string
+		{
+				return 'live-stream.new-viewer';
+		} 
 }

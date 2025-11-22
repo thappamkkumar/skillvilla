@@ -16,6 +16,9 @@ const PublisherStream = ({
 	
 	//useEffect for getting media and play localy if logged user is publisher
 	useEffect(()=>{ 
+		
+		  let localStream = null; 
+	
 		const getPublisherMedia = async( ) => { 
 			try
 			{ 
@@ -26,11 +29,12 @@ const PublisherStream = ({
 				localMediaRef.current = localStream; 
 				 
 				
-				if (publisherVideoRef.current) { 
-					publisherVideoRef.current.srcObject = localStream; 
-					/*console.log('uncomment above live');
-					setsubmitionMSG('publisher media start.');
-					setShowModel(true);*/
+				const videoOnlyStream = new MediaStream(
+					localStream.getVideoTracks()
+				);
+
+				if (publisherVideoRef.current) {
+					publisherVideoRef.current.srcObject = videoOnlyStream;
 				}
 			}
 			catch(e)
@@ -45,7 +49,15 @@ const PublisherStream = ({
 		{
 			getPublisherMedia();
 		}
-	
+		
+		
+		// cleanup (VERY IMPORTANT)
+		return () => {
+			if (localStream) {
+				localStream.getTracks().forEach(t => t.stop());
+			}
+		};
+		
 	}, [ ]); 
 	
 	return(
@@ -54,8 +66,7 @@ const PublisherStream = ({
 				className="w-100 h-100 object-fit-cover bg-dark  "
 				ref={publisherVideoRef}
 				autoPlay
-				playsInline
-				loop={true}
+				playsInline 
 				muted  
 			></video>
 		</div>

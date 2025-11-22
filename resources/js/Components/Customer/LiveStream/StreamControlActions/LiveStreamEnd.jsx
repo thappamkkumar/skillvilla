@@ -87,14 +87,31 @@ const LiveStreamEnd = ({
 					{
 						publisherVideoRef.current = null;
 					}
-					if (peerConRef.current) {
-						
-						peerConRef.current.getSenders().forEach(s => {
-							if (s.track) s.track.stop();
+					
+					
+					
+					if (peerConRef.current && Object.keys(peerConRef.current).length > 0) {
+
+						Object.values(peerConRef.current).forEach(peer => {
+
+							// Stop all outgoing tracks
+							peer.getSenders().forEach(sender => {
+								if (sender.track) sender.track.stop();
+							});
+
+							// Close WebRTC connection
+							try { 
+								peer.close(); 
+							} catch(e) {
+								console.warn("Error closing peer:", e);
+							}
+
 						});
-						peerConRef.current.close();
-						peerConRef.current = null;
+
+						// Clear all peers
+						peerConRef.current = {};
 					}
+
 				}
 				else
 				{

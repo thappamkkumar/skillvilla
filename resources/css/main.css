@@ -10,7 +10,10 @@ body
 	background-color:rgba(var(--bg-color), 1);
 	overflow:hidden;  
 	font-family: 'Inter', sans-serif;
-   
+  
+	
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--text-color),0.5) rgba(240,240,240,1);
 }
 
 

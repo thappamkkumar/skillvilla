@@ -19,6 +19,9 @@ use App\Models\LiveProfessionalStreamSessionViewer;
 //use App\Models\LiveStreamMessages;
  
  
+use App\Events\LiveStream\Started;
+use App\Events\LiveStream\ViewerJoined;
+
 use App\Events\LiveStream\Ended;
 use App\Events\LiveStream\Hold;
 use App\Events\LiveStream\JoinedRequest;
@@ -27,9 +30,7 @@ use App\Events\LiveStream\JoinRequestCancelled;
 use App\Events\LiveStream\Message;
 use App\Events\LiveStream\Reaction;
 use App\Events\LiveStream\Signal;
-use App\Events\LiveStream\Started;
 use App\Events\LiveStream\ViewerHold;
-use App\Events\LiveStream\ViewerJoined;
 use App\Events\LiveStream\ViewerLeft;
 use App\Events\LiveStream\ViewerPaused; 
  
@@ -587,7 +588,13 @@ class LiveStreamController extends Controller
 					}
 				}
 
-				
+				//dispatch event for broadcast 
+				ViewerJoined::dispatch([
+								'publisher_id' => $liveStream->publisher_id,
+								'live_stream_id' => $liveStreamId,
+								'new_viewer'=>  $viewer, 
+						]);
+				 			
 				 
 				$data = [
 				'status'=> true, 

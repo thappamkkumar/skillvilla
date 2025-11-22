@@ -39,7 +39,7 @@ const handleCallEnd = async (peerConRef, authToken, logedUserData, chatCallData,
       }
     }
   } catch (e) {
-    console.log(e);
+    //console.log(e);
   }
 };
 

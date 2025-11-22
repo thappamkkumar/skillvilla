@@ -23,6 +23,24 @@ const LiveStreamReducer = {
 				break;
 			}
 			
+			
+			//add new viewer on publisher side 
+			case "addNewViewer":
+			{  
+				const {liveId, newViewer} = action.payload.newViewerData;
+				if(liveId !== state.liveId) break;
+				
+				const viewer = {
+					...newViewer,
+					connection_status: 'connecting',
+				}
+				state.viewerList = [viewer, ...state.viewerList];
+	
+
+				break;
+			}
+			
+			//current viewer start watching stream "viewer side how start watching only"
 			case "viewerStartWatchingStream":
 			{
 				const liveData = action.payload.data;
@@ -42,7 +60,7 @@ const LiveStreamReducer = {
 			case "newMessage":
 			{
 				const {messageId, liveId, newMessage, senderId, sender} = action.payload.data;
-				if(liveId !== state.liveId) return;
+				if(liveId !== state.liveId) break;
 				 
 				const message = {
 					id: messageId,
@@ -90,6 +108,8 @@ const LiveStreamReducer = {
 				
 				state.joinedRequest = [];
 				state.chatMessages = [];
+				
+				break;
 			}
 			
 			default : {
