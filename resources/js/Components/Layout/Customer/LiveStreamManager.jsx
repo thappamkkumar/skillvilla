@@ -11,7 +11,7 @@ const LiveStreamManager = () => {
 	const liveStreamData = useSelector((state) => state.liveStreamData);
   
 	const ICE_CONFIG = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }; 
-	let peerConRef = useRef(null); 
+	let peerConRef = useRef({}); 
 	const publisherVideoRef  = useRef(null);  
 	const localMediaRef  = useRef(null);  
 	

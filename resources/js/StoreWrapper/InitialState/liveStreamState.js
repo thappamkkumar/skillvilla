@@ -27,9 +27,9 @@ const liveStreamState = {
 	speakerId:null,
 	cameraId:null,
 	
-	isConnecting:false,
+	isConnecting:false, // no need
 	
-	error: null,
+	error: null, // no need
 	
 	 
 };

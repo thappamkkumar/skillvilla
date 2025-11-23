@@ -559,7 +559,7 @@ class CallController extends Controller
 				$payload = $request->payload;
 				$type = $request->type;
 			 
-				//dispatch event for call end
+				//dispatch event for signaling
 				ChatCallSignalEvent::dispatch( $toUserId , $call_id, $payload, $type  ); 
 				
 				

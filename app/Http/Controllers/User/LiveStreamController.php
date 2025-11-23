@@ -627,8 +627,14 @@ class LiveStreamController extends Controller
 					return response()->json($data);
 				}
 				// Get logged-in user
-				$user = JWTAUTH::parseToken()->authenticate(); 
-        $viewerId = $user->id;
+				$user = JWTAUTH::parseToken()->authenticate();
+				$viewerId = $user->id;
+				
+				if($request->viewerId)
+				{
+					$viewerId = request->viewerId;
+				}
+        
 				
 				// 2. Fetch the LiveStream with related streams
         $liveStream = LiveStream::with(['quickStream', 'professionalStream'])->find($liveStreamId);
@@ -806,11 +812,22 @@ class LiveStreamController extends Controller
 		{
 			try
 			{
-				// Get logged-in user
-				$user = JWTAUTH::parseToken()->authenticate();
+				// Retrieve the authenticated user from the JWT token
+				$user = JWTAuth::parseToken()->authenticate();
+				
+				$toUserId = $request->toUserId;
+				$liveId = $request->liveId;
+				$payload = $request->payload;
+				$type = $request->type;
+			 
+				//dispatch event for  signaling
+				Signal::dispatch( $toUserId, $liveId, $payload, $type  ); 
 				
 				
-				$data = ['status'=> true, 'message' => ''];
+				
+				// Return the posts as a JSON response
+				$data = ['status' => true,   ]; 
+				return response()->json($data);
 				
 			}
 			catch(Exception $e)

@@ -10,16 +10,25 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class Signal
+class Signal implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+		 
+		public $toUserId;
+		public $liveId; 
+    public $payload ;
+    public $type;
+		
+    public function __construct($toUserId, $liveId, $payload, $type)
     {
-        //
+      $this->toUserId = $toUserId; 
+      $this->liveId  = $liveId ;
+      $this->payload  = $payload ;
+      $this->type  = $type ;
     }
 
     /**
@@ -30,7 +39,14 @@ class Signal
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+          new PrivateChannel('live-stream.' . $this->toUserId),
         ];
     }
+		
+		public function broadcastAs(): string
+		{
+			return 'live-stream.signal';
+		} 
+		
+		
 }
