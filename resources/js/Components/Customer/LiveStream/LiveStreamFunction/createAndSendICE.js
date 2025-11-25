@@ -1,7 +1,7 @@
 import serverConnection from '../../../../CustomHook/serverConnection';
  
-
-ateAndSendICE = async (peer, authToken, viewerId, liveId) => {
+ 
+const createAndSendICE = async (peer, authToken, toUserId, liveId) => {
 	try {
     let candidateQueue = [];
     let sendTimeout = null;
@@ -22,7 +22,7 @@ ateAndSendICE = async (peer, authToken, viewerId, liveId) => {
 							const resultData = await serverConnection(
                 '/live-stream-signaling',
                 {
-                  toUserId: viewerId, 
+                  toUserId: toUserId, 
                   liveId: liveId, 
                   payload: payloadToSend, // Send array of candidates
                   type: 'ice',

@@ -1,26 +1,25 @@
 import serverConnection from '../../../../CustomHook/serverConnection';
- 
-const createAndSendOffer = async ( peer, authToken, toUserId, liveId) => {
-	 
+
+const createAndSendAnswer = async ( peer, authToken, toUserId, liveId) => { 
 	
 	try
 	{
 		
-		// create the offer
-		const offer = await peer.createOffer();
-		await peer.setLocalDescription(offer);
-	
+		// create the answer
+		const answer = await peer.createAnswer();
+		await peer.setLocalDescription(answer);
+		 
 		const resultData = await serverConnection('/live-stream-signaling', 
 											{ 
 												toUserId: toUserId,
 												liveId: liveId,
-												payload: offer,
-												type: 'offer',
+												payload: answer,
+												type: 'answer',
 											}, authToken   ); 
+											
 		//console.log(resultData);
-		 
 		if(!resultData.status)
-		{
+		{ 
 			console.log('send error to viewer and cancel conneting');
 		}
 	
@@ -33,4 +32,4 @@ const createAndSendOffer = async ( peer, authToken, toUserId, liveId) => {
 	
 };
 
-export default createAndSendOffer;
+export default createAndSendAnswer;

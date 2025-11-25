@@ -1,6 +1,38 @@
 
 
+/*
 
+
+
+const attachPeerConnectionStateHandlers = (
+  peerConRef,
+  onStateChange
+) => {
+
+  const attachHandler = (pc, key) => {
+    pc.onconnectionstatechange = () => {
+      const state = pc.connectionState;
+
+      onStateChange(state, key); // key = peerId or null
+    };
+  };
+
+  const peerCon = peerConRef.current;
+
+  // Viewer (single connection)
+  if (peerCon instanceof RTCPeerConnection) {
+    attachHandler(peerCon, null);
+    return;
+  }
+
+  // Publisher (multiple connections)
+  Object.keys(peerCon).forEach(key => {
+    attachHandler(peerCon[key], key);
+  });
+};
+
+
+*/
 
 
 // in this file it dne for per viewer. use peerConRef and do for all viewer. 
