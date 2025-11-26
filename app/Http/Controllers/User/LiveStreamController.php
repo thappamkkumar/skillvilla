@@ -820,14 +820,17 @@ class LiveStreamController extends Controller
 				$liveId = $request->liveId;
 				$payload = $request->payload;
 				$type = $request->type;
-			 
+				$viewerId = $request->viewerId;
+				
+				 
+				
 				//dispatch event for  signaling
-				Signal::dispatch( $toUserId, $liveId, $payload, $type  ); 
+				Signal::dispatch( $toUserId, $liveId, $payload, $type, $viewerId  ); 
 				
 				
 				
 				// Return the posts as a JSON response
-				$data = ['status' => true, 'data'=>$request->all()  ]; 
+				$data = ['status' => true,    ]; 
 				return response()->json($data);
 				
 			}

@@ -25,8 +25,8 @@ const startLiveStream = async (ICE_CONFIG, peerConRef, localMediaRef,   authToke
   // Create RTCPeerConnection instance
 	const peer =   new RTCPeerConnection(ICE_CONFIG);
 	
-	//create ice and send to receiver
-	await createAndSendICE(peer, authToken, toUserId, liveStreamData.liveId);
+	//create ice and send to viewer (null is pass for viewer id (i.e. loged user id) )
+	await createAndSendICE(peer, authToken, toUserId, liveStreamData.liveId, null);
 	
 	
 	// Add local tracks to peer connection

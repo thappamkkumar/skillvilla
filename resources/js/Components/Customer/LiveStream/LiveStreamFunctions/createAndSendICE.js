@@ -1,7 +1,7 @@
 import serverConnection from '../../../../CustomHook/serverConnection';
  
- 
-const createAndSendICE = async (peer, authToken, toUserId, liveId) => {
+// create and send by both publisher and viewer.(viewerID is use to filter viewer in publisher side and it is null on viewer side)
+const createAndSendICE = async (peer, authToken, toUserId, liveId, viewerId) => {
 	try {
     let candidateQueue = [];
     let sendTimeout = null;
@@ -23,6 +23,7 @@ const createAndSendICE = async (peer, authToken, toUserId, liveId) => {
                 '/live-stream-signaling',
                 {
                   toUserId: toUserId, 
+                  viewerId: viewerId, 
                   liveId: liveId, 
                   payload: payloadToSend, // Send array of candidates
                   type: 'ice',

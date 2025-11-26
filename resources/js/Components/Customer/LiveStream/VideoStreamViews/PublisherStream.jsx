@@ -28,13 +28,18 @@ const PublisherStream = ({
 				
 				localMediaRef.current = localStream; 
 				 
-				
+				// Disable audio playback locally to avoid feedback
+				//localStream.getAudioTracks().forEach(t => (t.enabled = false));
+
 				const videoOnlyStream = new MediaStream(
 					localStream.getVideoTracks()
 				);
 
 				if (publisherVideoRef.current) {
 					publisherVideoRef.current.srcObject = videoOnlyStream;
+					publisherVideoRef.current.muted = true; // Required for autoplay
+					publisherVideoRef.current.autoplay = true;
+					publisherVideoRef.current.playsInline = true;
 				}
 			}
 			catch(e)
@@ -67,7 +72,7 @@ const PublisherStream = ({
 				ref={publisherVideoRef}
 				autoPlay
 				playsInline 
-				muted  
+				   
 			></video>
 		</div>
 	);

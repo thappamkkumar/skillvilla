@@ -20,7 +20,7 @@ const useLiveStreamSignalWebsocket = (loggedUserData, liveStreamData, handleOffe
       window.Echo.private(channelName)
         .listen('.live-stream.signal', (e) => {
          
-				     console.log("  call accept event:", e);
+				  //   console.log("  call accept event:", e);
 					if ( liveStreamData?.liveId !== e.liveId  ) return;
 					
 					if (e.type === 'offer') 
@@ -29,11 +29,11 @@ const useLiveStreamSignalWebsocket = (loggedUserData, liveStreamData, handleOffe
 					}
 					if (e.type === 'answer') 
 					{
-						//handleAnswer(e.payload);
+						handleAnswer(e.payload, e.viewerId);
 					}
 					if (e.type === 'ice') 
 					{
-						//onICEConnection(e.payload);
+						onICEConnection(e.payload, e.viewerId);
 					}
 					
 					
@@ -45,7 +45,7 @@ const useLiveStreamSignalWebsocket = (loggedUserData, liveStreamData, handleOffe
     return () => {
       window.Echo.leave(channelName);
     };
-  }, [userRef.current, loggedUserData, liveStreamData ]);
+  }, [userRef.current, loggedUserData ]);
 };
 
 export default useLiveStreamSignalWebsocket;

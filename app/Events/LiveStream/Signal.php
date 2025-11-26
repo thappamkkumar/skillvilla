@@ -22,13 +22,15 @@ class Signal implements ShouldBroadcast
 		public $liveId; 
     public $payload ;
     public $type;
+    public $viewerId;
 		
-    public function __construct($toUserId, $liveId, $payload, $type)
+    public function __construct($toUserId, $liveId, $payload, $type, $viewerId)
     {
       $this->toUserId = $toUserId; 
       $this->liveId  = $liveId ;
       $this->payload  = $payload ;
       $this->type  = $type ;
+      $this->viewerId  = $viewerId ;
     }
 
     /**

@@ -5,7 +5,7 @@ import attachConnectionStateHandlers from './attachConnectionStateHandlers';
 
 
 
-const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, localMediaRef, authToken,  liveStreamData,    dispatch) => {
+const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, localMediaRef, authToken,  liveStreamData,  logedUserData,  dispatch) => {
 	  
 		if(liveStreamData.publisherId == null || liveStreamData.liveId == null)
 		{return;}
@@ -13,8 +13,8 @@ const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, l
 		// Create RTCPeerConnection instance
 		const peer = new RTCPeerConnection(ICE_CONFIG);
 		
-		//create ice and send to publisher
-		await createAndSendICE(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId);
+		//create ice and send to publisher (logged user id use for filter viewer in publisher side)
+		await createAndSendICE(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId, logedUserData.id);
 		
 		
 		
@@ -34,7 +34,7 @@ const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, l
 
 				if (video) {
 						video.srcObject = event.streams[0];
-						video.muted = true;       // Important for autoplay to work in Chrome/Safari
+						//video.muted = true;       // Important for autoplay to work in Chrome/Safari
 						video.autoplay = true;    // Enables autoplay without click
 						video.playsInline = true; // Prevents fullscreen on mobile
 						
@@ -49,8 +49,8 @@ const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, l
 		// important — set caller's offer as the remote description
 		await peer.setRemoteDescription(new RTCSessionDescription(payload));
 
-		//call function for creating and sending answer to publisher
-		createAndSendAnswer(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId);
+		//call function for creating and sending answer to publisher (logged user id use for filter viewer in publisher side)
+		createAndSendAnswer(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId, logedUserData.id);
 	 
 	 
 	 

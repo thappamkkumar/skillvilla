@@ -25,10 +25,7 @@
     console.error("Critical ICE handling error:", err);
     
   }
-	finally{
-		//dispatch(updateChatCallState({'type' : 'setIsConnecting', 'isConnecting':false } ));
-		//console.log('ICE candidates  ');
-	}
+	 
 };
 
 export default handleICE;

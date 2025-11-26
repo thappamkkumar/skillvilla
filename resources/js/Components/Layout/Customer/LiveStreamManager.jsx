@@ -6,6 +6,8 @@ import LiveStreamModel from '../../Customer/LiveStream/LiveStreamModel';
 //live stream functions
 import startLiveStream from '../../Customer/LiveStream/LiveStreamFunctions/startLiveStream'; 
 import handleOffer from '../../Customer/LiveStream/LiveStreamFunctions/handleOffer'; 
+import handleAnswer from '../../Customer/LiveStream/LiveStreamFunctions/handleAnswer'; 
+import handleICE from '../../Customer/LiveStream/LiveStreamFunctions/handleICE'; 
 
 //live stream custom hook for websockets
 import useLiveStreamStartWebsocket from '../../../Websockets/LiveStream/useLiveStreamStartWebsocket';
@@ -34,20 +36,33 @@ const LiveStreamManager = () => {
 	
 	const onOffer = useCallback(
 		async (payload) => {
-			await handleOffer(payload, ICE_CONFIG, peerConRef, publisherVideoRef,localMediaRef, authToken,  liveStreamData,  dispatch);
+			await handleOffer(payload, ICE_CONFIG, peerConRef, publisherVideoRef,localMediaRef, authToken,  liveStreamData, logedUserData,  dispatch);
 		},
-		[ICE_CONFIG, peerConRef, publisherVideoRef, localMediaRef, authToken, liveStreamData, dispatch]
+		[ICE_CONFIG, peerConRef, publisherVideoRef, localMediaRef, authToken, liveStreamData, dispatch, logedUserData]
+	);
+	
+	const onAnswer = useCallback(
+		async (payload, viewerId) => {
+			await handleAnswer(payload, viewerId, peerConRef);
+		},
+		[peerConRef]
 	);
 	
 	
+	const onICEConnection = useCallback(
+		async (payload, viewerId) => {
+			await handleICE(payload, viewerId, peerConRef);
+		},
+		[peerConRef]
+	);
 	
 	
   // Call the websocket hook
   useLiveStreamStartWebsocket(logedUserData);
   useLiveStreamNewViewerWebsocket(logedUserData, liveStreamData, onStartLiveStream);
-  useLiveStreamSignalWebsocket(logedUserData, liveStreamData, onOffer);
- 
- //console.log(liveStreamData?.publisher?.id);
+  useLiveStreamSignalWebsocket(logedUserData, liveStreamData, onOffer, onAnswer, onICEConnection);
+  
+	
  // return null if no live stream start
 	if(liveStreamData.liveStatus === 'idle') return null; 
 	

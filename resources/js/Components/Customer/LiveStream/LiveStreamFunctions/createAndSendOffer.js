@@ -6,7 +6,7 @@ const createAndSendOffer = async ( peer, authToken, toUserId, liveId) => {
 	try
 	{
 		
-		// create the offer
+		// create the offer (create and send by publisher)
 		const offer = await peer.createOffer();
 		await peer.setLocalDescription(offer);
 	
