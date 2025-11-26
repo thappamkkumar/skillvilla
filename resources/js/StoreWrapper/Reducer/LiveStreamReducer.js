@@ -14,6 +14,7 @@ const LiveStreamReducer = {
 				state.liveId = liveStreamData.id;
 				state.liveStatus = 'live';
 				
+				state.publisherId = liveStreamData.publisher.id;
 				state.publisher = liveStreamData.publisher;
 				state.liveType = liveStreamData.live_type;
 				
@@ -47,6 +48,8 @@ const LiveStreamReducer = {
 				
 				state.liveId = liveData.liveId;
 				state.liveStatus = 'live';
+				
+				state.publisherId = liveData.publisherId;
 				
 				state.currentViewer = liveData.viewer;
 				
@@ -90,6 +93,7 @@ const LiveStreamReducer = {
 				
 				state.publisherHold = false;
 				state.publisher = null;
+				state.publisherId = null;
 				
 				state.viewerList = []; 
 				state.currentViewer = null;  

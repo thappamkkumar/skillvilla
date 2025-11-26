@@ -5,13 +5,16 @@ import attachConnectionStateHandlers from './attachConnectionStateHandlers';
 
 
 
-const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, localMediaRef, authToken,  liveStreamData,   publisherId, dispatch) => {
-	
+const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, localMediaRef, authToken,  liveStreamData,    dispatch) => {
+	  
+		if(liveStreamData.publisherId == null || liveStreamData.liveId == null)
+		{return;}
+
 		// Create RTCPeerConnection instance
 		const peer = new RTCPeerConnection(ICE_CONFIG);
 		
-		//create ice and send to caller
-		await createAndSendICE(peer, authToken, publisherId, liveStreamData.liveId);
+		//create ice and send to publisher
+		await createAndSendICE(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId);
 		
 		
 		
@@ -46,8 +49,8 @@ const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, l
 		// important — set caller's offer as the remote description
 		await peer.setRemoteDescription(new RTCSessionDescription(payload));
 
-		//call function for creating and sending answer to caller
-		createAndSendAnswer(peer, authToken, publisherId, liveStreamData.liveId);
+		//call function for creating and sending answer to publisher
+		createAndSendAnswer(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId);
 	 
 	 
 	 

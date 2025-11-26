@@ -20,25 +20,28 @@ const applyHoldState = (peer, isHolding) => {
 
 
 
-const startLiveStream = async (ICE_CONFIG, peerConRef, localMediaRef,   authToken, liveStreamData,   viewerId,    dispatch) => {
+const startLiveStream = async (ICE_CONFIG, peerConRef, localMediaRef,   authToken, liveStreamData,   toUserId,    dispatch) => {
 	
   // Create RTCPeerConnection instance
 	const peer =   new RTCPeerConnection(ICE_CONFIG);
 	
 	//create ice and send to receiver
-	await createAndSendICE(peer, authToken, viewerId, liveStreamData.liveId);
+	await createAndSendICE(peer, authToken, toUserId, liveStreamData.liveId);
 	
 	
 	// Add local tracks to peer connection
-  localMediaRef.getTracks().forEach(track => {
-			peer.addTrack(track, localStream);
+	if (!localMediaRef.current) {
+    return;
+  } 
+  localMediaRef.current.getTracks().forEach(track => {
+			peer.addTrack(track, localMediaRef.current);
   });
 	
 	 
 	
 	
 	//call function for creating and sending sdp offer to receiver
-	createAndSendOffer(peer, authToken, viewerId, liveStreamData.liveId);
+	createAndSendOffer(peer, authToken, toUserId, liveStreamData.liveId);
 
 	// After everything is set up, check if publisher is holding
 	if (liveStreamData.publisherHold) {
@@ -50,11 +53,11 @@ const startLiveStream = async (ICE_CONFIG, peerConRef, localMediaRef,   authToke
   if (!peerConRef.current) {
     peerConRef.current = {};
   } 
-  peerConRef.current[viewerId] = peer;
+  peerConRef.current[toUserId] = peer;
 	
-	
+	//console.log(peerConRef.current);
 	// Attach connection state listeners
-	//attachConnectionStateHandlers(peer, authToken, viewerId, liveStreamData.liveId, dispatch);
+	//attachConnectionStateHandlers(peer, authToken, toUserId, liveStreamData.liveId, dispatch);
 	
 	
 };

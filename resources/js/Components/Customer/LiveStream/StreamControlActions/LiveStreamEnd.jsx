@@ -141,23 +141,19 @@ const LiveStreamEnd = ({
 				
 			const result = await serverConnection(url, requestData, authToken);
 			
-			 console.log(result);
+			// console.log(result);
 			
-			if(result?.status === true)
-			{
-				dispatch(updateLiveStreamState(
+			if(!result?.status )
+			{ 
+				setsubmitionMSG(result?.message || 'Failed to leave live stream. Please try again.');
+				setShowModel(true);
+			}
+			
+			dispatch(updateLiveStreamState(
 					{ 
 						'type':'refresh',   
 					}
 				));
-			
-			}
-			else
-			{
-				setsubmitionMSG(result?.message || 'Failed to leave live stream. Please try again.');
-				setShowModel(true);
-			}
-				
 			 
 		}
 		catch (err) 

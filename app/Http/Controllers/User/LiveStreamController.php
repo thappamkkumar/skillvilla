@@ -599,6 +599,7 @@ class LiveStreamController extends Controller
 				$data = [
 				'status'=> true, 
 				'message' => 'Viewer data is ready.', 
+				'publisher_id'=>$liveStream->publisher_id,
 				'viewer'=>$viewer,
 				'messages'=>$liveStream->messages
 				];
@@ -826,7 +827,7 @@ class LiveStreamController extends Controller
 				
 				
 				// Return the posts as a JSON response
-				$data = ['status' => true,   ]; 
+				$data = ['status' => true, 'data'=>$request->all()  ]; 
 				return response()->json($data);
 				
 			}

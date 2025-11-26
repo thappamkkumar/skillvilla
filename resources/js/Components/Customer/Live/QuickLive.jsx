@@ -25,7 +25,8 @@ const QuickLive = ({ live }) => {
 			
 			//call api to create quick live stream
 			const result = await serverConnection('/live-stream-new-viewer', {liveId: live.id}, authToken);
-			// console.log(result);
+			
+			//console.log(result);
 			 
 			
 			if(result?.status == true)
@@ -36,6 +37,7 @@ const QuickLive = ({ live }) => {
 				const data = {
 					viewer: viewerData,
 					liveId: live.id,
+					publisherId: result.publisher_id,
 					startedAt: live.quick_stream.started_at,
 					messages: messages,
 				};

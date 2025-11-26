@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import {updateLiveStreamState} from '../../StoreWrapper/Slice/LiveStreamSlice';
 
-const useLiveStreamNewViewerWebsocket = (loggedUserData) => {
+const useLiveStreamNewViewerWebsocket = (loggedUserData, liveStreamData, onStartLiveStream) => {
+	
   const userRef = useRef(loggedUserData?.id);
   const dispatch = useDispatch();
 
@@ -24,13 +25,18 @@ const useLiveStreamNewViewerWebsocket = (loggedUserData) => {
         .listen('.live-stream.new-viewer', (e) => {
           
 					//console.log("Live Stream   Data:", e.new_viewer);
+					if(liveStreamData?.liveId !== e.live_stream_id || e.new_viewer == null)
+					{ 
+						return;
+					}
 					
-					const liveStreamData = {
+					const liveData = {
 						liveId:  e.live_stream_id,
 						newViewer:  e.new_viewer,
 					};
-					dispatch(updateLiveStreamState({type : 'addNewViewer', newViewerData: liveStreamData}));  
-					
+					dispatch(updateLiveStreamState({type : 'addNewViewer', newViewerData: liveData}));  
+					//call function for start connectiong via webRTC
+          onStartLiveStream(e.new_viewer?.user?.id);
         });
     };
 
@@ -39,7 +45,7 @@ const useLiveStreamNewViewerWebsocket = (loggedUserData) => {
     return () => {
       window.Echo.leave(channelName);
     };
-  }, [userRef.current, dispatch, loggedUserData ]);
+  }, [userRef.current,   loggedUserData,   ]);
 };
 
 export default useLiveStreamNewViewerWebsocket;
