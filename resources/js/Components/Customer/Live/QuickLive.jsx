@@ -14,7 +14,7 @@ const QuickLive = ({ live }) => {
 	const [submitting, setSubmitting] = useState(null);
 	const dispatch = useDispatch(); 
 
-  const handleNavigateToUserProfile = useCallback(async() => {
+  const handleJoinLiveStream = useCallback(async() => {
     if(!authToken)
 		{
 			return;
@@ -76,7 +76,7 @@ const QuickLive = ({ live }) => {
 			id={`quickLive${live.id}`}
 			title={`Go live with ${live?.publisher?.name || "Unknown User"}`}
 			className="w-100 px-2 py-2 d-flex flex-wrap align-items-center"
-			onClick={handleNavigateToUserProfile}
+			onClick={handleJoinLiveStream}
 			disabled={liveStreamData.liveStatus !== 'idle'}
 		>
      

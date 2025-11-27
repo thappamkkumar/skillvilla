@@ -96,7 +96,8 @@ const LiveStreamModel = ({
 									
 										<SidePanel 
 											sidePanel={sidePanel}
-											largeScreen={largeScreen}
+											largeScreen={largeScreen} 
+											setResizeScreen={setResizeScreen}
 										/>
 										
 									)}

@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 
 import handleImageError from '../../../../../../CustomHook/handleImageError'; 
 
-const ChatMessages= () => {
+const ChatMessages= ({setResizeScreen}) => {
 	const liveStreamData = useSelector((state) => state.liveStreamData);
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 
@@ -19,6 +19,8 @@ const ChatMessages= () => {
 	
 	const navigateToSenderProfile = useCallback((ID,userID)=>{
 		const url = logedUserData.id == ID ? '/profile' : `/user/${userID}/${ID}/profile` ;
+		
+		setResizeScreen(pre => !pre);
 		navigate(url); 
 		
 	},[]);

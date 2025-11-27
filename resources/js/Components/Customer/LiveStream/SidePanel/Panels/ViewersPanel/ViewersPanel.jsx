@@ -1,11 +1,36 @@
 
-import {memo} from 'react';
+import {memo, useState} from 'react';
+import { useSelector } from 'react-redux';
+import Viewer from './Viewer';
 
-const ViewersPanel = () => {
+import MessageAlert from '../../../../../MessageAlert';
 
+const ViewersPanel = ({setResizeScreen}) => {
+const liveStreamData = useSelector((state) => state.liveStreamData);
+ 
+ const [submitionMSG, setsubmitionMSG] = useState(null); //state for store  msg to show
+	const [showModel, setShowModel] = useState(false); //state for show/hide 
+	
+	
 	return(
-		<div className="">
-			Viewers Panel
+		<div >
+			<MessageAlert setShowModel={handleModalClose} showModel={showModel} message={submitionMSG}/>
+			
+			{liveStreamData?.viewerList?.map((viewer) => ( 
+						
+				<div     key={viewer.id}  className="        ">
+				 
+					<Viewer 
+						liveId={liveStreamData.liveId} 
+						viewer={viewer} 
+						setResizeScreen={setResizeScreen} 
+						setsubmitionMSG={setsubmitionMSG} 
+						setShowModel={setShowModel} 
+					/>
+					
+				</div>
+			))} 
+					
 		</div>
 	);
 

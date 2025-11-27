@@ -10,16 +10,17 @@ import MembersPanel from './Panels/MembersPanel/MembersPanel';
 const SidePanel = ({ 
 	sidePanel,
 	largeScreen,	
+	setResizeScreen,	
 }) => {
 	
 	const [selectedPanel, setSelectedPanel] = useState('chat');
 	
 	 // Map panel codes to their content
   const panelContent = {
-    chat: <ChatPanel />,
-    viewer: <ViewersPanel  />,
-    request: <RequestsPanel />,
-    member: <MembersPanel />,
+    chat: <ChatPanel setResizeScreen={setResizeScreen} />,
+    viewer: <ViewersPanel setResizeScreen={setResizeScreen} />,
+    request: <RequestsPanel setResizeScreen={setResizeScreen} />,
+    member: <MembersPanel setResizeScreen={setResizeScreen} />,
   };
 	
 	return(

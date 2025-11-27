@@ -19,8 +19,8 @@ const SidePanelHeader = ({
   if (isPublisher) { 
     buttons.push({ title: 'Chat', code: 'chat' });
     buttons.push({ title: 'Viewer', code: 'viewer' });
-    buttons.push({ title: 'Request', code: 'request' });
-    buttons.push({ title: 'Member', code: 'member' });
+   // buttons.push({ title: 'Request', code: 'request' });
+   // buttons.push({ title: 'Member', code: 'member' });
   }
 
   if (isCurrentViewer) {

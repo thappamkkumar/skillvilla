@@ -22,7 +22,7 @@ const MainHeader = ({
 	const timerRef = useRef(null); 
 	 
 	const resizeHandlle = useCallback(()=>{
-		setResizeScreen	(pre => !pre);	
+		setResizeScreen(pre => !pre);	
 	},[]);
 	
 	const panelHandlle = useCallback(()=>{

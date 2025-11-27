@@ -67,6 +67,7 @@ const Header = () => {
     "/create/freelance",
     "/create/community",
     "/create/story",
+    "/create/live-stream",
     "/posts",
     "/workfolio",
     "/jobs",
