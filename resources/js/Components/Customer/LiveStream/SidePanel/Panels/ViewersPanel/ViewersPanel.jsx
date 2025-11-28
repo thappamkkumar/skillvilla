@@ -14,7 +14,7 @@ const liveStreamData = useSelector((state) => state.liveStreamData);
 	
 	return(
 		<div >
-			<MessageAlert setShowModel={handleModalClose} showModel={showModel} message={submitionMSG}/>
+			<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
 			
 			{liveStreamData?.viewerList?.map((viewer) => ( 
 						

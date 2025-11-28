@@ -160,7 +160,7 @@
 		
 		
 		//Route for manage access of (MEMBER AND VIEWER) for live stream 
-		Route::post('/live-stream-manage-access', 'liveStreamManageAccess')->name('user.liveStreamManageAccess');
+		Route::post('/live-stream-update-viewer-can', 'liveStreamUpdateViewerCan')->name('user.liveStreamUpdateViewerCan');
 		
 		//Route for publisher hold live stream 
 		Route::post('/live-stream-publisher-hold', 'liveStreamPublisherHold')->name('user.liveStreamPublisherHold');

@@ -41,6 +41,28 @@ const LiveStreamReducer = {
 				break;
 			}
 			
+			case "updateViewerCan":
+			{
+				const {liveId, viewerId, type, can_do} = action.payload.updatedData;
+				if(liveId !== state.liveId) break;
+				
+				state.viewerList = state.viewerList.map(viewer => {
+								if (viewer.id === viewerId) 
+								{
+									if(type === "can_live")
+									{
+										viewer.can_live = can_do;
+									}
+									if(type === "can_message")
+									{
+										viewer.can_message = can_do;
+									}
+								}
+								return viewer;
+						});
+				break;
+			}
+			
 			//current viewer start watching stream "viewer side how start watching only"
 			case "viewerStartWatchingStream":
 			{

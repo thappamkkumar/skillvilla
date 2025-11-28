@@ -565,8 +565,6 @@ class LiveStreamController extends Controller
 											? url(Storage::url('profile_image/' . $viewer->user->customer->image))
 											: null;
 					}
-
-		
         }
 				
 				
@@ -669,6 +667,12 @@ class LiveStreamController extends Controller
             return response()->json(['status'=> false, 'message' => 'Stream type not found']);
         }
 
+				ViewerLeft::dispatch([
+					'liveStreamId' => $liveStreamId,
+					'viewerId' => $viewerId,
+					'toUserId' => $request->viewerId ?? $liveStream->publisher_id,
+				]);
+				
 				
 				$data = ['status'=> true, 'message' => 'Successfully leave the live stream.'];
 				return response()->json($data);
@@ -843,17 +847,54 @@ class LiveStreamController extends Controller
 		}
 
 
-		//manageor (update) the access of viewer and members
-		function liveStreamManageAccess(Request $request)
+		//manage or (update) the access of viewer and members
+		function liveStreamUpdateViewerCan(Request $request)
 		{
 			try
 			{
 				// Get logged-in user
 				$user = JWTAUTH::parseToken()->authenticate();
 				
+				$liveStreamId = $request->liveId;
+				$viewer_id= $request->viewer_id;
+				$type= $request->type;
 				
-				$data = ['status'=> true, 'message' => ''];
+				if(!$liveStreamId)
+				{
+					$data = ['status' => false,'message'=> "Live Stream Id Not Found In Request."];
+					return response()->json($data);
+				} 
 				
+				// 2. Fetch the LiveStream with related streams
+        $liveStream = LiveStream::with(['quickStream'])->find($liveStreamId);
+
+				if (!$liveStream) {
+            return response()->json(['status'=> false, 'message' => 'Live stream not found']);
+        }
+				
+				$viewer = null;
+				if ($liveStream->quickStream) 
+				{
+					$viewer = LiveQuickStreamViewer::find($viewer_id);
+
+					if (!$viewer) 
+					{
+						return response()->json(['status'=> false, 'message' => 'Live stream selected viewer not found.']);
+					}
+					
+					if($type === 'can_live')
+					{
+						$viewer->can_live = !$viewer->can_live;
+					}
+					if($type === 'can_message')
+					{
+						$viewer->can_message = !$viewer->can_message;
+					}
+					$viewer->save();
+				}
+				
+				$data = ['status'=> true, 'message' => '', "updated_viewer"=>$viewer];
+				return response()->json($data);
 			}
 			catch(Exception $e)
 			{

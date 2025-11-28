@@ -7,6 +7,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { BsThreeDotsVertical,  BsCircleFill, BsCircle} from "react-icons/bs";
 
 
+import {updateLiveStreamState} from '../../../../../../StoreWrapper/Slice/LiveStreamSlice';
+
 import serverConnection from '../../../../../../CustomHook/serverConnection';
 import handleImageError from '../../../../../../CustomHook/handleImageError';
 
@@ -21,7 +23,7 @@ const Viewer = ({
 	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 	const authToken = useSelector((state) => state.auth.token); //selecting token from store 
 	
-	const [updating, setUpdating] = useState(null);
+	const [updating, setUpdating] = useState(false);
 	
 	
 	const navigate = useNavigate();
@@ -51,23 +53,31 @@ const Viewer = ({
 				liveId: liveId,
 				viewer_id: viewer.id,
 				type: type,
-			};
+			}; 
+			
 			//call api to create quick live stream
-			const result = await serverConnection('/live-stream-manage-access', reqData, authToken);
+			const result = await serverConnection('/live-stream-update-viewer-can', reqData, authToken);
 			
 			//console.log(result);
 			 
 			
-			if(result?.status == true)
+			if(result?.status)
 			{		 
 		 
+				const updatedData = {
+					liveId : liveId,
+					viewerId : viewer.id,
+					type : type, 
+					can_do : type === 'can_live' ? result.updated_viewer?.can_live : result.updated_viewer?.can_message,
+				};
 				 
-				/*dispatch(updateLiveStreamState(
+				 
+				dispatch(updateLiveStreamState(
 					{ 
-					'type':'viewerStartWatchingStream',  
-					'data': data
+					'type':'updateViewerCan',  
+					'updatedData': updatedData
 					}
-				));*/
+				));
 			}
 			else
 			{
@@ -153,7 +163,7 @@ const Viewer = ({
 							title={`Toggle 'Can Live' permission for ${viewer?.user?.name || "viewer"}`} 
 							className="py-2 d-flex align-items-center gap-2  rounded  navigation_link" 
 							onClick={handleViewerCanLiveChange}
-							disable={updating}
+							disabled={updating}
 						>
 							{viewer.can_live ? (
 									<BsCircleFill size={14} color="var(--bs-success)" />    
@@ -174,7 +184,7 @@ const Viewer = ({
 							title={`Toggle 'Can Message' permission for ${viewer?.user?.name || "viewer"}`}
 							className="py-2 d-flex align-items-center gap-2 rounded navigation_link"
 							onClick={handleViewerCanMessageChange}
-							disable={updating}
+							disabled={updating}
 						>
 							{viewer.can_message ? (
 								<BsCircleFill size={14} color="var(--bs-success)" />
