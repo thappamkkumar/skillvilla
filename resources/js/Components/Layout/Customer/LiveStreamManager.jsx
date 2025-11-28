@@ -13,6 +13,7 @@ import handleICE from '../../Customer/LiveStream/LiveStreamFunctions/handleICE';
 import useLiveStreamStartWebsocket from '../../../Websockets/LiveStream/useLiveStreamStartWebsocket';
 import useLiveStreamNewViewerWebsocket from '../../../Websockets/LiveStream/useLiveStreamNewViewerWebsocket';
 import useLiveStreamSignalWebsocket from '../../../Websockets/LiveStream/useLiveStreamSignalWebsocket';
+import useLiveStreamViewerLeaveWebsocket from '../../../Websockets/LiveStream/useLiveStreamViewerLeaveWebsocket';
 
 const LiveStreamManager = () => {
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
@@ -60,6 +61,7 @@ const LiveStreamManager = () => {
   // Call the websocket hook
   useLiveStreamStartWebsocket(logedUserData);
   useLiveStreamNewViewerWebsocket(logedUserData, liveStreamData, onStartLiveStream);
+  useLiveStreamViewerLeaveWebsocket(logedUserData, liveStreamData);
   useLiveStreamSignalWebsocket(logedUserData, liveStreamData, onOffer, onAnswer, onICEConnection);
   
 	

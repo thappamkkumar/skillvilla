@@ -5,7 +5,7 @@ const liveStreamState = {
 	liveType: null,
 	startedAt: null,
 	liveStatus: 'idle',
-	totalViewer: null,
+	totalViewer: 0,
 	
 	liveSession: null, //{id, title, description,etc}
 	liveDetail: null, //if(type prof. stream) && {id, title, description,etc}

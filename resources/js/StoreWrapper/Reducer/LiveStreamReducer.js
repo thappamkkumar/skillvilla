@@ -36,10 +36,24 @@ const LiveStreamReducer = {
 					connection_status: 'connecting',
 				}
 				state.viewerList = [viewer, ...state.viewerList];
-	
+				state.totalViewer = (state.totalViewer || 0 ) + 1;
 
 				break;
 			}
+			
+			case "removeViewer":
+			{
+				const {liveId, viewerUserId} = action.payload.liveData;
+				
+				state.viewerList = state.viewerList.filter(item => item.viewer_id != viewerUserId);
+				if(state.totalViewer != null && state.totalViewer > 1)
+				{
+					state.totalViewer--;
+				} 
+				 
+				break;
+			}
+			
 			
 			case "updateViewerCan":
 			{

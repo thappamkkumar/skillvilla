@@ -633,7 +633,7 @@ class LiveStreamController extends Controller
 				{
 					$viewerId = request->viewerId;
 				}
-        
+        //here viewerId is actualy user.id
 				
 				// 2. Fetch the LiveStream with related streams
         $liveStream = LiveStream::with(['quickStream', 'professionalStream'])->find($liveStreamId);
@@ -668,9 +668,9 @@ class LiveStreamController extends Controller
         }
 
 				ViewerLeft::dispatch([
-					'liveStreamId' => $liveStreamId,
-					'viewerId' => $viewerId,
-					'toUserId' => $request->viewerId ?? $liveStream->publisher_id,
+					'live_stream_id' => $liveStreamId,
+					'viewer_user_id' => $viewerId,
+					'to_user_id' => $request->viewerId ?? $liveStream->publisher_id,
 				]);
 				
 				
