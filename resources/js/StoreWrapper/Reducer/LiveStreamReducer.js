@@ -33,7 +33,8 @@ const LiveStreamReducer = {
 				
 				const viewer = {
 					...newViewer,
-					connection_status: 'connecting',
+					isConnecting: true,
+					error: null ,
 				}
 				state.viewerList = [viewer, ...state.viewerList];
 				state.totalViewer = (state.totalViewer || 0 ) + 1;
@@ -77,6 +78,40 @@ const LiveStreamReducer = {
 				break;
 			}
 			
+			//this is for publisher side
+			case "updateViewerConnectionStatusAndError":
+			{
+				console.log(action.payload);
+				const {viewerUserId, isConnecting, error} = action.payload.viewerData;
+				 
+				state.viewerList = state.viewerList.map(viewer => {
+								if (viewer.viewer_id === viewerUserId) 
+								{
+									 viewer.isConnecting = isConnecting;
+									 viewer.error = error;
+									 
+								}
+								return viewer;
+						});
+				break;
+			}
+			
+			//this is for viewer side 
+			case "updateCurrentViewerConnectionStatusAndError":
+			{
+				const {viewerId, isConnecting, error} = action.payload.currentViewerData;
+				
+				if(state.currentViewer?.viewer_id == viewerId)
+				{
+					state.isConnecting = isConnecting;
+					state.error = error;
+				}
+				break;
+			}
+			
+			
+			
+			
 			//current viewer start watching stream "viewer side how start watching only"
 			case "viewerStartWatchingStream":
 			{
@@ -92,6 +127,8 @@ const LiveStreamReducer = {
 				state.startedAt = liveData.startedAt;
 				
 				state.chatMessages = liveData.messages; 
+				state.isConnecting = true;
+				state.error = null;
 				
 				break;
 			}

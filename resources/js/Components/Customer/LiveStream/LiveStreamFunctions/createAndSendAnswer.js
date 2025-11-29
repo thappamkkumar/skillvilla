@@ -1,6 +1,7 @@
 import serverConnection from '../../../../CustomHook/serverConnection';
+import {updateLiveStreamState} from '../../../../StoreWrapper/Slice/LiveStreamSlice';
 
-const createAndSendAnswer = async ( peer, authToken, toUserId, liveId, viewerId) => { 
+const createAndSendAnswer = async ( peer, authToken, toUserId, liveId, viewerId, dispatch) => { 
 	
 	try
 	{
@@ -11,7 +12,7 @@ const createAndSendAnswer = async ( peer, authToken, toUserId, liveId, viewerId)
 		 
 		const resultData = await serverConnection('/live-stream-signaling', 
 											{ 
-												toUserId: toUserId,
+												toUserId: toUserId,//it is publisher id
 												viewerId: viewerId,//(viewerId is logged user id use for filter viewer in publisher side)
 												liveId: liveId,
 												payload: answer,
@@ -21,14 +22,34 @@ const createAndSendAnswer = async ( peer, authToken, toUserId, liveId, viewerId)
 		//console.log(resultData);
 		if(!resultData.status)
 		{ 
-			console.log('send error to viewer and cancel conneting');
+			console.log('Facing issue while sending answer to publisher.');
+			dispatch(updateLiveStreamState(
+			{ 
+				'type':'updateCurrentViewerConnectionStatusAndError',  
+				'currentViewerData': {
+						viewerId : viewerId,
+						isConnecting: false,
+						error: 'Facing issue while connecting.',
+					}
+				}
+			));
 		}
 	
 	}
 	catch(e)
 	{
-		console.log(e);
-		console.log('send error to viewer and cancel conneting');
+		//console.log(e);
+		console.log('Facing issue while creating answer.');
+		dispatch(updateLiveStreamState(
+		{ 
+			'type':'updateCurrentViewerConnectionStatusAndError',  
+			'currentViewerData': {
+					viewerId : viewerId,
+					isConnecting: false,
+					error: 'Facing issue while connecting.',
+				}
+			}
+		));
 	}
 	
 };

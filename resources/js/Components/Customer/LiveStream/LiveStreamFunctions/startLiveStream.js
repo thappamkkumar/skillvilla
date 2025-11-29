@@ -26,7 +26,10 @@ const startLiveStream = async (ICE_CONFIG, peerConRef, localMediaRef,   authToke
 	const peer =   new RTCPeerConnection(ICE_CONFIG);
 	
 	//create ice and send to viewer (null is pass for viewer id (i.e. loged user id) )
-	await createAndSendICE(peer, authToken, toUserId, liveStreamData.liveId, null);
+	await createAndSendICE(peer, authToken, toUserId, liveStreamData.liveId, null, dispatch);
+	
+	
+	
 	
 	
 	// Add local tracks to peer connection
@@ -41,7 +44,7 @@ const startLiveStream = async (ICE_CONFIG, peerConRef, localMediaRef,   authToke
 	
 	
 	//call function for creating and sending sdp offer to receiver
-	createAndSendOffer(peer, authToken, toUserId, liveStreamData.liveId);
+	createAndSendOffer(peer, authToken, toUserId, liveStreamData.liveId, dispatch);
 
 	// After everything is set up, check if publisher is holding
 	if (liveStreamData.publisherHold) {
@@ -56,8 +59,10 @@ const startLiveStream = async (ICE_CONFIG, peerConRef, localMediaRef,   authToke
   peerConRef.current[toUserId] = peer;
 	
 	//console.log(peerConRef.current);
+	
 	// Attach connection state listeners
-	//attachConnectionStateHandlers(peer, authToken, toUserId, liveStreamData.liveId, dispatch);
+	//toUserId is pass as viewer user id to remove uiewer if needed.
+	attachConnectionStateHandlers(peerConRef, peer, authToken, toUserId, liveStreamData.liveId, dispatch, true);
 	
 	
 };

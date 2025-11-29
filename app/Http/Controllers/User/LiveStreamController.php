@@ -631,7 +631,7 @@ class LiveStreamController extends Controller
 				
 				if($request->viewerId)
 				{
-					$viewerId = request->viewerId;
+					$viewerId = $request->viewerId;
 				}
         //here viewerId is actualy user.id
 				

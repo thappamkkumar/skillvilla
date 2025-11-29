@@ -14,16 +14,9 @@ const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, l
 		const peer = new RTCPeerConnection(ICE_CONFIG);
 		
 		//create ice and send to publisher (logged user id use for filter viewer in publisher side)
-		await createAndSendICE(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId, logedUserData.id);
+		await createAndSendICE(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId, logedUserData.id, dispatch);
 		
-		
-		
-		
-		// this is for simple peer. not for obj of peer like publisher has
-		// Attach connection state listeners
-		//attachConnectionStateHandlers(peer, authToken, publisherId(or viewerId), liveStreamData.liveId, dispatch);
-		
-		
+		 
 		
 		
 		
@@ -50,14 +43,18 @@ const handleOffer = async (payload, ICE_CONFIG, peerConRef, publisherVideoRef, l
 		await peer.setRemoteDescription(new RTCSessionDescription(payload));
 
 		//call function for creating and sending answer to publisher (logged user id use for filter viewer in publisher side)
-		createAndSendAnswer(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId, logedUserData.id);
+		createAndSendAnswer(peer, authToken, liveStreamData.publisherId, liveStreamData.liveId, logedUserData.id, dispatch);
 	 
 	 
 	 
  
 		peerConRef.current = peer;
 		
-	
+		// Attach connection state listeners
+		//logedUserData.id  as viewer id for removing viewer id
+		attachConnectionStateHandlers(peerConRef, peer, authToken, logedUserData.id, liveStreamData.liveId, dispatch, false);
+		
+		
 	
   };
 

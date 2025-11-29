@@ -131,17 +131,42 @@ const Viewer = ({
 						variant="dark"
 						id={`viewer${viewer.user.userID}Profile`}
 						title={`Go To ${viewer.user.name || "Unknown User"} Profile`} 
-						className="p-0 px-2   text-truncate overflow-hidden text-nowrap text-light strong "
+						className="p-0 px-2   text-truncate overflow-hidden text-nowrap text-light strong text-start"
 						onClick={handleNavigateToUserProfile}
 					>
 						{viewer?.user?.name || "Unknown User"} 
+						
 					</Button>
-
-					<small
-						className=" px-2   text-truncate overflow-hidden text-nowrap text-danger  "
-					>
-						{viewer?.connection_status || ""}
-					</small>
+					
+					{
+						!viewer?.isConnecting &&   viewer?.error == null &&  
+						<small
+							className=" px-2   text-truncate overflow-hidden text-nowrap text-secondary d-block "
+						>
+						{viewer?.user?.userID}
+						</small> 
+					}
+					
+					{
+						viewer?.isConnecting && 
+						<small
+							className=" px-2   text-truncate overflow-hidden text-nowrap text-secondary  "
+						>
+							Connecting
+							<span className="dot-blink">.</span>
+              <span className="dot-blink">.</span>
+              <span className="dot-blink">.</span>
+						</small> 
+					}
+					{
+						!viewer?.isConnecting && viewer?.error && viewer?.error.trim() != "" &&
+						<small
+							className=" px-2   text-truncate overflow-hidden text-nowrap text-danger  "
+						>
+						{viewer?.error} 
+						</small> 
+					}
+					
 					
 				</div>
 				
@@ -163,7 +188,7 @@ const Viewer = ({
 							title={`Toggle 'Can Live' permission for ${viewer?.user?.name || "viewer"}`} 
 							className="py-2 d-flex align-items-center gap-2  rounded  navigation_link" 
 							onClick={handleViewerCanLiveChange}
-							disabled={updating}
+							disabled={updating || viewer?.isConnecting}
 						>
 							{viewer.can_live ? (
 									<BsCircleFill size={14} color="var(--bs-success)" />    
@@ -184,7 +209,7 @@ const Viewer = ({
 							title={`Toggle 'Can Message' permission for ${viewer?.user?.name || "viewer"}`}
 							className="py-2 d-flex align-items-center gap-2 rounded navigation_link"
 							onClick={handleViewerCanMessageChange}
-							disabled={updating}
+							disabled={updating || viewer?.isConnecting}
 						>
 							{viewer.can_message ? (
 								<BsCircleFill size={14} color="var(--bs-success)" />

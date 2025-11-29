@@ -1,6 +1,7 @@
 import serverConnection from '../../../../CustomHook/serverConnection';
- 
-const createAndSendOffer = async ( peer, authToken, toUserId, liveId) => {
+import {updateLiveStreamState} from '../../../../StoreWrapper/Slice/LiveStreamSlice';
+
+const createAndSendOffer = async ( peer, authToken, toUserId, liveId, dispatch) => {
 	 
 	
 	try
@@ -12,7 +13,7 @@ const createAndSendOffer = async ( peer, authToken, toUserId, liveId) => {
 	
 		const resultData = await serverConnection('/live-stream-signaling', 
 											{ 
-												toUserId: toUserId,
+												toUserId: toUserId,//viewer user id
 												liveId: liveId,
 												payload: offer,
 												type: 'offer',
@@ -21,14 +22,34 @@ const createAndSendOffer = async ( peer, authToken, toUserId, liveId) => {
 		 
 		if(!resultData.status)
 		{
-			console.log('send error to viewer and cancel conneting');
+			console.log('Facing issue while sending offer to viewer.');
+			dispatch(updateLiveStreamState(
+			{ 
+				'type':'updateViewerConnectionStatusAndError',  
+				'viewerData': {
+						viewerUserId : toUserId,
+						isConnecting: false,
+						error: 'Facing issue while connecting.',
+					}
+				}
+			));
 		}
 	
 	}
 	catch(e)
 	{
-		console.log(e);
-		console.log('send error to viewer and cancel conneting');
+		//console.log(e);
+		console.log('Facing issue while creating offer.');
+		dispatch(updateLiveStreamState(
+		{ 
+			'type':'updateViewerConnectionStatusAndError',  
+			'viewerData': {
+					viewerUserId : toUserId,
+					isConnecting: false,
+					error: 'Facing issue while connecting.',
+				}
+			}
+		));
 	}
 	
 };

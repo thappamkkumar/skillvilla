@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+//use Carbon\Carbon;
 
 class LiveQuickStreamViewer extends Model
 {
@@ -32,7 +33,15 @@ class LiveQuickStreamViewer extends Model
 					];
 		}
 		
-		
+		/*protected $appends = ['joined_at_human_readable']; 
+
+		public function getJoinedAtHumanReadableAttribute()
+    {
+        // Format the expires_at value as a human-readable string
+        return Carbon::parse($this->attributes['joined_at'])->diffForHumans();
+    }
+*/
+
 		 public function quickStream()
     {
         return $this->belongsTo(LiveQuickStream::class, 'live_quick_stream_id');
