@@ -1,5 +1,5 @@
 
-import   {  useState, useEffect, useRef, useCallback } from 'react';
+import   {  useState, useEffect, useRef, useCallback, memo } from 'react';
 import debounce from "lodash/debounce";
 import { useSelector } from 'react-redux'; 
 
@@ -123,4 +123,4 @@ const LiveStreamModel = ({
 };
 
 
-export default LiveStreamModel;
+export default memo(LiveStreamModel);

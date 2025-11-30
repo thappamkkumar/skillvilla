@@ -974,7 +974,7 @@ class LiveStreamController extends Controller
 				// Get logged-in user
 				$user = JWTAUTH::parseToken()->authenticate();
 				
-				$liveStream = LiveStream::find($request->liveStreamId);
+				$liveStream = LiveStream::with('quickStream:id,live_stream_id')->find($request->liveStreamId);
 				
 				if (!$liveStream) {
             return response()->json(['status'=> fasle, 'message' => 'Live stream not found']);
@@ -1002,11 +1002,26 @@ class LiveStreamController extends Controller
 					: null; 
 				}	
 				
-				 
+				$viewers = LiveQuickStreamViewer::where('live_quick_stream_id',$liveStream->quickStream->id)->whereNot('viewer_id', $user->id)->get();
+				if($viewers)
+				{
+					$viewers_user_id = $viewers->pluck('viewer_id');
+					if($liveStreamChat->sender_id != $liveStream->publisher_id)
+					{
+						$viewers_user_id->push($liveStream->publisher_id);
+					}
+					$newMessage = $liveStreamChat->only(['id', 'live_stream_id','message', 'sender_id', 'sender']);
+					
+					Message::dispatch([
+						'message' => $newMessage,
+						'viewer_users_ids' => $viewers_user_id,
+						]);
+				}
+				
 				$data = [
 				'status'=> true, 
 				'message' => 'Message sent successfully', 
-				'newMessage'=> $liveStreamChat->only(['id', 'live_stream_id','message', 'sender_id', 'sender']),  
+				'newMessage'=> $newMessage,   
 				];
 				return response()->json($data);
 			}

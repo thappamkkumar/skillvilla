@@ -1,5 +1,5 @@
 
-import {memo, useCallback} from 'react';
+import {memo, useCallback, useMemo} from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate  } from "react-router-dom";
 import Image from 'react-bootstrap/Image'; 
@@ -14,7 +14,7 @@ const ChatMessages= ({setResizeScreen}) => {
   const navigate = useNavigate();
 	
 	
-	const messages =   liveStreamData.chatMessages ;
+	const messages =   useMemo(()=>{return liveStreamData.chatMessages ;},[liveStreamData.chatMessages]); 
 	
 	
 	const navigateToSenderProfile = useCallback((ID,userID)=>{
@@ -27,7 +27,7 @@ const ChatMessages= ({setResizeScreen}) => {
 	
 	return( 
 		<div className="flex-grow-1  h-100 overflow-auto ">
-		 	<div className="  py-4  d-flex flex-column justify-content-end ">{/*use justify-content-end   for reverse rendering. mean onload  div start from bottom not from top */}
+		 	<div className="  py-4  d-flex flex-column justify-content-end ">{/*use justify-content-end   for reverse rendering. main onload  div start from bottom not from top */}
 			 	{
 				messages.map((message)=> (
 					<div 

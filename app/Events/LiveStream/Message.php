@@ -10,16 +10,17 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class Message
+class Message implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+		public $data;
+    public function __construct($data)
     {
-        //
+      $this->data = $data;
     }
 
     /**
@@ -29,8 +30,21 @@ class Message
      */
     public function broadcastOn(): array
     {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
+        return collect($this->data['viewer_users_ids'])
+            ->map(fn($id) => new PrivateChannel("live-stream.{$id}"))
+            ->toArray();
     }
+		
+		public function broadcastWith(): array
+		{
+				return [
+						'message' => $this->data['message'], 
+				];
+		}
+
+		public function broadcastAs(): string
+		{
+				return 'live-stream.message';
+		} 
+		
 }

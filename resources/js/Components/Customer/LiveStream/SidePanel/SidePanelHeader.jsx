@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 
@@ -10,9 +10,9 @@ const SidePanelHeader = ({
   const liveStreamData = useSelector((state) => state.liveStreamData);
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 
-  const isPublisher = logedUserData?.id === liveStreamData?.publisher?.id;
-  const isCurrentViewer = logedUserData?.id === liveStreamData?.currentViewer?.viewer_id;
-  const isSharing = liveStreamData?.currentViewer?.is_sharing;
+  const isPublisher = useMemo(()=>{ return logedUserData?.id === liveStreamData?.publisher?.id },[logedUserData, liveStreamData.publisher]);
+  const isCurrentViewer = useMemo(()=>{ return logedUserData?.id === liveStreamData?.currentViewer?.viewer_id  },[logedUserData, liveStreamData.currentViewer]);
+  const isSharing = useMemo(()=>{ return liveStreamData?.currentViewer?.is_sharing  },[liveStreamData.currentViewer]);
 
   const buttons = [];
 

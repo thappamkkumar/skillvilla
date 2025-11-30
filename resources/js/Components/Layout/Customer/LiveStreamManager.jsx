@@ -1,4 +1,4 @@
-import   {useCallback,  useRef} from 'react';
+import   {useCallback,  useRef, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import LiveStreamModel from '../../Customer/LiveStream/LiveStreamModel'; 
 
@@ -14,6 +14,7 @@ import useLiveStreamStartWebsocket from '../../../Websockets/LiveStream/useLiveS
 import useLiveStreamNewViewerWebsocket from '../../../Websockets/LiveStream/useLiveStreamNewViewerWebsocket';
 import useLiveStreamSignalWebsocket from '../../../Websockets/LiveStream/useLiveStreamSignalWebsocket';
 import useLiveStreamViewerLeaveWebsocket from '../../../Websockets/LiveStream/useLiveStreamViewerLeaveWebsocket';
+import useLiveStreamMessageWebsocket from '../../../Websockets/LiveStream/useLiveStreamMessageWebsocket';
 
 const LiveStreamManager = () => {
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
@@ -58,11 +59,15 @@ const LiveStreamManager = () => {
 	);
 	
 	
+	 
+	
+	
   // Call the websocket hook
   useLiveStreamStartWebsocket(logedUserData);
   useLiveStreamNewViewerWebsocket(logedUserData, liveStreamData, onStartLiveStream);
   useLiveStreamViewerLeaveWebsocket(logedUserData, liveStreamData);
   useLiveStreamSignalWebsocket(logedUserData, liveStreamData, onOffer, onAnswer, onICEConnection);
+  useLiveStreamMessageWebsocket(logedUserData);
   
 	
  // return null if no live stream start

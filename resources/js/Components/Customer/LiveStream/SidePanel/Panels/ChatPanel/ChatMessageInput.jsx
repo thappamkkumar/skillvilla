@@ -14,7 +14,7 @@ import {updateLiveStreamState} from '../../../../../../StoreWrapper/Slice/LiveSt
 
 const ChatMessageInput = () => {
 	const liveStreamData = useSelector((state) => state.liveStreamData);
-	const logedUserData = JSON.parse(useSelector((state) => state.auth.user)); // get login info
+	//const logedUserData = JSON.parse(useSelector((state) => state.auth.user)); // get login info
 	const authToken = useSelector((state) => state.auth.token); //selecting token from store
 	const [submitionMSG, setsubmitionMSG] = useState(null); //state for store info about form submition  
 	const [showModel, setShowModel] = useState(false); //state for alert message 

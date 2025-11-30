@@ -17,7 +17,7 @@ const MainHeader = ({
 }) =>
 {
 	const liveStreamData = useSelector((state) => state.liveStreamData);
-	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
+	//const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 	
   const [elapsedTime, setElapsedTime] = useState(0);
 	
