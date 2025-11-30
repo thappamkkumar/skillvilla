@@ -81,7 +81,7 @@ const LiveStreamReducer = {
 			//this is for publisher side
 			case "updateViewerConnectionStatusAndError":
 			{
-				console.log(action.payload);
+				 
 				const {viewerUserId, isConnecting, error} = action.payload.viewerData;
 				 
 				state.viewerList = state.viewerList.map(viewer => {

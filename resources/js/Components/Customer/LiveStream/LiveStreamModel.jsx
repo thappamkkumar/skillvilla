@@ -44,6 +44,8 @@ const LiveStreamModel = ({
   }, []);
  
  
+
+ 
 	return(
 			<div
 				className={`  position-fixed top-0 overflow-hidden  bg-dark    ${resizeScreen && 'small-call-container end-0  m-1 rounded-3  '} `}
@@ -51,7 +53,13 @@ const LiveStreamModel = ({
 			>
 					<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
 					
+					
+					
 				 	<div className="w-100 h-100   d-flex flex-column  ">
+						
+						
+						 
+ 
 						
 						
 						{/*MAIN HEADER*/}

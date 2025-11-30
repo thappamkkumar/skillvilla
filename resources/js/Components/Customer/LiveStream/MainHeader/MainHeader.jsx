@@ -17,6 +17,8 @@ const MainHeader = ({
 }) =>
 {
 	const liveStreamData = useSelector((state) => state.liveStreamData);
+	const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
+	
   const [elapsedTime, setElapsedTime] = useState(0);
 	
 	const timerRef = useRef(null); 
@@ -63,10 +65,34 @@ const MainHeader = ({
 	return(
 		<div className="d-flex justify-content-between align-items-center p-2 bg-dark   border-bottom border-2 border-secondary ">
 			<div>
-				 
-				<span className= {`text-white-50 fw-bold  ${resizeScreen && 'small'} `} >
-						{liveStreamData?.startedAt ? formatTime(elapsedTime) : "wait..."}
-				</span>
+				{
+					!liveStreamData?.isConnecting &&   liveStreamData?.error == null &&  
+					
+					<span className= {`text-white-50 fw-bold  ${resizeScreen && 'small'} `} >
+							{liveStreamData?.startedAt ? formatTime(elapsedTime) : "wait..."}
+					</span>
+				}
+				
+			 {
+					liveStreamData?.isConnecting && 
+					<span
+						className=" px-2   text-truncate overflow-hidden text-nowrap text-white-50  "
+					>
+						Connecting
+						<span className="dot-blink">.</span>
+						<span className="dot-blink">.</span>
+						<span className="dot-blink">.</span>
+					</span> 
+				}
+				{
+					!liveStreamData?.isConnecting && liveStreamData?.error && liveStreamData?.error.trim() != "" &&
+					<span
+						className=" px-2   text-truncate overflow-hidden text-nowrap text-danger  "
+					>
+					{liveStreamData?.error} 
+					</span> 
+				}
+				
 				 
 				
 			</div>

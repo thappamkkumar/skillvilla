@@ -21,9 +21,8 @@ const handleViewerLeave = async (peerConRef,  authToken, viewerId, liveId,  disp
       },
       authToken
     );
-    //console.log(resultData);
-
-    if (resultData?.status) {
+   // console.log(resultData);
+ 
 			
 			if(isPublisherSide)
 			{ 
@@ -57,10 +56,9 @@ const handleViewerLeave = async (peerConRef,  authToken, viewerId, liveId,  disp
 				dispatch(updateLiveStreamState({type : 'refresh'}));
 			}
 		
-      
-    }
+       
   } catch (e) {
-    //console.log(e);
+    console.log(e);
   }
 };
 
