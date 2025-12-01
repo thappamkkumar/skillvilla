@@ -1,28 +1,100 @@
   
-import {   memo, useRef, useEffect} from 'react'; 
+import {   memo, useRef, useState, useCallback, useEffect} from 'react'; 
 import { useSelector, useDispatch } from 'react-redux';  
 import { debounce } from "lodash";
-import Row from 'react-bootstrap/Row' 
-import Col from 'react-bootstrap/Col' 
+import Row from 'react-bootstrap/Row' ;
+import Col from 'react-bootstrap/Col' ;
 
+
+import InfiniteScrollContainer from '../../../Components/Common/InfiniteScrollContainer';
 import MainPageHeader from "./../../../Components/Customer/LiveList/MainPageHeader";
 import QuickLive from "./../../../Components/Customer/LiveType/QuickLive";
 import ProfessionalLive from "./../../../Components/Customer/LiveType/ProfessionalLive";
 
+import serverConnection from '../../../CustomHook/serverConnection';
+
+import { updateActiveLiveState } from '../../../StoreWrapper/Slice/ActiveLiveSlice';
+ 
+//live stream custom hook for websockets
+import useLiveStreamStartWebsocket from '../../../Websockets/LiveStream/useLiveStreamStartWebsocket';
+
+
+
 const ActiveLivePage = () => {  
-	
+	const authToken = useSelector((state) => state.auth.token); //selecting token from store
+  const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 	const liveList = useSelector((state) => state.activeLiveList);
-	const dispatch = useDispatch(); 
-	const scrollRef = useRef(null);
+	const [loading, setLoading] = useState(false);
+	 
+	 
+	const dispatch = useDispatch();//geting reference of useDispatch into dispatch
+	
+	
+  // Call the websocket hook
+  useLiveStreamStartWebsocket(logedUserData);
 	
 	
 	
+	//function for fetching data (professional live streams)
+	const apiCall = useCallback(async()=>{ 
+		console.log('fetch professional streams');
+	
+	
+		if(authToken == null) return;
+		try
+		{
+			setLoading(true);
+			//call the function fetcg post data fron server
+			 
+			  
+				  
+		}
+		catch(error)
+		{
+			console.log(error);
+			
+		}
+		finally
+		{
+			setLoading(false);
+		}
+			
+	},[dispatch, liveList]); 
+
+	useEffect(() => { 
+		 
+		// Create a cancel token source
+		let source = axios.CancelToken.source(); 
+		if(liveList.professionalLiveList.length == 0)
+		{ 
+			apiCall(); 
+		} 
+		return () => {
+				// Cancel the request when the component unmounts 
+        source.cancel('Request canceled due to component unmount '); 
+    };
+	}, [liveList.professionalLiveList.length]);
+	 
+	
+	
+	//function to add currunt scroll location into redux state
+	const handleScrollUpdate = useCallback((scrollTop) => {
+		  dispatch(updateActiveLiveState({type : 'setScrollHeightPosition', scrollHeightPosition: scrollTop})); 
+    
+  }, [dispatch]);
+	 
 	return (
-     <div  ref={scrollRef} className="  p-0 m-0 main_container customListGroupContainer" >
+     <InfiniteScrollContainer
+				fetchData={apiCall}
+				hasMore={liveList?.professionalLiveHasMore || false}
+				loading={loading}
+				initialScrollPosition={liveList.scrollHeightPosition}
+				onScrollUpdate={handleScrollUpdate}
+			> 
          
 				<MainPageHeader />
 				<Row className="m-0 flex-row-reverse p-0  ">
-					<Col sm={12} xl={3} className="min-vh-100 bg-light py-2 py-xl-4">
+					<Col sm={12} xl={3} className="  bg-light py-2 py-xl-4">
 						<h3 className="fw-bold  ">Quick Lives</h3>
 						<QuickLive />
 					</Col>
@@ -33,7 +105,7 @@ const ActiveLivePage = () => {
 					</Col>
 				</Row>
         
-      </div>
+      </InfiniteScrollContainer>
      
   );
 };

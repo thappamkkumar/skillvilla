@@ -39,6 +39,7 @@ import { updateUserState } from '../../../StoreWrapper/Slice/UserSlice';
 import {updateCommunityState as updateYourCommunityState} from '../../../StoreWrapper/Slice/YourCommunitySlice';
 import {updateCommunityState as updateSuggestionCommunityState} from '../../../StoreWrapper/Slice/SuggestionCommunitySlice';
 import { updateShareStatsState } from '../../../StoreWrapper/Slice/ShareStatsSlice';
+import { updateActiveLiveState } from '../../../StoreWrapper/Slice/ActiveLiveSlice';
  
  
 //import manageVisitedUrl from '../../../CustomHook/manageVisitedUrl';
@@ -100,7 +101,10 @@ const LargeScreen = () => {
 			dispatch(updateSuggestionCommunityState({ type: 'refresh' }));
 			dispatch(updateExploreJobFilterState({ type: 'refresh' }));
 			dispatch(updateExploreSearchState({ type: 'refresh' }));
-    } else {
+    } else if (url === '/lives/active') {
+      dispatch(updateActiveLiveState({ type: 'refresh' }));
+		}
+		else {
       //alert(`${url} click`);
     }
 		

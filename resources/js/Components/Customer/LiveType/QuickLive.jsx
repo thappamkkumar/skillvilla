@@ -77,12 +77,12 @@ const QuickLive = () =>{
 	
 	return(
 		
-    <div className="position-relative w-100">
+    <div className="position-relative  w-100">
 		
       {/* LEFT scroll button on mobile only */}
       <button
-        className="btn btn-secondary shadow-sm position-absolute start-0 bottom-1 d-xl-none"
-        style={{ zIndex: 20, height:'70px'}}
+        className="btn btn-secondary shadow-sm position-absolute start-0 bottom-1 d-xl-none h-75"
+        
         onClick={scrollLeft}
       >
         <BsChevronCompactLeft size={20} />
@@ -90,8 +90,7 @@ const QuickLive = () =>{
 
       {/* RIGHT scroll button on mobile only */}
       <button
-        className="btn btn-secondary shadow-sm position-absolute end-0 bottom-1  d-xl-none"
-        style={{ zIndex: 20, height:'70px' }}
+        className="btn btn-secondary shadow-sm position-absolute end-0 bottom-1  d-xl-none h-75" 
         onClick={scrollRight}
       >
         <BsChevronCompactRight size={20} />

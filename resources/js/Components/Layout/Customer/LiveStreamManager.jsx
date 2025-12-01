@@ -9,8 +9,7 @@ import handleOffer from '../../Customer/LiveStream/LiveStreamFunctions/handleOff
 import handleAnswer from '../../Customer/LiveStream/LiveStreamFunctions/handleAnswer'; 
 import handleICE from '../../Customer/LiveStream/LiveStreamFunctions/handleICE'; 
 
-//live stream custom hook for websockets
-import useLiveStreamStartWebsocket from '../../../Websockets/LiveStream/useLiveStreamStartWebsocket';
+//live stream custom hook for websockets 
 import useLiveStreamNewViewerWebsocket from '../../../Websockets/LiveStream/useLiveStreamNewViewerWebsocket';
 import useLiveStreamSignalWebsocket from '../../../Websockets/LiveStream/useLiveStreamSignalWebsocket';
 import useLiveStreamViewerLeaveWebsocket from '../../../Websockets/LiveStream/useLiveStreamViewerLeaveWebsocket';
@@ -62,8 +61,7 @@ const LiveStreamManager = () => {
 	 
 	
 	
-  // Call the websocket hook
-  useLiveStreamStartWebsocket(logedUserData);
+  // Call the websocket hook 
   useLiveStreamNewViewerWebsocket(logedUserData, liveStreamData, onStartLiveStream);
   useLiveStreamViewerLeaveWebsocket(logedUserData, liveStreamData);
   useLiveStreamSignalWebsocket(logedUserData, liveStreamData, onOffer, onAnswer, onICEConnection);

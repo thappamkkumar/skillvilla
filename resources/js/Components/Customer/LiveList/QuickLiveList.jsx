@@ -8,7 +8,7 @@ const QuickLiveList = ({liveList}) => {
   
 	return ( 
 		 
-			<div className="d-flex d-xl-block ">
+			<div className="d-flex d-xl-block gap-1 ">
 				 
 				{liveList.map((live) => ( 
 						

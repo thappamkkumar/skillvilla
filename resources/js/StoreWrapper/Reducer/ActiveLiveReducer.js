@@ -50,10 +50,13 @@ const ActiveLiveReducer = {
 						break;
 					
 						case "refresh":
-							 state.postList = []; 
-							 state.cursor = null;
-							 state.hasMore = false;
-							 state.scrollHeightPosition = 0;
+							state.quickLiveList= []; 
+							state.quickLiveCursor= null;
+							state.quickLiveHasMore= false;
+							state.professionalLiveList= []; 
+							state.professionalLiveCursor= null;
+							state.professionalLiveHasMore= false; 
+							state.scrollHeightPosition = 0;
 							break;
 					default: 
 							break;
