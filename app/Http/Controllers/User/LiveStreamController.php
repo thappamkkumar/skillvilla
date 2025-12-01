@@ -443,15 +443,31 @@ class LiveStreamController extends Controller
 				// Get logged-in user
 				$user = JWTAUTH::parseToken()->authenticate();
 				
-				$live = LiveStream::find($liveId);
+				$live = LiveStream::with('quickStream:id,live_stream_id')->find($liveId);
 				if(!$live)
 				{
 					$data = ['status' => false,'message'=> "Live Stream Not Found."];
 					return response()->json($data);
 				}
+				
+				$viewers = LiveQuickStreamViewer::where('live_quick_stream_id',$live->quickStream->id)->get();
+				
+				
 				$live->delete();
 				
-				$data = ['status'=> true, 'message' => 'Quick Live Stream Ended Successfully.', 'live'=>$live];
+				
+				if($viewers)
+				{
+					$viewers_user_id = $viewers->pluck('viewer_id');
+					  
+					Ended::dispatch([
+						'live_id' => $live->id,
+						'viewer_users_ids' => $viewers_user_id,
+						]);
+				}
+			 
+				
+				$data = ['status'=> true, 'message' => 'Quick Live Stream Ended Successfully.', 'live'=>$live, 'viewers'=>$viewers];
 				return response()->json($data);
 			}
 			catch(Exception $e)

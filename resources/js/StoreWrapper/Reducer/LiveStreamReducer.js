@@ -24,6 +24,17 @@ const LiveStreamReducer = {
 				break;
 			}
 			
+			case "liveStreamEnd":
+			{
+				const liveId = action.payload.liveId;
+				if(liveId !== state.liveId) break;
+				
+				state.isEnd = true;
+				
+				break;
+
+			}
+			
 			
 			//add new viewer on publisher side 
 			case "addNewViewer":
@@ -159,6 +170,7 @@ const LiveStreamReducer = {
 				state.liveType = null;
 				state.startedAt = null;
 				state.liveStatus = 'idle';
+				state.isEnd = false;
 				state.totalViewer = null;
 				
 				state.liveSession = null;  
@@ -171,6 +183,9 @@ const LiveStreamReducer = {
 				state.viewerList = []; 
 				state.currentViewer = null;  
 				
+				state.joinedRequest = [];
+				state.chatMessages = [];
+				
 				state.isMuted = false;
 				state.cameraOn = true;
 				state.speakerOff = false; 
@@ -179,12 +194,9 @@ const LiveStreamReducer = {
 				state.speakerId =  null;
 				state.cameraId =null;
 				
-				state.isConnecting = false;
-				
+				state.isConnecting = false; 
 				state.error = null;
 				
-				state.joinedRequest = [];
-				state.chatMessages = [];
 				
 				break;
 			}

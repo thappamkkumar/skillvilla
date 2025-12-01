@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import MainHeader from './MainHeader/MainHeader';
 import PublisherStream from './VideoStreamViews/PublisherStream';
+import LiveStreamEndModel from './VideoStreamViews/LiveStreamEndModel';
 import SidePanel from './SidePanel/SidePanel';
 import StreamControlActions from './StreamControlActions/StreamControlActions';
 import MessageAlert from '../../../Components/MessageAlert';
@@ -43,8 +44,7 @@ const LiveStreamModel = ({
     };
   }, []);
  
- 
-
+  
  
 	return(
 			<div
@@ -53,6 +53,11 @@ const LiveStreamModel = ({
 			>
 					<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
 					
+					<LiveStreamEndModel 
+						peerConRef={peerConRef}
+						publisherVideoRef={publisherVideoRef}
+						localMediaRef={localMediaRef}
+					/>
 					
 					
 				 	<div className="w-100 h-100   d-flex flex-column  ">

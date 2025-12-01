@@ -22,7 +22,14 @@ const ActiveLiveReducer = {
 							state.quickLiveHasMore = action.payload.quickLiveHasMore;
 							break;
 							 
-					
+					case "removeQuickLive": 
+					{
+						const liveId = action.payload.liveId;
+						
+						state.quickLiveList = state.quickLiveList.filter(item => item.id != liveId);
+						
+						break;
+					}
 					
 					
 					

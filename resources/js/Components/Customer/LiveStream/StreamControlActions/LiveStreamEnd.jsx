@@ -149,6 +149,21 @@ const LiveStreamEnd = ({
 				setShowModel(true);
 			}
 			
+			if (localMediaRef.current) { 
+					localMediaRef.current.getTracks().forEach(track => track.stop());
+					localMediaRef.current = null;
+			}
+
+			if(publisherVideoRef.current)
+			{
+				publisherVideoRef.current = null;
+			}
+						
+			if(peerConRef.current)
+			{
+				publisherVideoRef.current = null;
+			}
+			
 			dispatch(updateLiveStreamState(
 					{ 
 						'type':'refresh',   

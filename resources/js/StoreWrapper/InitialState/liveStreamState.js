@@ -5,6 +5,7 @@ const liveStreamState = {
 	liveType: null,
 	startedAt: null,
 	liveStatus: 'idle',
+	isEnd: false,
 	totalViewer: 0,
 	
 	liveSession: null, //{id, title, description,etc}

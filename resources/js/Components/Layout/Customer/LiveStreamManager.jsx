@@ -14,6 +14,7 @@ import useLiveStreamNewViewerWebsocket from '../../../Websockets/LiveStream/useL
 import useLiveStreamSignalWebsocket from '../../../Websockets/LiveStream/useLiveStreamSignalWebsocket';
 import useLiveStreamViewerLeaveWebsocket from '../../../Websockets/LiveStream/useLiveStreamViewerLeaveWebsocket';
 import useLiveStreamMessageWebsocket from '../../../Websockets/LiveStream/useLiveStreamMessageWebsocket';
+import useLiveStreamEndWebsocket from '../../../Websockets/LiveStream/useLiveStreamEndWebsocket';
 
 const LiveStreamManager = () => {
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
@@ -66,6 +67,7 @@ const LiveStreamManager = () => {
   useLiveStreamViewerLeaveWebsocket(logedUserData, liveStreamData);
   useLiveStreamSignalWebsocket(logedUserData, liveStreamData, onOffer, onAnswer, onICEConnection);
   useLiveStreamMessageWebsocket(logedUserData);
+  useLiveStreamEndWebsocket(logedUserData);
   
 	
  // return null if no live stream start
