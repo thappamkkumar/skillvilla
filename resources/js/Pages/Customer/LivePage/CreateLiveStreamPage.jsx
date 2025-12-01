@@ -32,7 +32,7 @@ const AddStoriesPage = ( ) => {
 				 
 				<QuickLiveStream  setShowModel={setShowModel} setsubmitionMSG={setsubmitionMSG} />
 				
-				<ProfessionalLiveStream  setShowModel={setShowModel} setsubmitionMSG={setsubmitionMSG} />
+				{/*<ProfessionalLiveStream  setShowModel={setShowModel} setsubmitionMSG={setsubmitionMSG} />*/}
 					 
 					
 				 

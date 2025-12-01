@@ -6,6 +6,9 @@ import {useSelector , useDispatch } from 'react-redux';
 
 import Button from 'react-bootstrap/Button';   
 import Spinner from 'react-bootstrap/Spinner';   
+import { Card,   Badge } from "react-bootstrap";
+
+
 
 import { BsBroadcast } from "react-icons/bs";
 
@@ -73,9 +76,8 @@ const QuickLiveStream = ({
 	}, [authToken, dispatch]);
 
  
-	return ( 
-		   
-			 	 
+	/*return ( 
+		    
 				<div className="w-100 h-auto clearfix">
 					<Button 
 						variant="dark"
@@ -93,7 +95,58 @@ const QuickLiveStream = ({
 				</div>
 			 
 				 
-	);
+	);*/
+	
+	
+	
+	
+	return (
+    <div className=" ">
+          <Card className="  border-0 h-100">
+            <Card.Body>
+              <div className="d-flex align-items-center mb-2">
+                 
+                <Card.Title className="m-0 fs-3 fw-bold">Quick Stream</Card.Title>
+              </div>
+
+              <Card.Text className="text-muted">
+                Go live instantly with a single click. Perfect for quick, casual broadcasts.
+              </Card.Text>
+
+              <Button 
+									variant="dark"
+									title="Go Live Quickly."
+									id="goQuickLive" 
+									onClick={goQuickLive}
+									disabled={submitting}
+								>
+									{
+										submitting ? <Spinner  className="me-2 " size="sm" /> : <BsBroadcast className="me-2 "/>
+									}
+									 Go Live
+								</Button>
+            </Card.Body>
+          </Card>
+         
+
+        {/* Professional Stream (Coming Soon) */}
+           <Card className="  h-100 border-0">
+            <Card.Body className="opacity-75">
+              <div className="d-flex align-items-center mb-2">
+                
+                <Card.Title className="m-0 fs-3 fw-bold">Professional Stream</Card.Title>
+              </div>
+
+              <Card.Text className="text-muted">
+                Advanced streaming with multiple sessions and full broadcast control.
+              </Card.Text>
+
+              <Badge bg="secondary">Coming Soon</Badge>
+            </Card.Body>
+          </Card>
+        
+    </div>
+  );
 	
 };
 

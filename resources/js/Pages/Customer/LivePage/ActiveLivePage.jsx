@@ -90,9 +90,15 @@ const ActiveLivePage = () => {
 				loading={loading}
 				initialScrollPosition={liveList.scrollHeightPosition}
 				onScrollUpdate={handleScrollUpdate}
+				style="pb-5  pt-0  main_container"
 			> 
          
-				<MainPageHeader />
+				 {/* MainPageHeader  is comment due to interview reason. when working again un-comment it. it work well. and also in create page uncomment proffesional live and in queck live return only button*/}
+				 {/*<MainPageHeader />*/}
+				 
+				 
+				 
+				 
 				<Row className="m-0 flex-row-reverse p-0  ">
 					<Col sm={12} xl={3} className="  bg-light py-2 py-xl-4">
 						<h3 className="fw-bold  ">Quick Lives</h3>
@@ -100,8 +106,8 @@ const ActiveLivePage = () => {
 					</Col>
 					
 					<Col sm={12} xl={9} className="px-2 px-md-4 py-4">
-						<h3 className="fw-bold  ">Professional Lives</h3>
-						<ProfessionalLive />
+						{/*<h3 className="fw-bold  ">Professional Lives</h3>
+						<ProfessionalLive />*/}
 					</Col>
 				</Row>
         
