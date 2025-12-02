@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef, useCallback, memo } from 'react';
 import { useSelector } from 'react-redux';
 import LiveStreamEnd from './LiveStreamEnd';
+import ControlActions from './ControlActions/ControlActions';
 
 const StreamControlActions = ({
 	peerConRef,
@@ -75,13 +76,8 @@ const StreamControlActions = ({
 				className="  d-flex justify-content-center align-items-center flex-wrap gap-2  px-2 py-2 rounded-5  mb-4 bg-secondary bg-opacity-25 " 
 			>
 				{/*all controlls*/}
-				<div className="  d-flex justify-content-center align-items-center flex-wrap gap-2 p-1 overflow-auto    ">
-					<span className="btn btn-light rounded-circle">  R</span>  
-					<span className="btn btn-light rounded-circle ">M</span> 
-					<span className="btn btn-light rounded-circle ">C</span>
-					<span className="btn btn-light rounded-circle">  S</span> 
-					<span className="btn btn-light rounded-circle">  H</span> 
-					
+				<div className="  d-flex justify-content-center align-items-center flex-wrap gap-2 p-1 overflow-auto    "> 
+					<ControlActions />
 				</div>
 				<div className="p-1">
 					 
