@@ -53,7 +53,7 @@ const LiveStreamMicDevices = ({
       })
       .catch((err) => {
         console.warn("Error accessing devices:", err);
-        setError("Could not enumerate devices");
+        setError("Could not access mic list");
       });
   }, [ ]);
 
@@ -160,7 +160,7 @@ const LiveStreamMicDevices = ({
           <h5>Select Microphone</h5>
           <Button
             variant="outline-light"
-            className="p-1 border-2 border-dark"
+            className="p-1   "
             onClick={toggleMicList}
             title="Close"
           >
