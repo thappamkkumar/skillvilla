@@ -29,7 +29,7 @@ const SpeakerControl= () => {
 		<Button 
 			variant={liveStreamData.speakerId == 'off' ? "secondary" : "light"}
 			title="Speakers" 
-			id="cameraControlBTN" 
+			id="speakerControlBTN" 
 			className={`rounded-circle    fs-5 p-3  lh-1       `}
 			onClick={toggleSpeakerList}
 		>

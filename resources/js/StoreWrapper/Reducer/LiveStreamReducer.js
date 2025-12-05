@@ -210,7 +210,12 @@ const LiveStreamReducer = {
 				state.cameraId = cameraId;
 				break;
 			}
-
+			
+			case "setHold":
+			{
+				state.isHold = action.payload.isHold;
+				break;
+			}
 
 			case "refresh":
 			{

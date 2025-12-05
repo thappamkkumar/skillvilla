@@ -11,7 +11,7 @@ import HoldButton from './HoldControl';
 import ReactionButton from './ReactionControl';
 
 
-const ControlActions = () =>{
+const ControlActions = ({localMediaRef, peerConRef}) =>{
 	const liveStreamData = useSelector((state) => state.liveStreamData);
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 
@@ -47,7 +47,7 @@ const ControlActions = () =>{
       case 'mic': return <MicButton key="mic" />;
       case 'camera': return <CameraButton key="camera" />;
       case 'speaker': return <SpeakerButton key="speaker" />;
-      case 'hold': return <HoldButton key="hold" />;
+      case 'hold': return <HoldButton key="hold" localMediaRef={localMediaRef} peerConRef={peerConRef} />;
       case 'reaction': return <ReactionButton key="reaction" />;
       default: return null;
     }

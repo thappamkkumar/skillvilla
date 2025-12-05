@@ -28,7 +28,7 @@ const MicControl= () => {
 		<Button 
 			variant={liveStreamData.micId == 'off' ? "secondary" : "light"}
 			title="Mics" 
-			id="cameraControlBTN" 
+			id="micControlBTN" 
 			className={`rounded-circle    fs-5 p-3  lh-1       `}
 			onClick={toggleMicList}
 		>

@@ -8,7 +8,7 @@ const ReactionControl= () => {
 		<Button 
 			variant="light"
 			title="Reactions" 
-			id="cameraControlBTN" 
+			id="reactionControlBTN" 
 			className={`rounded-circle    fs-5 p-3  lh-1       `}
 		>
 			<BsEmojiLaughing    />

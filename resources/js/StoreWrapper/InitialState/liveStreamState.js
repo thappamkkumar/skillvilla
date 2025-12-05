@@ -11,7 +11,7 @@ const liveStreamState = {
 	liveSession: null, //{id, title, description,etc}
 	liveDetail: null, //if(type prof. stream) && {id, title, description,etc}
 	
-	publisherHold: false,	
+	//publisherHold: false,	
 	publisher: null,
 	
 	publisherId: null,
@@ -33,6 +33,8 @@ const liveStreamState = {
 	micListShow: false,
 	speakerListShow: false,
 	reactionListShow: false,
+	
+	isHold: false, //use for both publisher and member
 	
 	isConnecting:false,  
 	error: null, 
