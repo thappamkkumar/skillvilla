@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react';
-import {  useDispatch } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { 
 	BsCameraVideo, 
@@ -11,7 +11,8 @@ import {updateLiveStreamState} from '../../../../../StoreWrapper/Slice/LiveStrea
 
 
 const CameraControl= () => {
-	
+	const liveStreamData = useSelector((state) => state.liveStreamData);
+ 
 	const dispatch = useDispatch();	
 	 
 	const toggleCameraList = useCallback(()=>{
@@ -25,13 +26,15 @@ const CameraControl= () => {
 	
   return (
 		<Button 
-			variant="light"
-			title="Camera Controls" 
+			variant={liveStreamData.cameraId == 'off' ? "secondary" : "light"}
+			title="Cameras" 
 			id="cameraControlBTN" 
 			className={`rounded-circle    fs-5 p-3  lh-1       `}
 			onClick={toggleCameraList}
 		>
-			<BsCameraVideo    />
+			{
+				liveStreamData.cameraId == 'off' ? <BsCameraVideoOff /> : <BsCameraVideo />
+			}
 		</Button>
 	);
 };

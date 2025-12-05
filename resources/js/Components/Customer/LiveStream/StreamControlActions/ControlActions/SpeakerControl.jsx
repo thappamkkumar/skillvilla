@@ -1,6 +1,6 @@
 
 import { memo, useCallback } from 'react';
-import {  useDispatch } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { 
 	BsVolumeUp ,
@@ -11,7 +11,8 @@ import {updateLiveStreamState} from '../../../../../StoreWrapper/Slice/LiveStrea
 
 const SpeakerControl= () => {
 	
-	
+	const liveStreamData = useSelector((state) => state.liveStreamData);
+ 
 	const dispatch = useDispatch();	
 	 
 	const toggleSpeakerList = useCallback(()=>{
@@ -26,13 +27,15 @@ const SpeakerControl= () => {
 	
   return (
 		<Button 
-			variant="light"
-			title="Camera Controls" 
+			variant={liveStreamData.speakerId == 'off' ? "secondary" : "light"}
+			title="Speakers" 
 			id="cameraControlBTN" 
 			className={`rounded-circle    fs-5 p-3  lh-1       `}
 			onClick={toggleSpeakerList}
 		>
-			<BsVolumeUp    />
+			{
+				liveStreamData.speakerId == 'off' ? <BsVolumeMute /> : <BsVolumeUp />
+			}
 		</Button>
 	);
 };

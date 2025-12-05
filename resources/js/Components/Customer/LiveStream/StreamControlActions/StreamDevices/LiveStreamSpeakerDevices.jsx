@@ -147,12 +147,13 @@ const LiveStreamSpeakerDevices = ({publisherVideoRef}) => {
             {/* Turn off */}
             <Button
               variant="danger"
+              title="Off Speaker"
               className="d-block w-100 border-0 py-2 text-start rounded"
               onClick={() => handleSelect("off")}
               disabled={liveStreamData.speakerId === "off"}
             >
               <BsVolumeMute className="me-2" />
-              Mute Output
+              Off
             </Button>
           </div>
         ) : (

@@ -1,6 +1,6 @@
 
 import { memo, useCallback } from 'react';
-import {  useDispatch } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { 
 	BsMic, 
@@ -11,7 +11,8 @@ import {updateLiveStreamState} from '../../../../../StoreWrapper/Slice/LiveStrea
 
 
 const MicControl= () => {
-	
+	const liveStreamData = useSelector((state) => state.liveStreamData);
+ 
 	const dispatch = useDispatch();	
 	 
 	const toggleMicList = useCallback(()=>{
@@ -25,13 +26,15 @@ const MicControl= () => {
 	
   return (
 		<Button 
-			variant="light"
-			title="Camera Controls" 
+			variant={liveStreamData.micId == 'off' ? "secondary" : "light"}
+			title="Mics" 
 			id="cameraControlBTN" 
 			className={`rounded-circle    fs-5 p-3  lh-1       `}
 			onClick={toggleMicList}
 		>
-			<BsMic   />
+			{
+				liveStreamData.micId == 'off' ? <BsMicMute /> : <BsMic />
+			}
 		</Button>
 	);
 };

@@ -7,7 +7,7 @@ const ReactionControl= () => {
   return (
 		<Button 
 			variant="light"
-			title="Camera Controls" 
+			title="Reactions" 
 			id="cameraControlBTN" 
 			className={`rounded-circle    fs-5 p-3  lh-1       `}
 		>
