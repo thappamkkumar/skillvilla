@@ -29,6 +29,11 @@ const liveStreamState = {
 	speakerId:null,
 	cameraId:null,
 	
+	cameraListShow: false,
+	micListShow: false,
+	speakerListShow: false,
+	reactionListShow: false,
+	
 	isConnecting:false,  
 	error: null, 
 	 

@@ -15,7 +15,7 @@ const ControlActions = () =>{
 	const liveStreamData = useSelector((state) => state.liveStreamData);
   const logedUserData = JSON.parse(useSelector((state) => state.auth.user));
 
-	const isPublisher = useMemo(()=>{ return logedUserData?.id === liveStreamData?.publisher?.id },[logedUserData, liveStreamData.publisher]);
+	const isPublisher = useMemo(()=>{ return logedUserData?.id === liveStreamData?.publisherId },[logedUserData, liveStreamData.publisherId]);
   
 	const isCurrentViewer = useMemo(()=>{ return logedUserData?.id === liveStreamData?.currentViewer?.viewer_id  },[logedUserData, liveStreamData.currentViewer]);
   

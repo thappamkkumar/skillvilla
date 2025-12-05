@@ -8,6 +8,7 @@ import PublisherStream from './VideoStreamViews/PublisherStream';
 import LiveStreamEndModel from './VideoStreamViews/LiveStreamEndModel';
 import SidePanel from './SidePanel/SidePanel';
 import StreamControlActions from './StreamControlActions/StreamControlActions';
+import LiveStreamDevices from './StreamControlActions/StreamDevices/LiveStreamDevices';
 import MessageAlert from '../../../Components/MessageAlert';
 
 import useWindowHeight from "../../../CustomHook/useWindowHeight";
@@ -53,7 +54,15 @@ const LiveStreamModel = ({
 			>
 					<MessageAlert setShowModel={setShowModel} showModel={showModel} message={submitionMSG}/>
 					
+					{/*model open when live stream end*/}
 					<LiveStreamEndModel 
+						peerConRef={peerConRef}
+						publisherVideoRef={publisherVideoRef}
+						localMediaRef={localMediaRef}
+					/>
+					
+					{/* it has devices use to control mic, camera, and speakers*/}
+					<LiveStreamDevices 
 						peerConRef={peerConRef}
 						publisherVideoRef={publisherVideoRef}
 						localMediaRef={localMediaRef}

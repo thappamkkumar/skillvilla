@@ -77,7 +77,7 @@ const StreamControlActions = ({
 			>
 				{/*all controlls*/}
 				<div className="  d-flex justify-content-center align-items-center flex-wrap gap-2 p-1 overflow-auto    "> 
-					<ControlActions />
+					<ControlActions  />
 				</div>
 				<div className="p-1">
 					 

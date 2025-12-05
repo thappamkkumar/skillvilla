@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BsCameraVideo, BsX } from "react-icons/bs";
+import { BsCameraVideo, BsCameraVideoOff, BsX } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -145,8 +145,8 @@ const CameraDevices = ({ show, onClose, peerConRef, localVideoRef }) => {
 									disabled={chatCallData.cameraId == 'off'}
                   onClick={() => handleSelect('off')}
               >
-                  <BsCameraVideo className="me-2"/>
-                   Mute
+                  <BsCameraVideoOff className="me-2"/>
+                   Off
               </Button>
             </div>
           ) : (

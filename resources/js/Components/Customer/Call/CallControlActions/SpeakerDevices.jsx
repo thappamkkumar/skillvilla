@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BsVolumeUp, BsX } from "react-icons/bs";
+import { BsVolumeUp, BsVolumeMute,  BsX } from "react-icons/bs";
 import Button from "react-bootstrap/Button"; // You can replace with your own button if needed
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -100,7 +100,7 @@ const SpeakerDevices = ({ show, onClose }) => {
 									disabled={chatCallData.speakerId == 'off'}
                   onClick={() => handleSelect('off')}
               >
-                  <BsVolumeUp className="me-2"/>
+                  <BsVolumeMute className="me-2"/>
                    Off
               </Button>
             </div>

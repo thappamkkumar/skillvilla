@@ -1,3 +1,4 @@
+
 // reducer for live stream
 
 const LiveStreamReducer = {
@@ -163,6 +164,54 @@ const LiveStreamReducer = {
 				break;
 			}
 			
+		
+			case "toggleActionControlList":
+			{
+				const deviceType = action.payload.deviceType;
+				if(deviceType == 'mic')
+				{
+					state.micListShow = !state.micListShow;
+				}
+				else if(deviceType == 'speaker')
+				{
+					state.speakerListShow = !state.speakerListShow;
+				}
+				else if(deviceType == 'camera')
+				{
+					state.cameraListShow = !state.cameraListShow;
+				}
+				else if(deviceType == 'reaction')
+				{
+					state.reactionListShow = !state.reactionListShow;
+				}
+				else
+				{					 
+				}
+				break;
+			}
+			
+			case "setMicId":
+			{
+				const micId = action.payload.micId;
+				state.micId = micId;
+				break;
+			}
+			
+			case "setSpeakerId":
+			{
+				const speakerId = action.payload.speakerId;
+				state.speakerId = speakerId;
+				break;
+			}
+			
+			case "setCameraId":
+			{
+				const cameraId = action.payload.cameraId;
+				state.cameraId = cameraId;
+				break;
+			}
+
+
 			case "refresh":
 			{
 				 

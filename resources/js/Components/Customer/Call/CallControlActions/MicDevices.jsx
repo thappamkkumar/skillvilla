@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BsMic, BsX } from "react-icons/bs";
+import { BsMic, BsMicMute, BsX } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -33,42 +33,42 @@ const MicDevices = ({ show, onClose, peerConRef }) => {
       });
   }, [show]);
 
-   const handleSelect = async (deviceId) => {
-  try {
-    const sender = peerConRef.current
-      ?.getSenders()
-      .find(s => s.track && s.track.kind === 'audio');
+  const handleSelect = async (deviceId) => {
+		try {
+			const sender = peerConRef.current
+				?.getSenders()
+				.find(s => s.track && s.track.kind === 'audio');
 
-    if (deviceId === 'off') {
-      // Mute mic without stopping track
-      if (sender?.track) {
-        sender.track.enabled = false;
-      }
-    } else {
-      // Get the new microphone stream
-      const newStream = await navigator.mediaDevices.getUserMedia({
-        audio: { deviceId: { exact: deviceId } }
-      });
-      const newTrack = newStream.getAudioTracks()[0];
+			if (deviceId === 'off') {
+				// Mute mic without stopping track
+				if (sender?.track) {
+					sender.track.enabled = false;
+				}
+			} else {
+				// Get the new microphone stream
+				const newStream = await navigator.mediaDevices.getUserMedia({
+					audio: { deviceId: { exact: deviceId } }
+				});
+				const newTrack = newStream.getAudioTracks()[0];
 
-      if (sender) {
-        await sender.replaceTrack(newTrack);
-        sender.track.enabled = true; // ensure unmuted after switch
-      }
-    }
+				if (sender) {
+					await sender.replaceTrack(newTrack);
+					sender.track.enabled = true; // ensure unmuted after switch
+				}
+			}
 
-    // Update Redux state
-    dispatch(updateChatCallState({
-      type: 'setMic',
-      micId: deviceId
-    }));
+			// Update Redux state
+			dispatch(updateChatCallState({
+				type: 'setMic',
+				micId: deviceId
+			}));
 
-    onClose();
-  } catch (err) {
-    console.error('Error switching microphone:', err);
-    setError('Could not switch microphone');
-  }
-};
+			onClose();
+		} catch (err) {
+			console.error('Error switching microphone:', err);
+			setError('Could not switch microphone');
+		}
+	};
 
 
   if (!show) return null;
@@ -123,7 +123,7 @@ const MicDevices = ({ show, onClose, peerConRef }) => {
 									disabled={chatCallData.micId == 'off'}
                   onClick={() => handleSelect('off')}
               >
-                  <BsMic className="me-2"/>
+                  <BsMicMute className="me-2"/>
                    Mute
               </Button>
 							
