@@ -139,7 +139,7 @@ const LiveStreamCameraDevices = ({
       <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
         <h5>Select Camera</h5>
 
-        <Button variant="outline-light" title="Close" className="p-1" onClick={toggleCameraList} >
+        <Button variant="outline-light" id="closeBTN" title="Close" className="p-1" onClick={toggleCameraList} >
           <BsX className="fw-bold fs-3" />
         </Button>
       </div>

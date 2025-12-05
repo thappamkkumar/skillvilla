@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import LiveStreamMicDevices from './LiveStreamMicDevices';
 import LiveStreamCameraDevices from './LiveStreamCameraDevices';
+import LiveStreamSpeakerDevices from './LiveStreamSpeakerDevices';
 
 const LiveStreamDevices = ({ 
 	peerConRef,
@@ -30,12 +31,18 @@ const LiveStreamDevices = ({
 					/>
 				}
 				
-			 {
+				{
 					liveStreamData.cameraListShow &&
 					<LiveStreamCameraDevices 
 						peerConRef={peerConRef} 
 						publisherVideoRef={publisherVideoRef} 
 						localMediaRef={localMediaRef}
+					/>
+				}
+				{
+					liveStreamData.speakerListShow &&
+					<LiveStreamSpeakerDevices  
+						publisherVideoRef={publisherVideoRef}  
 					/>
 				}
 			 

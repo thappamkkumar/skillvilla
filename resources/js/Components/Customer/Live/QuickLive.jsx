@@ -75,7 +75,7 @@ const QuickLive = ({ live }) => {
 			variant="light"
 			id={`quickLive${live.id}`}
 			title={`Go live with ${live?.publisher?.name || "Unknown User"}`}
-			className="w-100 px-2 py-2 d-flex flex-wrap align-items-center"
+			className="w-100 px-2 py-2 d-flex flex-wrap align-items-center   "
 			onClick={handleJoinLiveStream}
 			disabled={liveStreamData.liveStatus !== 'idle'}
 		>
@@ -91,7 +91,7 @@ const QuickLive = ({ live }) => {
       </div>
 
       {/* TEXT Only on XL+ */}
-      <div className="d-none d-xl-flex flex-column ms-2"  >
+      <div className="d-none d-xl-flex flex-column ms-2 text-start "  >
         <strong
           className="text-truncate overflow-hidden text-nowrap userCard_userName"
         >
