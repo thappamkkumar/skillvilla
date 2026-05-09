@@ -47,6 +47,14 @@ You can also create a new account.
 
 ---
 
+## 🧠 Architecture Diagram
+
+<p align="center">
+  <img src="./screenshots/architecture.png" alt="SkillVilla Architecture Diagram" width="100%" />
+</p>
+
+---
+
 ## 🚀 Core Features
 
 ### Professional & Social Features
