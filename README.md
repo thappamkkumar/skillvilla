@@ -1,8 +1,8 @@
 # SkillVilla — Professional Media Platform
 
-SkillVilla is a full-stack professional media platform that combines professional networking, freelance workflows, job discovery, content sharing, and real-time communication into a unified system.
+SkillVilla is a full-stack professional media platform that combines professional networking, freelance workflows, job discovery, content sharing, and real-time communication into a unified ecosystem.
 
-The platform was designed to reduce fragmentation across professional platforms by allowing users to showcase work, connect with others, discover opportunities, and communicate in real time without switching between multiple systems.
+The platform was designed to reduce fragmentation across professional workflows by allowing users to showcase work, connect with communities, discover opportunities, and communicate in real time without switching between multiple systems.
 
 > Built independently as a complete end-to-end full-stack system.
 
@@ -22,6 +22,7 @@ Password: Mukesh;06
 You can also create a new account.
 
 ---
+
 ## 📸 Screenshots
 
 ### Homepage
@@ -57,69 +58,38 @@ You can also create a new account.
 
 ## 🚀 Core Features
 
-### Professional & Social Features
-- User authentication and authorization
-- Professional profile system
+### Professional Platform
+- Authentication & profile system
 - Follow/unfollow system
-- Workfolio showcase system
-- User reviews and ratings
-- Story publishing system
+- Workfolio showcase with reviews & ratings
 - Community creation and management
 
-### Content Systems
+### Content & Discovery
 - Posts and discussions
-- Problem-solving discussion system
-- Job listings
-- Freelance gigs
-- Workfolio uploads
-- Shared interaction model for likes, comments, and shares
+- Problem-solving system
+- Jobs and freelance gigs
+- Unified search and explore system
+- Infinite scroll feed architecture
 
-### Real-Time Systems
-- Real-time private messaging
-- Community real-time chat
-- Message seen status
-- Story seen status
-- Real-time likes, comments, and shares
-- Real-time workfolio reviews
-- Real-time problem discussions
-- Story commenting system
-
-### Communication Layer
-- 1-to-1 audio calls
-- 1-to-1 video calls
+### Real-Time Communication
+- Private and community chat
+- Message and story seen status
+- Real-time likes, comments, and interactions
+- Audio/video calling using WebRTC
 - Live streaming system
-- WebRTC peer-to-peer communication
 
-### Discovery & Search
-- Unified explore/search system
-- Search across:
-  - Users
-  - Jobs
-  - Freelance gigs
-  - Problems
-  - Workfolio
-  - Communities
-  - Content
-
-### Administrative Features
-- Admin panel
-- Content management
-- User management
+### Administration
+- Admin dashboard
+- User and content management
 - Platform moderation tools
 
 ---
 
 ## 🏗️ Project Overview
 
-SkillVilla was designed as a unified professional ecosystem where users can:
-- build professional identity
-- showcase skills and work
-- communicate in real time
-- discover opportunities
-- participate in communities
-- collaborate through freelance and job systems
+SkillVilla is a unified professional ecosystem designed to integrate networking, communication, content sharing, freelance workflows, and job discovery into a single platform.
 
-Instead of separating these workflows into different platforms, the system integrates them into a single application with a consistent experience and shared interaction model.
+The system focuses on creating a consistent user experience where professionals can interact, showcase work, participate in communities, and access opportunities without relying on multiple disconnected applications.
 
 ---
 
@@ -127,59 +97,31 @@ Instead of separating these workflows into different platforms, the system integ
 
 SkillVilla follows a monolithic full-stack architecture extended with real-time communication layers.
 
-### Frontend Layer
+### Frontend
 - React.js
 - Redux Toolkit
-- React Router
 - Bootstrap
-- Styled Components
 - Vite
 
-Responsibilities:
-- UI rendering
-- State management
-- Real-time synchronization
-- API integration
-- WebRTC signaling handling
-
-### Backend Layer
+### Backend
 - Laravel 11
-- REST API architecture
-- JWT authentication
+- REST APIs
+- JWT Authentication
 - Laravel Reverb
-- Queue workers
-
-Responsibilities:
-- Authentication & authorization
-- API handling
-- Real-time event broadcasting
-- WebRTC signaling
-- Business logic management
 
 ### Real-Time Layer
-- WebSockets using Laravel Reverb & Echo
-- WebRTC peer-to-peer communication
-- Persistent messaging channels
-- Live event broadcasting
+- WebSockets
+- Laravel Echo
+- WebRTC
 
-### Database Layer
+### Database
 - MySQL relational database
-- Structured schema for:
-  - users
-  - posts
-  - jobs
-  - messages
-  - communities
-  - workfolio
-  - gigs
-  - stories
 
-### Deployment Layer
+### Deployment
 - AWS EC2
-- Ubuntu server
-- Nginx configuration
-- Queue worker setup
-- Full-stack deployment on single instance
+- Ubuntu
+- Nginx
+- Queue Workers
 
 ---
 
@@ -188,9 +130,9 @@ Responsibilities:
 ### Frontend
 - React 18
 - Redux Toolkit
+- React Router
 - Bootstrap 5
 - Axios
-- React Router
 - Styled Components
 - Chart.js
 - Quill Editor
@@ -212,81 +154,56 @@ Responsibilities:
 - WebRTC
 - Pusher JS
 
-### Deployment & Infrastructure
+### Infrastructure
 - AWS EC2
 - Ubuntu
 - Nginx
 
 ---
 
-## 🔄 Real-Time Architecture
-
-The platform combines REST APIs with persistent WebSocket connections.
-
-### REST APIs Handle
-- initial data fetching
-- authentication
-- CRUD operations
-- system workflows
-
-### WebSockets Handle
-- live messaging
-- instant UI synchronization
-- activity broadcasting
-- live interaction updates
-
-### WebRTC Handles
-- audio/video calls
-- peer-to-peer communication
-- live streaming
-
-The Laravel backend also acts as the signaling server for WebRTC peer connection negotiation.
-
----
-
 ## 🧩 Core Systems
 
 ### Content Engine
-Unified content architecture supporting:
+Unified architecture supporting:
 - posts
 - jobs
 - freelance gigs
 - workfolio
-- problems/discussions
+- problem discussions
 
 All content types share:
 - likes
 - comments
 - shares
-- interaction flows
+- interaction workflows
 
 ---
 
 ### Messaging System
-Persistent real-time messaging system featuring:
-- private chat
+Persistent real-time communication system featuring:
+- private messaging
 - community chat
-- live updates
-- message persistence
+- live synchronization
 - seen status tracking
+- message persistence
 
 ---
 
 ### Feed & Discovery System
-Dynamic discovery system supporting:
+Dynamic discovery architecture supporting:
 - follow-based feed generation
-- content exploration
-- unified search
-- categorized discovery flows
+- categorized exploration
+- unified search system
+- content discovery flows
 
 ---
 
 ### Infinite Scroll System
-Implemented optimized continuous content loading:
+Optimized continuous content loading with:
 - offset/limit controlled fetching
 - duplicate prevention
-- controlled API synchronization
-- optimized browsing experience
+- synchronized API requests
+- smooth browsing experience
 
 ---
 
@@ -296,16 +213,13 @@ Implemented optimized continuous content loading:
 Designed a unified interaction architecture while supporting different data structures for posts, jobs, workfolio, and discussions.
 
 ### Synchronizing REST APIs with Real-Time Events
-Used Redux as centralized state management to synchronize API responses with WebSocket events.
+Used Redux as a centralized state layer to synchronize API responses with WebSocket events.
 
 ### Implementing WebRTC Without Third-Party Calling Services
-Used Laravel backend as a signaling server to exchange SDP and ICE candidates for peer-to-peer communication.
+Used the Laravel backend as a signaling server to exchange SDP and ICE candidates for peer-to-peer communication.
 
 ### Infinite Scroll Consistency
-Implemented controlled offset/limit fetching to avoid:
-- duplicate data
-- inconsistent ordering
-- excessive API calls
+Implemented controlled offset/limit fetching to avoid duplicate data, inconsistent ordering, and excessive API calls.
 
 ### Managing Large System Complexity
 Organized the platform into modular domains and structured APIs by system responsibility.
@@ -376,7 +290,7 @@ Install dependencies:
 npm install
 ```
 
-Start Vite development server:
+Start development server:
 
 ```bash
 npm run dev
@@ -384,7 +298,7 @@ npm run dev
 
 ---
 
-### WebSocket Server
+### Start Real-Time Services
 
 Run Laravel Reverb server:
 
@@ -392,9 +306,7 @@ Run Laravel Reverb server:
 php artisan reverb:start
 ```
 
----
-
-### Queue Worker
+Run queue worker:
 
 ```bash
 php artisan queue:work
@@ -411,15 +323,15 @@ php artisan queue:work
 
 ---
 
-## 📈 Key Engineering Highlights
+## 📈 Engineering Highlights
 
-- Full-stack architecture built independently
-- Real-time systems using WebSockets and WebRTC
-- Complex multi-domain application structure
-- Centralized state management with Redux
-- Unified content interaction architecture
-- Manual AWS deployment and server configuration
-- Real-time synchronization across multiple systems
+- Independently built end-to-end full-stack architecture
+- Integrated WebSockets and WebRTC for real-time systems
+- Designed scalable multi-domain application structure
+- Managed centralized frontend state using Redux Toolkit
+- Built unified interaction workflows across content systems
+- Deployed and configured application manually on AWS EC2
+- Implemented real-time synchronization across multiple platform features
 
 ---
 
@@ -429,9 +341,9 @@ php artisan queue:work
 - Notification system
 - Rate limiting
 - Media optimization pipeline
-- Microservice extraction for real-time layer
+- Docker-based deployment
 - Advanced recommendation system
-- Containerized deployment using Docker
+- Service separation for real-time infrastructure
 
 ---
 
@@ -441,4 +353,3 @@ Mukesh Kumar
 
 - Portfolio: https://mukeshkumar.vercel.app/
 - GitHub: https://github.com/thappamkkumar
-```
