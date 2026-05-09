@@ -1,66 +1,412 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SkillVilla — Professional Media Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+SkillVilla is a full-stack professional media platform that combines professional networking, freelance workflows, job discovery, content sharing, and real-time communication into a unified system.
 
-## About Laravel
+The platform was designed to reduce fragmentation across professional platforms by allowing users to showcase work, connect with others, discover opportunities, and communicate in real time without switching between multiple systems.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> Built independently as a complete end-to-end full-stack system.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🌐 Live Demo
 
-## Learning Laravel
+🔗 Demo: http://52.53.160.90/
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Demo Credentials
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```txt
+Email: thappamkkumar@gmail.com
+Password: Mukesh;06
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+You can also create a new account.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Core Features
 
-### Premium Partners
+### Professional & Social Features
+- User authentication and authorization
+- Professional profile system
+- Follow/unfollow system
+- Workfolio showcase system
+- User reviews and ratings
+- Story publishing system
+- Community creation and management
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Content Systems
+- Posts and discussions
+- Problem-solving discussion system
+- Job listings
+- Freelance gigs
+- Workfolio uploads
+- Shared interaction model for likes, comments, and shares
 
-## Contributing
+### Real-Time Systems
+- Real-time private messaging
+- Community real-time chat
+- Message seen status
+- Story seen status
+- Real-time likes, comments, and shares
+- Real-time workfolio reviews
+- Real-time problem discussions
+- Story commenting system
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Communication Layer
+- 1-to-1 audio calls
+- 1-to-1 video calls
+- Live streaming system
+- WebRTC peer-to-peer communication
 
-## Code of Conduct
+### Discovery & Search
+- Unified explore/search system
+- Search across:
+  - Users
+  - Jobs
+  - Freelance gigs
+  - Problems
+  - Workfolio
+  - Communities
+  - Content
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Administrative Features
+- Admin panel
+- Content management
+- User management
+- Platform moderation tools
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🏗️ Project Overview
 
-## License
+SkillVilla was designed as a unified professional ecosystem where users can:
+- build professional identity
+- showcase skills and work
+- communicate in real time
+- discover opportunities
+- participate in communities
+- collaborate through freelance and job systems
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Instead of separating these workflows into different platforms, the system integrates them into a single application with a consistent experience and shared interaction model.
+
+---
+
+## 🧠 System Architecture
+
+SkillVilla follows a monolithic full-stack architecture extended with real-time communication layers.
+
+### Frontend Layer
+- React.js
+- Redux Toolkit
+- React Router
+- Bootstrap
+- Styled Components
+- Vite
+
+Responsibilities:
+- UI rendering
+- State management
+- Real-time synchronization
+- API integration
+- WebRTC signaling handling
+
+### Backend Layer
+- Laravel 11
+- REST API architecture
+- JWT authentication
+- Laravel Reverb
+- Queue workers
+
+Responsibilities:
+- Authentication & authorization
+- API handling
+- Real-time event broadcasting
+- WebRTC signaling
+- Business logic management
+
+### Real-Time Layer
+- WebSockets using Laravel Reverb & Echo
+- WebRTC peer-to-peer communication
+- Persistent messaging channels
+- Live event broadcasting
+
+### Database Layer
+- MySQL relational database
+- Structured schema for:
+  - users
+  - posts
+  - jobs
+  - messages
+  - communities
+  - workfolio
+  - gigs
+  - stories
+
+### Deployment Layer
+- AWS EC2
+- Ubuntu server
+- Nginx configuration
+- Queue worker setup
+- Full-stack deployment on single instance
+
+---
+
+## ⚙️ Tech Stack
+
+### Frontend
+- React 18
+- Redux Toolkit
+- Bootstrap 5
+- Axios
+- React Router
+- Styled Components
+- Chart.js
+- Quill Editor
+- Vite
+
+### Backend
+- Laravel 11
+- PHP 8.2
+- JWT Authentication
+- Laravel Reverb
+- REST APIs
+
+### Database
+- MySQL
+
+### Real-Time Technologies
+- WebSockets
+- Laravel Echo
+- WebRTC
+- Pusher JS
+
+### Deployment & Infrastructure
+- AWS EC2
+- Ubuntu
+- Nginx
+
+---
+
+## 🔄 Real-Time Architecture
+
+The platform combines REST APIs with persistent WebSocket connections.
+
+### REST APIs Handle
+- initial data fetching
+- authentication
+- CRUD operations
+- system workflows
+
+### WebSockets Handle
+- live messaging
+- instant UI synchronization
+- activity broadcasting
+- live interaction updates
+
+### WebRTC Handles
+- audio/video calls
+- peer-to-peer communication
+- live streaming
+
+The Laravel backend also acts as the signaling server for WebRTC peer connection negotiation.
+
+---
+
+## 🧩 Core Systems
+
+### Content Engine
+Unified content architecture supporting:
+- posts
+- jobs
+- freelance gigs
+- workfolio
+- problems/discussions
+
+All content types share:
+- likes
+- comments
+- shares
+- interaction flows
+
+---
+
+### Messaging System
+Persistent real-time messaging system featuring:
+- private chat
+- community chat
+- live updates
+- message persistence
+- seen status tracking
+
+---
+
+### Feed & Discovery System
+Dynamic discovery system supporting:
+- follow-based feed generation
+- content exploration
+- unified search
+- categorized discovery flows
+
+---
+
+### Infinite Scroll System
+Implemented optimized continuous content loading:
+- offset/limit controlled fetching
+- duplicate prevention
+- controlled API synchronization
+- optimized browsing experience
+
+---
+
+## 🧠 Technical Challenges Solved
+
+### Managing Multiple Content Types
+Designed a unified interaction architecture while supporting different data structures for posts, jobs, workfolio, and discussions.
+
+### Synchronizing REST APIs with Real-Time Events
+Used Redux as centralized state management to synchronize API responses with WebSocket events.
+
+### Implementing WebRTC Without Third-Party Calling Services
+Used Laravel backend as a signaling server to exchange SDP and ICE candidates for peer-to-peer communication.
+
+### Infinite Scroll Consistency
+Implemented controlled offset/limit fetching to avoid:
+- duplicate data
+- inconsistent ordering
+- excessive API calls
+
+### Managing Large System Complexity
+Organized the platform into modular domains and structured APIs by system responsibility.
+
+---
+
+## 📁 Project Structure
+
+```bash
+skillvilla/
+├── app/
+├── bootstrap/
+├── config/
+├── database/
+├── public/
+├── resources/
+│   ├── js/
+│   ├── components/
+│   ├── pages/
+│   ├── redux/
+│   └── layouts/
+├── routes/
+├── storage/
+└── tests/
+```
+
+---
+
+## 🛠️ Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/thappamkkumar/skillvilla.git
+```
+
+---
+
+### Backend Setup
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+Configure database credentials in `.env`
+
+Run migrations:
+
+```bash
+php artisan migrate
+```
+
+Start backend server:
+
+```bash
+php artisan serve
+```
+
+---
+
+### Frontend Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start Vite development server:
+
+```bash
+npm run dev
+```
+
+---
+
+### WebSocket Server
+
+Run Laravel Reverb server:
+
+```bash
+php artisan reverb:start
+```
+
+---
+
+### Queue Worker
+
+```bash
+php artisan queue:work
+```
+
+---
+
+## 🔐 Authentication
+
+- JWT-based authentication
+- Protected routes
+- Token-based authorization
+- Secure API access
+
+---
+
+## 📈 Key Engineering Highlights
+
+- Full-stack architecture built independently
+- Real-time systems using WebSockets and WebRTC
+- Complex multi-domain application structure
+- Centralized state management with Redux
+- Unified content interaction architecture
+- Manual AWS deployment and server configuration
+- Real-time synchronization across multiple systems
+
+---
+
+## 📌 Future Improvements
+
+- Redis caching
+- Notification system
+- Rate limiting
+- Media optimization pipeline
+- Microservice extraction for real-time layer
+- Advanced recommendation system
+- Containerized deployment using Docker
+
+---
+
+## 👨‍💻 Author
+
+Mukesh Kumar
+
+- Portfolio: https://mukeshkumar.vercel.app/
+- GitHub: https://github.com/thappamkkumar
+```
