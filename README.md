@@ -25,8 +25,8 @@ You can also create a new account.
 
 ## 📸 Screenshots
 
-### Homepage
-![Homepage](./screenshots/homepage.png)
+### Landing page
+![Homepage](./screenshots/landing-page.png)
 
 ### Feed System
 ![Feed](./screenshots/feed.png)
@@ -45,6 +45,9 @@ You can also create a new account.
 
 ### Communities
 ![Communities](./screenshots/communities.png)
+
+### Admin Dashboard
+![Communities](./screenshots/admin-dashboard.png)
 
 ---
 
